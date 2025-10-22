@@ -219,7 +219,7 @@ export default function PricingPage() {
                       "Flexible scheduling",
                       "Progress tracking tools",
                       "24/7 platform access"
-                    ]).map((feature, idx) => (
+                    ]).map((feature: string, idx: number) => (
                       <div key={idx} className="flex items-center">
                         <CheckCircle className="w-5 h-5 text-brand-leaf mr-3 flex-shrink-0" />
                         <span className="text-gray-700">{feature}</span>
@@ -283,7 +283,7 @@ export default function PricingPage() {
                       "Flexible scheduling",
                       "Advanced progress tracking",
                       "Priority support & booking"
-                    ]).map((feature, idx) => (
+                    ]).map((feature: string, idx: number) => (
                       <div key={idx} className="flex items-center">
                         <CheckCircle className="w-5 h-5 text-brand-leaf mr-3 flex-shrink-0" />
                         <span className="text-gray-700">{feature}</span>

@@ -3,7 +3,8 @@ const nextConfig = {
   output: "standalone",
   reactStrictMode: true,
   typescript: {
-    ignoreBuildErrors: true,
+    // TODO: Fix TypeScript errors and remove this flag before production
+    // ignoreBuildErrors: true,
   },
   images: {
     unoptimized: process.env.NODE_ENV === "development",

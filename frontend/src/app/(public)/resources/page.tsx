@@ -5,7 +5,7 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { ArrowLeft, Download, BookOpen, Video, FileText, Headphones, Users, Calendar, ChevronRight, Search, Mail } from "lucide-react"
+import { ArrowLeft, Download, BookOpen, Video, FileText, Headphones, Users, Calendar, Search, Mail } from "lucide-react"
 import GradientText from "@/components/GradientText"
 import SpotlightCard from "@/components/SpotlightCard"
 import Footer from "@/components/Footer"
@@ -20,12 +20,41 @@ interface ContentData {
   meta_description?: string
 }
 
+interface Resource {
+  title: string
+  description: string
+  pages?: number
+  format?: string
+  downloadUrl?: string
+  duration?: string
+  instructor?: string
+  videoUrl?: string
+  audioUrl?: string
+}
+
+interface Category {
+  title: string
+  description: string
+  icon?: React.ComponentType<{ className?: string }>
+  iconName?: string
+  resources?: Resource[]
+}
+
+interface FeaturedResource {
+  title: string
+  description: string
+  type: string
+  items?: number
+  duration?: string
+  downloadUrl?: string
+  accessUrl?: string
+}
+
 export default function ResourcesPage() {
   const [resourcesContent, setResourcesContent] = useState<ContentData | null>(null)
-  const [loading, setLoading] = useState(true)
 
   // Default resources if CMS content is not available
-  const defaultCategories = [
+  const defaultCategories: Category[] = [
     {
       title: "Guides & Workbooks",
       description: "Comprehensive guides to help you understand and practice ACT principles",
@@ -80,7 +109,7 @@ export default function ResourcesPage() {
     }
   ]
 
-  const defaultFeatured = [
+  const defaultFeatured: FeaturedResource[] = [
     {
       title: "Complete ACT Starter Kit",
       description: "Everything you need to begin your ACT journey",
@@ -114,8 +143,6 @@ export default function ResourcesPage() {
       }
     } catch (error) {
       console.error('Error fetching resources content:', error)
-    } finally {
-      setLoading(false)
     }
   }
 
@@ -170,8 +197,8 @@ export default function ResourcesPage() {
     return <><GradientText className="inline-block">Resources</GradientText> Library</>
   }
 
-  const resourceCategories = cmsContent?.categories?.categories || defaultCategories
-  const featuredResources = cmsContent?.featured?.resources || defaultFeatured
+  const resourceCategories: Category[] = cmsContent?.categories?.categories || defaultCategories
+  const featuredResources: FeaturedResource[] = cmsContent?.featured?.resources || defaultFeatured
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
@@ -237,7 +264,7 @@ export default function ResourcesPage() {
           </motion.div>
 
           <div className="grid md:grid-cols-2 gap-8">
-            {featuredResources.map((resource, index) => (
+            {featuredResources.map((resource: FeaturedResource, index: number) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
@@ -287,10 +314,13 @@ export default function ResourcesPage() {
           </motion.div>
 
           <div className="space-y-16">
-            {resourceCategories.map((category, categoryIndex) => {
+            {resourceCategories.map((category: Category, categoryIndex: number) => {
+              const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+                BookOpen, Video, FileText, Headphones, Users, Calendar
+              }
               const IconComponent = category.iconName ?
-                { BookOpen, Video, FileText, Headphones, Users, Calendar }[category.iconName] || BookOpen
-                : category.icon
+                (iconMap[category.iconName] || BookOpen)
+                : (category.icon || BookOpen)
 
               return (
                 <motion.div
@@ -306,7 +336,7 @@ export default function ResourcesPage() {
                   </div>
 
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {(category.resources || []).map((resource, resourceIndex) => (
+                    {(category.resources || []).map((resource: Resource, resourceIndex: number) => (
                       <SpotlightCard key={resourceIndex} className="p-6 hover:shadow-lg transition-shadow">
                         <div className="flex items-center justify-between mb-3">
                           <h4 className="text-lg font-semibold text-ink-dark">{resource.title}</h4>

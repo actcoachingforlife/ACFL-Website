@@ -19,9 +19,24 @@ interface ContentData {
   meta_description?: string
 }
 
+interface Benefit {
+  icon?: React.ComponentType<{ className?: string }>
+  iconName?: string
+  title: string
+  description: string
+}
+
+interface Position {
+  title: string
+  department: string
+  location: string
+  type: string
+  description: string
+  link?: string
+}
+
 export default function CareersPage() {
   const [careersContent, setCareersContent] = useState<ContentData | null>(null)
-  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     fetchCareersContent()
@@ -40,8 +55,6 @@ export default function CareersPage() {
       }
     } catch (error) {
       console.error('Error fetching careers content:', error)
-    } finally {
-      setLoading(false)
     }
   }
 
@@ -97,7 +110,7 @@ export default function CareersPage() {
   }
 
   // Default positions if CMS content is not available
-  const defaultPositions = [
+  const defaultPositions: Position[] = [
     {
       title: "Senior ACT Coach",
       location: "Remote",
@@ -128,10 +141,10 @@ export default function CareersPage() {
     }
   ]
 
-  const openPositions = cmsContent?.positions || defaultPositions
+  const openPositions: Position[] = cmsContent?.positions || defaultPositions
 
   // Default benefits if CMS content is not available
-  const defaultBenefits = [
+  const defaultBenefits: Benefit[] = [
     {
       icon: Heart,
       iconName: "Heart",
@@ -158,7 +171,7 @@ export default function CareersPage() {
     }
   ]
 
-  const benefits = cmsContent?.benefits || defaultBenefits
+  const benefits: Benefit[] = cmsContent?.benefits || defaultBenefits
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
@@ -213,10 +226,13 @@ export default function CareersPage() {
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {benefits.map((benefit, index) => {
-              const IconComponent = benefit.iconName ?
-                { Heart, Users, Trophy, Clock, Briefcase }[benefit.iconName] || Heart
-                : benefit.icon
+            {benefits.map((benefit: Benefit, index: number) => {
+              const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+                Heart, Users, Trophy, Clock, Briefcase
+              }
+              const IconComponent = benefit.iconName
+                ? (iconMap[benefit.iconName] || Heart)
+                : (benefit.icon || Heart)
 
               return (
                 <motion.div
@@ -327,7 +343,7 @@ export default function CareersPage() {
               "Professional development budget",
               "Remote work flexibility",
               "Team retreats and wellness programs"
-            ]).map((benefit, index) => (
+            ]).map((benefit: string, index: number) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}

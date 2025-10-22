@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { ArrowLeft, Search, HelpCircle, MessageCircle, Book, CreditCard, Shield, Users, ChevronRight, Phone, Mail } from "lucide-react"
+import { Search, HelpCircle, MessageCircle, Book, CreditCard, Shield, Users, ChevronRight, Phone, Mail } from "lucide-react"
 import GradientText from "@/components/GradientText"
 import SpotlightCard from "@/components/SpotlightCard"
 import { Input } from "@/components/ui/input"
@@ -20,13 +20,19 @@ interface ContentData {
   meta_description?: string
 }
 
+interface Category {
+  icon: React.ComponentType<{ className?: string }> | string
+  title: string
+  description: string
+  articles: string[]
+}
+
 export default function HelpCenterPage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [helpContent, setHelpContent] = useState<ContentData | null>(null)
-  const [loading, setLoading] = useState(true)
 
   // Default content in case CMS content is not available
-  const defaultCategories = [
+  const defaultCategories: Category[] = [
     {
       icon: Users,
       title: "Getting Started",
@@ -91,8 +97,6 @@ export default function HelpCenterPage() {
       }
     } catch (error) {
       console.error('Error fetching help content:', error)
-    } finally {
-      setLoading(false)
     }
   }
 
@@ -114,7 +118,7 @@ export default function HelpCenterPage() {
     }
   }
 
-  const categories = parseCategories()
+  const categories: Category[] = parseCategories()
 
   // Map icon names to actual icon components
   const iconMap: { [key: string]: any } = {
@@ -269,7 +273,7 @@ export default function HelpCenterPage() {
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {categories.map((category, index) => {
+            {categories.map((category: Category, index: number) => {
               // Get the icon component from the map, or use the direct component if it's already a component
               const IconComponent = typeof category.icon === 'string'
                 ? iconMap[category.icon] || HelpCircle
@@ -286,7 +290,7 @@ export default function HelpCenterPage() {
                   <h3 className="text-xl font-semibold text-ink-dark mb-2">{category.title}</h3>
                   <p className="text-gray-600 mb-4">{category.description}</p>
                   <ul className="space-y-2">
-                    {category.articles.map((article, idx) => (
+                    {category.articles.map((article: string, idx: number) => (
                       <li key={idx}>
                         <Link
                           href="#"

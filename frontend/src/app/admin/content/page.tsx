@@ -543,7 +543,7 @@ export default function ContentManagement() {
   };
 
   const handleSectionChange = (sectionId: string, fieldName: string, value: any) => {
-    setFormData(prev => ({
+    setFormData((prev: any) => ({
       ...prev,
       [sectionId]: {
         ...prev[sectionId],
@@ -569,7 +569,7 @@ export default function ContentManagement() {
     if (pageContent && pageContent.content) {
       try {
         const originalData = JSON.parse(pageContent.content);
-        setFormData(prev => ({
+        setFormData((prev: any) => ({
           ...prev,
           [sectionId]: originalData[sectionId] || {}
         }));
@@ -589,7 +589,7 @@ export default function ContentManagement() {
     setSaving(true);
     try {
       const contentData = {
-        title: `${PAGE_TEMPLATES[selectedPage].name}`,
+        title: `${PAGE_TEMPLATES[selectedPage as keyof typeof PAGE_TEMPLATES].name}`,
         slug: selectedPage,
         content: JSON.stringify(formData),
         content_type: selectedPage,
@@ -953,7 +953,7 @@ export default function ContentManagement() {
     }
   };
 
-  const currentTemplate = PAGE_TEMPLATES[selectedPage];
+  const currentTemplate = PAGE_TEMPLATES[selectedPage as keyof typeof PAGE_TEMPLATES];
 
   return (
     <div className="w-full">
@@ -1085,7 +1085,7 @@ export default function ContentManagement() {
                             {field.label}
                           </label>
                           {renderField(section.id, field)}
-                          {field.description && (
+                          {'description' in field && field.description && (
                             <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{field.description}</p>
                           )}
                         </div>
@@ -1108,7 +1108,7 @@ export default function ContentManagement() {
                               {field.label}
                             </label>
                             {renderReadOnlyField(section.id, field)}
-                            {field.description && (
+                            {'description' in field && field.description && (
                               <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{field.description}</p>
                             )}
                           </div>

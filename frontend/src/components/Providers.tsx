@@ -8,6 +8,7 @@ import { NotificationProvider } from '@/contexts/NotificationContext';
 import { AdminNotificationProvider } from '@/contexts/AdminNotificationContext';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { MeetingProvider } from '@/contexts/MeetingContext';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 import 'react-toastify/dist/ReactToastify.css';
 
 const theme = createTheme({
@@ -60,32 +61,34 @@ const theme = createTheme({
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        <NotificationProvider>
-          <AdminNotificationProvider>
-            <MeetingProvider>
-              <MuiThemeProvider theme={theme}>
-                <CssBaseline />
-                {children}
-                <ToastContainer
-                  position="top-right"
-                  autoClose={5000}
-                  hideProgressBar={false}
-                  newestOnTop={false}
-                  closeOnClick
-                  rtl={false}
-                  pauseOnFocusLoss
-                  draggable
-                  pauseOnHover
-                  theme="colored"
-                  toastClassName="custom-toast"
-                />
-              </MuiThemeProvider>
-            </MeetingProvider>
-          </AdminNotificationProvider>
-        </NotificationProvider>
-      </AuthProvider>
-    </ThemeProvider>
+    <ErrorBoundary>
+      <ThemeProvider>
+        <AuthProvider>
+          <NotificationProvider>
+            <AdminNotificationProvider>
+              <MeetingProvider>
+                <MuiThemeProvider theme={theme}>
+                  <CssBaseline />
+                  {children}
+                  <ToastContainer
+                    position="top-right"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="colored"
+                    toastClassName="custom-toast"
+                  />
+                </MuiThemeProvider>
+              </MeetingProvider>
+            </AdminNotificationProvider>
+          </NotificationProvider>
+        </AuthProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 } 

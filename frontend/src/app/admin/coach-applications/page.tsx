@@ -844,7 +844,7 @@ const ApplicationDetailsModal = ({
               <div className="bg-white dark:bg-gray-800 rounded-lg p-3 sm:p-4 border border-gray-200 dark:border-gray-700">
                 <label className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3 block">Professional Certifications</label>
                 <div className="space-y-2 max-h-32 overflow-y-auto custom-scrollbar">
-                  {application.professional_certifications?.length > 0 ? (
+                  {application.professional_certifications && application.professional_certifications.length > 0 ? (
                     application.professional_certifications.map((cert, index) => (
                       <div key={index} className="flex items-start space-x-2 p-2 bg-gray-50 dark:bg-gray-700 rounded-md">
                         <div className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0 mt-2"></div>
@@ -871,7 +871,7 @@ const ApplicationDetailsModal = ({
               <div className="bg-white dark:bg-gray-800 rounded-lg p-3 sm:p-4 border border-gray-200 dark:border-gray-700">
                 <label className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3 block">Areas of Expertise</label>
                 <div className="flex flex-wrap gap-1 sm:gap-2">
-                  {application.coaching_expertise?.length > 0 ? (
+                  {application.coaching_expertise && application.coaching_expertise.length > 0 ? (
                     application.coaching_expertise.map((area, index) => (
                       <Badge key={index} className="bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 border-purple-200 dark:border-purple-700 text-xs break-words mobile-badge">
                         {area}
@@ -885,7 +885,7 @@ const ApplicationDetailsModal = ({
               <div className="bg-white dark:bg-gray-800 rounded-lg p-3 sm:p-4 border border-gray-200 dark:border-gray-700">
                 <label className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3 block">Comfortable Age Groups</label>
                 <div className="flex flex-wrap gap-1 sm:gap-2">
-                  {application.age_groups_comfortable?.length > 0 ? (
+                  {application.age_groups_comfortable && application.age_groups_comfortable.length > 0 ? (
                     application.age_groups_comfortable.map((group, index) => (
                       <Badge key={index} className="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 text-xs break-words mobile-badge">
                         {group}
@@ -919,7 +919,7 @@ const ApplicationDetailsModal = ({
               <div className="bg-white dark:bg-gray-800 rounded-lg p-3 sm:p-4 border border-gray-200 dark:border-gray-700">
                 <label className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3 block">Techniques Used</label>
                 <div className="space-y-2 max-h-32 overflow-y-auto custom-scrollbar">
-                  {application.coaching_techniques?.length > 0 ? (
+                  {application.coaching_techniques && application.coaching_techniques.length > 0 ? (
                     application.coaching_techniques.map((technique, index) => (
                       <div key={index} className="flex items-start space-x-2 p-2 bg-green-50 dark:bg-green-900/20 rounded-md">
                         <div className="w-1.5 h-1.5 bg-green-500 rounded-full flex-shrink-0 mt-2"></div>
@@ -998,7 +998,7 @@ const ApplicationDetailsModal = ({
               <div className="bg-white dark:bg-gray-800 rounded-lg p-3 sm:p-4 border border-gray-200 dark:border-gray-700">
                 <p className="font-medium mb-2 text-gray-900 dark:text-white"><strong>Availability Times:</strong></p>
                 <div className="flex flex-wrap gap-1 mt-1 mb-4">
-                  {application.availability_times?.length > 0 ? (
+                  {application.availability_times && application.availability_times.length > 0 ? (
                     application.availability_times.map((time, index) => (
                       <Badge key={index} variant="outline" className="text-xs break-words">
                         {time}
@@ -1011,7 +1011,7 @@ const ApplicationDetailsModal = ({
 
                 <p className="font-medium mb-2 text-gray-900 dark:text-white"><strong>Languages:</strong></p>
                 <div className="flex flex-wrap gap-1 mt-1">
-                  {application.languages_fluent?.length > 0 ? (
+                  {application.languages_fluent && application.languages_fluent.length > 0 ? (
                     application.languages_fluent.map((lang, index) => (
                       <Badge key={index} variant="secondary" className="text-xs break-words">
                         {lang}

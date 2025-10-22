@@ -1,11 +1,9 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import Link from "next/link"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import Logo from "@/components/Logo"
-import { ArrowLeft, Users, Clock, Calendar, ChevronRight, Heart, Target, Brain, Compass, CheckCircle, Star } from "lucide-react"
+import { Users, Clock, Calendar, ChevronRight, Heart, Target, Brain, CheckCircle, Star } from "lucide-react"
 import GradientText from "@/components/GradientText"
 import SpotlightCard from "@/components/SpotlightCard"
 import CountUp from "@/components/CountUp"
@@ -21,8 +19,31 @@ interface ContentData {
   meta_description?: string
 }
 
+interface Benefit {
+  icon: React.ComponentType<{ className?: string }>
+  title: string
+  description: string
+}
+
+interface GroupType {
+  title: string
+  description: string
+  duration: string
+  size: string
+  schedule: string
+  focus: string[]
+}
+
+interface UpcomingGroup {
+  title: string
+  startDate: string
+  time: string
+  spotsLeft: number
+  coach: string
+}
+
 // Default content - will be overridden by CMS if available
-const defaultGroupTypes = [
+const defaultGroupTypes: GroupType[] = [
   {
     title: "Anxiety & Stress Management",
     description: "Learn ACT techniques to manage anxiety and build resilience in a supportive group environment",
@@ -57,7 +78,7 @@ const defaultGroupTypes = [
   }
 ]
 
-const defaultBenefits = [
+const defaultBenefits: Benefit[] = [
   {
     icon: Users,
     title: "Peer Support",
@@ -80,7 +101,7 @@ const defaultBenefits = [
   }
 ]
 
-const defaultUpcomingGroups = [
+const defaultUpcomingGroups: UpcomingGroup[] = [
   {
     title: "Anxiety & Stress Management",
     startDate: "February 12, 2024",
@@ -113,7 +134,6 @@ const defaultUpcomingGroups = [
 
 export default function GroupCoachingPage() {
   const [groupContent, setGroupContent] = useState<ContentData | null>(null)
-  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     fetchGroupContent()
@@ -132,8 +152,6 @@ export default function GroupCoachingPage() {
       }
     } catch (error) {
       console.error('Error fetching group coaching content:', error)
-    } finally {
-      setLoading(false)
     }
   }
 
@@ -201,9 +219,9 @@ export default function GroupCoachingPage() {
   }
 
   // Get data from CMS or use defaults
-  const groupTypes = cmsContent?.programs?.types || defaultGroupTypes
-  const benefits = cmsContent?.benefits?.items || defaultBenefits
-  const upcomingGroups = cmsContent?.upcoming?.groups || defaultUpcomingGroups
+  const groupTypes: GroupType[] = cmsContent?.programs?.types || defaultGroupTypes
+  const benefits: Benefit[] = cmsContent?.benefits?.items || defaultBenefits
+  const upcomingGroups: UpcomingGroup[] = cmsContent?.upcoming?.groups || defaultUpcomingGroups
   const stats = cmsContent?.stats
 
   return (
@@ -310,7 +328,7 @@ export default function GroupCoachingPage() {
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {benefits.map((benefit, index) => {
+            {benefits.map((benefit: Benefit, index: number) => {
               const IconComponent = benefit.icon
               return (
                 <motion.div
@@ -348,7 +366,7 @@ export default function GroupCoachingPage() {
           </motion.div>
 
           <div className="grid md:grid-cols-2 gap-8">
-            {groupTypes.map((group, index) => (
+            {groupTypes.map((group: GroupType, index: number) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
@@ -383,7 +401,7 @@ export default function GroupCoachingPage() {
                   <div className="mb-4">
                     <h4 className="font-semibold text-ink-dark mb-2">Focus Areas:</h4>
                     <ul className="space-y-1">
-                      {group.focus.map((item, idx) => (
+                      {group.focus.map((item: string, idx: number) => (
                         <li key={idx} className="flex items-center text-sm text-gray-600">
                           <CheckCircle className="w-4 h-4 text-brand-teal mr-2" />
                           {item}
@@ -416,7 +434,7 @@ export default function GroupCoachingPage() {
           </motion.div>
 
           <div className="space-y-6 max-w-4xl mx-auto">
-            {upcomingGroups.map((group, index) => (
+            {upcomingGroups.map((group: UpcomingGroup, index: number) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, x: -20 }}

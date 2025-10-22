@@ -1181,6 +1181,11 @@ router.post('/client/book-appointment', [
 
     // Send confirmation emails to both parties
     try {
+      console.log('Attempting to send confirmation emails...');
+      console.log('Client email:', clientProfile.email);
+      console.log('Coach email:', coach.email);
+      console.log('Session type:', sessionType);
+
       if (clientProfile.email && coach.email) {
         const scheduledDateTime = new Date(session.starts_at);
         const appointmentDate = scheduledDateTime.toLocaleDateString('en-US', {
@@ -1193,6 +1198,14 @@ router.post('/client/book-appointment', [
           hour: 'numeric',
           minute: '2-digit',
           hour12: true
+        });
+
+        console.log('Calling emailService.sendAppointmentConfirmation with:', {
+          clientEmail: clientProfile.email,
+          coachEmail: coach.email,
+          clientName: `${clientProfile.first_name} ${clientProfile.last_name}`,
+          coachName: `${coach.first_name} ${coach.last_name}`,
+          appointmentType: sessionType === 'consultation' ? 'Free Consultation' : 'Coaching Session'
         });
 
         await emailService.sendAppointmentConfirmation({
@@ -1208,12 +1221,15 @@ router.post('/client/book-appointment', [
           }
         });
 
-        console.log(`Confirmation emails sent to both ${clientProfile.email} and ${coach.email}`);
+        console.log(`✅ Confirmation emails sent successfully to ${clientProfile.email} and ${coach.email}`);
       } else {
-        console.log('Missing email address(es) - cannot send confirmation emails');
+        console.error('❌ Missing email address(es) - cannot send confirmation emails');
+        console.error('Client email:', clientProfile.email);
+        console.error('Coach email:', coach.email);
       }
     } catch (emailError) {
-      console.error('Failed to send confirmation emails:', emailError);
+      console.error('❌ Failed to send confirmation emails:', emailError);
+      console.error('Error details:', JSON.stringify(emailError, null, 2));
       // Don't fail the booking if email sending fails
     }
 

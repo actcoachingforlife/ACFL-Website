@@ -19,12 +19,30 @@ interface ContentData {
   meta_description?: string
 }
 
+interface PressRelease {
+  date: string
+  title: string
+  excerpt: string
+  link: string
+}
+
+interface MediaKitItem {
+  title: string
+  description: string
+  size: string
+}
+
+interface Award {
+  year: string
+  title: string
+  org: string
+}
+
 export default function PressPage() {
   const [pressContent, setPressContent] = useState<ContentData | null>(null)
-  const [loading, setLoading] = useState(true)
 
   // Default press releases if CMS content is not available
-  const defaultPressReleases = [
+  const defaultPressReleases: PressRelease[] = [
     {
       date: "January 15, 2024",
       title: "ACT Coaching For Life Raises $10M Series A to Expand Access to Mental Health Coaching",
@@ -45,14 +63,14 @@ export default function PressPage() {
     }
   ]
 
-  const defaultMediaKit = [
+  const defaultMediaKit: MediaKitItem[] = [
     { title: "Company Logos", description: "High-resolution logos in various formats", size: "2.3 MB" },
     { title: "Executive Bios", description: "Leadership team biographies and headshots", size: "1.8 MB" },
     { title: "Company Fact Sheet", description: "Key statistics and company information", size: "450 KB" },
     { title: "Product Screenshots", description: "Platform interface and feature highlights", size: "5.2 MB" }
   ]
 
-  const defaultAwards = [
+  const defaultAwards: Award[] = [
     { year: "2023", title: "Best Mental Health Platform", org: "Digital Health Awards" },
     { year: "2023", title: "Top Workplace Culture", org: "Remote Work Association" },
     { year: "2022", title: "Innovation in Therapy", org: "Psychology Today" },
@@ -76,8 +94,6 @@ export default function PressPage() {
       }
     } catch (error) {
       console.error('Error fetching press content:', error)
-    } finally {
-      setLoading(false)
     }
   }
 
@@ -132,9 +148,9 @@ export default function PressPage() {
     return <><GradientText className="inline-block">Press</GradientText> Center</>
   }
 
-  const pressReleases = cmsContent?.pressReleases?.releases || defaultPressReleases
-  const mediaKit = cmsContent?.mediaKit?.items || defaultMediaKit
-  const awards = cmsContent?.awards?.items || defaultAwards
+  const pressReleases: PressRelease[] = cmsContent?.pressReleases?.releases || defaultPressReleases
+  const mediaKit: MediaKitItem[] = cmsContent?.mediaKit?.items || defaultMediaKit
+  const awards: Award[] = cmsContent?.awards?.items || defaultAwards
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
@@ -188,7 +204,7 @@ export default function PressPage() {
           </motion.div>
 
           <div className="space-y-6">
-            {pressReleases.map((release, index) => (
+            {pressReleases.map((release: PressRelease, index: number) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, x: -20 }}
@@ -242,7 +258,7 @@ export default function PressPage() {
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {mediaKit.map((item, index) => (
+            {mediaKit.map((item: MediaKitItem, index: number) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
@@ -283,7 +299,7 @@ export default function PressPage() {
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {awards.map((award, index) => (
+            {awards.map((award: Award, index: number) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}

@@ -22,9 +22,16 @@ interface ContentData {
   meta_description?: string
 }
 
+interface ContactMethod {
+  icon?: React.ComponentType<{ className?: string }>
+  iconName?: string
+  title: string
+  value: string
+  description?: string
+}
+
 export default function ContactPage() {
   const [contactContent, setContactContent] = useState<ContentData | null>(null)
-  const [loading, setLoading] = useState(true)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -49,8 +56,6 @@ export default function ContactPage() {
       }
     } catch (error) {
       console.error('Error fetching contact content:', error)
-    } finally {
-      setLoading(false)
     }
   }
 
@@ -125,7 +130,7 @@ export default function ContactPage() {
   }
 
   // Default contact methods if CMS content is not available
-  const defaultContactMethods = [
+  const defaultContactMethods: ContactMethod[] = [
     {
       icon: Mail,
       iconName: "Mail",
@@ -149,7 +154,7 @@ export default function ContactPage() {
     }
   ]
 
-  const contactMethods = cmsContent?.contactMethods || defaultContactMethods
+  const contactMethods: ContactMethod[] = cmsContent?.contactMethods || defaultContactMethods
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
@@ -195,10 +200,13 @@ export default function ContactPage() {
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-6 mb-16">
-            {contactMethods.map((method, index) => {
-              const IconComponent = method.iconName ?
-                { Mail, Phone, MessageCircle, MapPin, Clock }[method.iconName] || Mail
-                : method.icon
+            {contactMethods.map((method: ContactMethod, index: number) => {
+              const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+                Mail, Phone, MessageCircle, MapPin, Clock
+              }
+              const IconComponent = method.iconName
+                ? (iconMap[method.iconName] || Mail)
+                : (method.icon || Mail)
 
               return (
                 <motion.div
@@ -369,7 +377,7 @@ export default function ContactPage() {
                       "Do you offer phone consultations?",
                       "Can I schedule a session directly?",
                       "What information should I include in my message?"
-                    ]).map((faq, index) => (
+                    ]).map((faq: string, index: number) => (
                       <div key={index} className="text-sm">
                         <p className="text-brand-teal hover:text-brand-teal/80 cursor-pointer">
                           • {faq}

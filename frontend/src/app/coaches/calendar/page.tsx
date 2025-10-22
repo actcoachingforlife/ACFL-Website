@@ -131,7 +131,7 @@ export default function UnifiedCalendarPage() {
 
   if (!coachId) {
     return (
-      <CoachPageWrapper>
+      <CoachPageWrapper title="Calendar" description="Loading your calendar...">
         <div className="flex items-center justify-center py-12">
           <div className="text-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
@@ -143,7 +143,7 @@ export default function UnifiedCalendarPage() {
   }
 
   return (
-    <CoachPageWrapper>
+    <CoachPageWrapper title="Calendar" description="Manage your coaching calendar">
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
