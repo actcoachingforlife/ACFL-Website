@@ -4,11 +4,15 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import NavbarLandingPage from '@/components/NavbarLandingPage';
 import Footer from '@/components/Footer';
+import { getApiUrl } from '@/lib/api';
 import {
   Search,
   ChevronDown,
   ChevronUp,
   HelpCircle,
+  MessageCircle,
+  ThumbsUp,
+  ThumbsDown,
 } from 'lucide-react';
 
 interface FAQCategory {
@@ -23,6 +27,8 @@ interface FAQItem {
   category_id: string;
   question: string;
   answer: string;
+  helpful_count?: number;
+  not_helpful_count?: number;
   category: {
     name: string;
     slug: string;
@@ -84,11 +90,12 @@ const staticFaqs: FAQItem[] = [
 
 export default function FAQPage() {
   const [categories] = useState<FAQCategory[]>(staticCategories);
-  const [faqs] = useState<FAQItem[]>(staticFaqs);
+  const [faqs, setFaqs] = useState<FAQItem[]>(staticFaqs);
   const [filteredFaqs, setFilteredFaqs] = useState<FAQItem[]>(staticFaqs);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     filterFAQs();
@@ -139,8 +146,8 @@ export default function FAQPage() {
         if (faq.id === faqId) {
           return {
             ...faq,
-            helpful_count: helpful ? faq.helpful_count + 1 : faq.helpful_count,
-            not_helpful_count: !helpful ? faq.not_helpful_count + 1 : faq.not_helpful_count
+            helpful_count: helpful ? (faq.helpful_count ?? 0) + 1 : (faq.helpful_count ?? 0),
+            not_helpful_count: !helpful ? (faq.not_helpful_count ?? 0) + 1 : (faq.not_helpful_count ?? 0)
           };
         }
         return faq;

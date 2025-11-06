@@ -20,6 +20,13 @@ interface ContentData {
   meta_description?: string
 }
 
+interface Category {
+  icon: React.ComponentType<{ className?: string }> | string
+  title: string
+  description: string
+  articles: string[]
+}
+
 export default function HelpCenterPage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [helpContent, setHelpContent] = useState<ContentData | null>(null)
@@ -270,7 +277,7 @@ export default function HelpCenterPage() {
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {categories.map((category, index) => {
+            {categories.map((category: Category, index: number) => {
               // Get the icon component from the map, or use the direct component if it's already a component
               const IconComponent = typeof category.icon === 'string'
                 ? iconMap[category.icon] || HelpCircle

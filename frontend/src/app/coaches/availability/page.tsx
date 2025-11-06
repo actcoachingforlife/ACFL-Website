@@ -574,14 +574,14 @@ export default function CoachAvailabilityPage() {
 
   if (loading) {
     return (
-      <CoachPageWrapper title="Availability" description="">
+      <CoachPageWrapper title="Availability" description="Set your weekly schedule and manage blocked time slots">
         <CalendarSkeleton />
       </CoachPageWrapper>
     );
   }
 
   return (
-    <CoachPageWrapper title="Availability" description="">
+    <CoachPageWrapper title="Availability" description="Set your weekly schedule and manage blocked time slots">
       <div className="space-y-6">
 
       {/* Unified Tabs */}

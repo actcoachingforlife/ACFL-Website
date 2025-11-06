@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,7 +18,6 @@ import { useMeeting } from '@/contexts/MeetingContext';
 import axios from 'axios';
 import { apiGet, apiPut, API_URL as API_BASE_URL } from '@/lib/api-client';
 import { Video, ArrowUpDown, ArrowUp, ArrowDown, MessageCircle, Search, Filter, ChevronUp, ChevronDown } from 'lucide-react';
-import { io, Socket } from 'socket.io-client';
 
 interface Appointment {
   id: string;
@@ -52,7 +53,7 @@ function AppointmentsContent() {
   const [nowMs, setNowMs] = useState<number>(Date.now());
   const [showMeeting, setShowMeeting] = useState(false);
   const [meetingAppointment, setMeetingAppointment] = useState<Appointment | null>(null);
-  const socketRef = useRef<Socket | null>(null);
+  const socketRef = useRef<any>(null);
 
   // Additional filter states for enhanced filtering
   const [searchQuery, setSearchQuery] = useState('');
@@ -77,59 +78,73 @@ function AppointmentsContent() {
 
   // WebSocket connection for real-time appointment updates
   useEffect(() => {
+    // Only run this effect on the client side
+    if (typeof window === 'undefined') {
+      return;
+    }
+
     if (!user?.id || !localStorage.getItem('token')) {
       return;
     }
 
     const token = localStorage.getItem('token');
-    const socket = io(API_URL, {
-      auth: { token },
-      transports: ['websocket', 'polling']
-    });
+    if (!token) {
+      return;
+    }
 
-    socketRef.current = socket;
+    // Dynamically import socket.io-client to avoid build-time issues
+    import('socket.io-client').then(({ io }) => {
+      const socket = io(API_URL, {
+        auth: { token },
+        transports: ['websocket', 'polling']
+      });
 
-    // Listen for appointment events
-    socket.on('appointment:new', (data) => {
-      console.log('New appointment:', data);
-      // Refresh appointments list
-      loadAppointments(true);
-    });
+      socketRef.current = socket;
 
-    socket.on('appointment:booked', (data) => {
-      console.log('Appointment booked:', data);
-      // Refresh appointments list
-      loadAppointments(true);
-    });
+      // Listen for appointment events
+      socket.on('appointment:new', (data) => {
+        console.log('New appointment:', data);
+        // Refresh appointments list
+        loadAppointments(true);
+      });
 
-    socket.on('appointment:status_updated', (data) => {
-      console.log('Appointment status updated:', data);
-      // Update specific appointment in the list
-      setAppointments(prev => prev.map(apt => 
-        apt.id === data.sessionId 
-          ? { ...apt, status: data.newStatus }
-          : apt
-      ));
-    });
+      socket.on('appointment:booked', (data) => {
+        console.log('Appointment booked:', data);
+        // Refresh appointments list
+        loadAppointments(true);
+      });
 
-    socket.on('appointment:rescheduled', (data) => {
-      console.log('Appointment rescheduled:', data);
-      // Update appointment time
-      setAppointments(prev => prev.map(apt => 
-        apt.id === data.sessionId 
-          ? { ...apt, starts_at: data.newScheduledAt, status: data.status }
-          : apt
-      ));
-    });
+      socket.on('appointment:status_updated', (data) => {
+        console.log('Appointment status updated:', data);
+        // Update specific appointment in the list
+        setAppointments(prev => prev.map(apt =>
+          apt.id === data.sessionId
+            ? { ...apt, status: data.newStatus }
+            : apt
+        ));
+      });
 
-    socket.on('appointment:cancelled', (data) => {
-      console.log('Appointment cancelled:', data);
-      // Update appointment status
-      setAppointments(prev => prev.map(apt => 
-        apt.id === data.sessionId 
-          ? { ...apt, status: 'cancelled' }
-          : apt
-      ));
+      socket.on('appointment:rescheduled', (data) => {
+        console.log('Appointment rescheduled:', data);
+        // Update appointment time
+        setAppointments(prev => prev.map(apt =>
+          apt.id === data.sessionId
+            ? { ...apt, starts_at: data.newScheduledAt, status: data.status }
+            : apt
+        ));
+      });
+
+      socket.on('appointment:cancelled', (data) => {
+        console.log('Appointment cancelled:', data);
+        // Update appointment status
+        setAppointments(prev => prev.map(apt =>
+          apt.id === data.sessionId
+            ? { ...apt, status: 'cancelled' }
+            : apt
+        ));
+      });
+    }).catch((error) => {
+      console.error('Failed to load socket.io-client:', error);
     });
 
     return () => {

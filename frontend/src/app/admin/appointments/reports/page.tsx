@@ -16,6 +16,7 @@ import {
   RefreshCw,
   ChevronDown
 } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { getApiUrl } from '@/lib/api';
 import useNotification from '@/hooks/useNotification';
 import NotificationModal from '@/components/NotificationModal';
@@ -43,6 +44,17 @@ interface ReportFilters {
   status: string;
   coachId: string;
   reportType: 'summary' | 'detailed' | 'analytics';
+}
+
+interface CoachMetric {
+  coachName: string;
+  totalSessions: number;
+  completionRate: number;
+}
+
+interface StatusDistributionItem {
+  status: string;
+  count: number;
 }
 
 interface ReportStats {
@@ -133,13 +145,13 @@ export default function AppointmentReports() {
           cancelledAppointments: data.summary.cancelledAppointments,
           noShowAppointments: data.summary.noShowAppointments,
           avgDuration: data.summary.avgDuration,
-          topCoaches: data.coachMetrics?.slice(0, 5).map((coach: any) => ({
+          topCoaches: data.coachMetrics?.slice(0, 5).map((coach: CoachMetric) => ({
             name: coach.coachName,
             count: coach.totalSessions,
             completionRate: coach.completionRate
           })) || [],
           appointmentsByDay: data.timeSeriesData || [],
-          statusDistribution: data.statusDistribution?.map((item: any) => ({
+          statusDistribution: data.statusDistribution?.map((item: StatusDistributionItem) => ({
             ...item,
             percentage: data.summary.totalAppointments > 0
               ? (item.count / data.summary.totalAppointments) * 100
@@ -170,7 +182,14 @@ export default function AppointmentReports() {
 
       if (response.ok) {
         const data = await response.json();
-        const coachList = data.users?.filter((user: any) => user.role === 'coach').map((coach: any) => ({
+        interface UserData {
+          id: string;
+          role: string;
+          name?: string;
+          first_name?: string;
+          last_name?: string;
+        }
+        const coachList = data.users?.filter((user: UserData) => user.role === 'coach').map((coach: UserData) => ({
           id: coach.id,
           name: coach.name || `${coach.first_name || ''} ${coach.last_name || ''}`.trim()
         })) || [];
@@ -243,31 +262,44 @@ export default function AppointmentReports() {
     }
   };
 
+  const getColorClasses = (color: string) => {
+    const colorMap: Record<string, { bg: string; text: string }> = {
+      blue: { bg: 'bg-blue-100 dark:bg-blue-900/30', text: 'text-blue-600 dark:text-blue-400' },
+      green: { bg: 'bg-green-100 dark:bg-green-900/30', text: 'text-green-600 dark:text-green-400' },
+      red: { bg: 'bg-red-100 dark:bg-red-900/30', text: 'text-red-600 dark:text-red-400' },
+      yellow: { bg: 'bg-yellow-100 dark:bg-yellow-900/30', text: 'text-yellow-600 dark:text-yellow-400' },
+    };
+    return colorMap[color] || colorMap.blue;
+  };
+
   const StatCard = ({ title, value, change, icon: Icon, color = 'blue' }: {
     title: string;
     value: string | number;
     change?: string;
-    icon: any;
+    icon: React.ComponentType<{ className?: string }>;
     color?: string;
-  }) => (
-    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-sm font-medium text-gray-600 dark:text-gray-400">{title}</p>
-          <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1">{value}</p>
-          {change && (
-            <p className="text-xs text-green-600 dark:text-green-400 mt-1">
-              <TrendingUp className="h-3 w-3 inline mr-1" />
-              {change}
-            </p>
-          )}
-        </div>
-        <div className={`p-3 rounded-lg bg-${color}-100 dark:bg-${color}-900/30`}>
-          <Icon className={`h-6 w-6 text-${color}-600 dark:text-${color}-400`} />
+  }) => {
+    const colorClasses = getColorClasses(color);
+    return (
+      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-sm font-medium text-gray-600 dark:text-gray-400">{title}</p>
+            <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1">{value}</p>
+            {change && (
+              <p className="text-xs text-green-600 dark:text-green-400 mt-1">
+                <TrendingUp className="h-3 w-3 inline mr-1" />
+                {change}
+              </p>
+            )}
+          </div>
+          <div className={`p-3 rounded-lg ${colorClasses.bg}`}>
+            <Icon className={`h-6 w-6 ${colorClasses.text}`} />
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   if (isLoading) {
     return (
@@ -329,31 +361,33 @@ export default function AppointmentReports() {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Status</label>
-              <select
-                value={filters.status}
-                onChange={(e) => setFilters({ ...filters, status: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="all">All Status</option>
-                <option value="confirmed">Confirmed</option>
-                <option value="completed">Completed</option>
-                <option value="cancelled">Cancelled</option>
-                <option value="no-show">No Show</option>
-                <option value="scheduled">Scheduled</option>
-              </select>
+              <Select value={filters.status} onValueChange={(value) => setFilters({ ...filters, status: value })}>
+                <SelectTrigger className="w-full bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
+                  <SelectValue placeholder="Select status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Status</SelectItem>
+                  <SelectItem value="confirmed">Confirmed</SelectItem>
+                  <SelectItem value="completed">Completed</SelectItem>
+                  <SelectItem value="cancelled">Cancelled</SelectItem>
+                  <SelectItem value="no-show">No Show</SelectItem>
+                  <SelectItem value="scheduled">Scheduled</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Coach</label>
-              <select
-                value={filters.coachId}
-                onChange={(e) => setFilters({ ...filters, coachId: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="all">All Coaches</option>
-                {coaches.map(coach => (
-                  <option key={coach.id} value={coach.id}>{coach.name}</option>
-                ))}
-              </select>
+              <Select value={filters.coachId} onValueChange={(value) => setFilters({ ...filters, coachId: value })}>
+                <SelectTrigger className="w-full bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
+                  <SelectValue placeholder="Select coach" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Coaches</SelectItem>
+                  {coaches.map(coach => (
+                    <SelectItem key={coach.id} value={coach.id}>{coach.name}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </div>
         )}
@@ -454,7 +488,7 @@ export default function AppointmentReports() {
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Top Coaches</h3>
               <div className="space-y-4">
                 {reportStats.topCoaches.map((coach, index) => (
-                  <div key={coach.name} className="flex items-center space-x-4">
+                  <div key={`${coach.name}-${index}`} className="flex items-center space-x-4">
                     <div className="flex-shrink-0 w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
                       <span className="text-sm font-semibold text-blue-600 dark:text-blue-400">
                         {index + 1}

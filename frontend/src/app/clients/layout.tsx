@@ -18,7 +18,7 @@ import {
   Bell, CircleUserRound, LogOut, Sun, Moon, Menu, X, Activity, Calendar,
   Mail, UserSearch, User, CreditCard, Settings, BarChart2,
   ChevronDown, ChevronRight, Search, PanelLeft, MoreHorizontal,
-  Phone, Receipt, Zap
+  Phone, Receipt, Zap, MessageSquare
 } from 'lucide-react';
 
 const poppins = Poppins({

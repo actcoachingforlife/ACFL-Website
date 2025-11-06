@@ -13,7 +13,7 @@ import { Textarea } from '../ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Plus, Trash2, DollarSign } from 'lucide-react';
-import { useToast } from '../ui/use-toast';
+import { toast } from 'react-toastify';
 
 interface InvoiceItem {
   description: string;
@@ -38,7 +38,6 @@ const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({
 }) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { toast } = useToast();
 
   const [formData, setFormData] = useState({
     client_id: '',
@@ -135,10 +134,7 @@ const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({
         throw new Error('Failed to create invoice');
       }
 
-      toast({
-        title: 'Success',
-        description: 'Invoice created successfully'
-      });
+      toast.success('Invoice created successfully');
 
       setOpen(false);
       onSuccess?.();
@@ -163,11 +159,7 @@ const CreateInvoiceModal: React.FC<CreateInvoiceModalProps> = ({
       }]);
 
     } catch (error) {
-      toast({
-        title: 'Error',
-        description: 'Failed to create invoice',
-        variant: 'destructive'
-      });
+      toast.error('Failed to create invoice');
     } finally {
       setLoading(false);
     }

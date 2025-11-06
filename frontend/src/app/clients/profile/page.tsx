@@ -80,10 +80,22 @@ function ProfileContent() {
   })
 
   // Export and deletion state
+  interface DeletionInfo {
+    deactivated_at: string;
+    scheduled_deletion_at: string;
+    reason?: string;
+  }
+
+  interface DeletionStatus {
+    isActive: boolean;
+    hasPendingDeletion: boolean;
+    deletion: DeletionInfo | null;
+  }
+
   const [isExporting, setIsExporting] = useState(false)
   const [deletionReason, setDeletionReason] = useState('')
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
-  const [deletionStatus, setDeletionStatus] = useState<any>(null)
+  const [deletionStatus, setDeletionStatus] = useState<DeletionStatus | null>(null)
   const [loadingDeletionStatus, setLoadingDeletionStatus] = useState(false)
 
   const form = useForm<ProfileFormData>({
@@ -185,7 +197,7 @@ function ProfileContent() {
   // Load user profile data and stats
   useEffect(() => {
     loadProfileAndStats()
-  }, [form])
+  }, [])
 
   const refreshData = async () => {
     setIsLoading(true)
@@ -861,70 +873,66 @@ function ProfileContent() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 dark:text-white mb-1">Preferred Language</label>
-                      <select
-                        value={form.watch('language')}
-                        onChange={(e) => form.setValue('language', e.target.value)}
-                        disabled={!isEditing}
-                        className="w-full px-3 py-2 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent disabled:bg-muted"
-                      >
-                        <option value="">Select preferred language</option>
-                        {LANGUAGES.map((language) => (
-                          <option key={language} value={language}>
-                            {language}
-                          </option>
-                        ))}
-                      </select>
+                      <Select value={form.watch('language')} onValueChange={(value) => form.setValue('language', value)} disabled={!isEditing}>
+                        <SelectTrigger className="w-full bg-background text-foreground border-border">
+                          <SelectValue placeholder="Select preferred language" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {LANGUAGES.map((language) => (
+                            <SelectItem key={language} value={language}>
+                              {language}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
                     
                     <div>
                       <label className="block text-sm font-medium text-gray-700 dark:text-white mb-1">Gender Identity</label>
-                      <select
-                        value={form.watch('genderIdentity')}
-                        onChange={(e) => form.setValue('genderIdentity', e.target.value)}
-                        disabled={!isEditing}
-                        className="w-full px-3 py-2 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent disabled:bg-muted"
-                      >
-                        <option value="">Select gender identity</option>
-                        {genderIdentityOptions.map((option) => (
-                          <option key={option.value} value={option.value}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </select>
+                      <Select value={form.watch('genderIdentity')} onValueChange={(value) => form.setValue('genderIdentity', value)} disabled={!isEditing}>
+                        <SelectTrigger className="w-full bg-background text-foreground border-border">
+                          <SelectValue placeholder="Select gender identity" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {genderIdentityOptions.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 dark:text-white mb-1">Ethnic Identity</label>
-                      <select
-                        value={form.watch('ethnicIdentity')}
-                        onChange={(e) => form.setValue('ethnicIdentity', e.target.value)}
-                        disabled={!isEditing}
-                        className="w-full px-3 py-2 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent disabled:bg-muted"
-                      >
-                        <option value="">Select ethnic identity</option>
-                        {ethnicIdentityOptions.map((option) => (
-                          <option key={option.value} value={option.value}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </select>
+                      <Select value={form.watch('ethnicIdentity')} onValueChange={(value) => form.setValue('ethnicIdentity', value)} disabled={!isEditing}>
+                        <SelectTrigger className="w-full bg-background text-foreground border-border">
+                          <SelectValue placeholder="Select ethnic identity" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {ethnicIdentityOptions.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 dark:text-white mb-1">Religious Background</label>
-                      <select
-                        value={form.watch('religiousBackground')}
-                        onChange={(e) => form.setValue('religiousBackground', e.target.value)}
-                        disabled={!isEditing}
-                        className="w-full px-3 py-2 border border-border bg-background text-foreground rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent disabled:bg-muted"
-                      >
-                        <option value="">Select religious background</option>
-                        {religiousBackgroundOptions.map((option) => (
-                          <option key={option.value} value={option.value}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </select>
+                      <Select value={form.watch('religiousBackground')} onValueChange={(value) => form.setValue('religiousBackground', value)} disabled={!isEditing}>
+                        <SelectTrigger className="w-full bg-background text-foreground border-border">
+                          <SelectValue placeholder="Select religious background" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {religiousBackgroundOptions.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
                   </div>
                 </div>
@@ -955,7 +963,7 @@ function ProfileContent() {
                         </div>
                         <div>
                           <p className="font-medium text-gray-700 dark:text-gray-400">Location</p>
-                          <p className="text-gray-900 dark:text-gray-100">{form.watch('location') ? STATE_NAMES[form.watch('location')] : 'Not specified'}</p>
+                          <p className="text-gray-900 dark:text-gray-100">{form.watch('location') ? STATE_NAMES[form.watch('location') as keyof typeof STATE_NAMES] || form.watch('location') : 'Not specified'}</p>
                         </div>
                         <div>
                           <p className="font-medium text-gray-700 dark:text-gray-400">Language</p>

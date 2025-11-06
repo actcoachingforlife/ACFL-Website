@@ -1,36 +1,26 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { usePermissions, PERMISSIONS } from "@/hooks/usePermissions";
+import { PERMISSIONS } from "@/hooks/usePermissions";
 import { PermissionGate } from "@/components/PermissionGate";
 import {
   Users,
   UserCheck,
   Calendar,
-  MessageSquare,
   TrendingUp,
   AlertCircle,
   CheckCircle,
   Clock,
   DollarSign,
   Activity,
-  Grid3x3,
-  List,
-  MoreHorizontal,
   MoreVertical,
-  ChevronRight,
   ChevronDown,
   BarChart3,
-  Maximize2,
-  Minimize2,
-  Package,
 } from "lucide-react";
 import { getApiUrl } from "@/lib/api";
 import {
   BarChart,
   Bar,
-  LineChart,
-  Line,
   AreaChart,
   Area,
   XAxis,
@@ -38,8 +28,16 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Legend,
 } from "recharts";
+
+interface Activity {
+  id?: string;
+  type: string;
+  title: string;
+  description: string;
+  time: string;
+  icon: React.ComponentType<{ className?: string }>;
+}
 
 interface DashboardStats {
   totalUsers: number;
@@ -49,7 +47,7 @@ interface DashboardStats {
   pendingApprovals: number;
   activeMatches: number;
   monthlyRevenue: number;
-  recentActivity: any[];
+  recentActivity: Activity[];
 }
 
 interface SystemStatus {
@@ -87,8 +85,6 @@ export default function AdminDashboard() {
   const [systemHealth, setSystemHealth] = useState<SystemHealth | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isHealthLoading, setIsHealthLoading] = useState(true);
-  const [activityPage, setActivityPage] = useState(1);
-  const activityPageSize = 3;
 
   // Collapsible sections state
   const [expandedSections, setExpandedSections] = useState<
@@ -168,7 +164,7 @@ export default function AdminDashboard() {
       const data = await response.json();
 
       // Map the activity data to include icons
-      const activityWithIcons = data.recentActivity.map((activity: any) => ({
+      const activityWithIcons = data.recentActivity.map((activity: Omit<Activity, 'icon'>) => ({
         ...activity,
         icon:
           activity.type === "user_registered"
@@ -178,7 +174,7 @@ export default function AdminDashboard() {
             : activity.type === "appointment_booked"
             ? Calendar
             : AlertCircle,
-      }));
+      } as Activity));
 
       setStats({
         ...data,
@@ -407,7 +403,17 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="w-full p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-5 md:space-y-6">
+    <div className="w-full px-3 sm:px-4 md:px-6 pt-0 pb-3 sm:pb-4 md:pb-6 space-y-4 sm:space-y-5 md:space-y-6">
+      {/* Header */}
+      <div className="flex justify-between items-start">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Overview</h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-1">
+            Get a snapshot of your coaching platform's performance, user activity, and upcoming sessions.
+          </p>
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
         {/* Column 1 & 2: Stats and Chart */}
         <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 md:gap-6">

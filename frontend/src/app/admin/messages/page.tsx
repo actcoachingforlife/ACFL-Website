@@ -592,6 +592,9 @@ function AdminMessagesContent() {
 						{/* Page Title */}
 						<div className="px-4 py-3">
 							<h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">Messages</h1>
+							<p className="text-gray-600 dark:text-gray-400 mt-1">
+								View and manage conversations between clients and coaches
+							</p>
 						</div>
 						<div className="flex flex-1 min-h-0 overflow-hidden gap-4">
 					{/* Sidebar */}
@@ -621,7 +624,13 @@ function AdminMessagesContent() {
 								<select
 									value={roleFilter}
 									onChange={(e) => setRoleFilter(e.target.value as 'all' | 'client' | 'coach')}
-									className="w-full h-12 sm:h-14 px-4 sm:px-5 pr-10 sm:pr-12 border-2 border-gray-300 dark:border-gray-600 rounded-2xl bg-white dark:bg-gray-700 text-base sm:text-lg font-medium text-gray-900 dark:text-white shadow-md hover:border-blue-400 dark:hover:border-blue-500 hover:shadow-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 appearance-none cursor-pointer"
+									className="w-full h-12 sm:h-14 px-4 sm:px-5 pr-10 sm:pr-12 border-2 border-gray-300 dark:border-gray-600 rounded-2xl bg-white dark:bg-gray-700 text-base sm:text-lg font-medium text-gray-900 dark:text-white shadow-md hover:border-blue-400 dark:hover:border-blue-500 hover:shadow-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 cursor-pointer [&::-ms-expand]:hidden"
+									style={{
+										WebkitAppearance: 'none',
+										MozAppearance: 'none',
+										appearance: 'none',
+										backgroundImage: 'none'
+									}}
 									size={1}
 								>
 									<option value="all">All Users</option>

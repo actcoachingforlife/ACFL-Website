@@ -1,9 +1,18 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: "standalone",
   reactStrictMode: true,
   typescript: {
     ignoreBuildErrors: true,
+  },
+  webpack: (config, { isServer }) => {
+    // Prevent socket.io-client from being bundled on the server side
+    if (isServer) {
+      if (!Array.isArray(config.externals)) {
+        config.externals = [];
+      }
+      config.externals.push('socket.io-client', 'engine.io-client');
+    }
+    return config;
   },
   images: {
     unoptimized: process.env.NODE_ENV === "development",
