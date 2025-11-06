@@ -704,9 +704,6 @@ export default function GHLBookingCalendar({ coach, onBookingComplete, requirePa
                 coachId={coach.id}
                 selectedDate={selectedDate}
                 selectedTime={formatTime(selectedSlot.slot_start)}
-                sessionType={sessionType}
-                notes={notes}
-                duration={selectedDuration || selectedSlot.duration_minutes}
                 onBookingComplete={handlePaymentBookingComplete}
                 onCancel={() => setShowPaymentFlow(false)}
               />

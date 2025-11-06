@@ -279,7 +279,6 @@ export function DataListExample() {
           <div className="space-y-4">
             <div className="flex items-center justify-center py-8">
               <LoadingSpinner
-                variant="spin"
                 text="Loading your sessions..."
                 size="lg"
               />

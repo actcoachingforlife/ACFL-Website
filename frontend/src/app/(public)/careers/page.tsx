@@ -19,6 +19,21 @@ interface ContentData {
   meta_description?: string
 }
 
+interface Benefit {
+  icon: React.ComponentType<{ className?: string }>
+  iconName: string
+  title: string
+  description: string
+}
+
+interface Position {
+  title: string
+  location: string
+  type: string
+  department: string
+  description: string
+}
+
 export default function CareersPage() {
   const [careersContent, setCareersContent] = useState<ContentData | null>(null)
   const [loading, setLoading] = useState(true)
@@ -213,7 +228,7 @@ export default function CareersPage() {
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {benefits.map((benefit, index) => {
+            {benefits.map((benefit: Benefit, index: number) => {
               const IconComponent = benefit.iconName ?
                 { Heart, Users, Trophy, Clock, Briefcase }[benefit.iconName] || Heart
                 : benefit.icon
@@ -255,7 +270,7 @@ export default function CareersPage() {
 
           <div className="space-y-4 max-w-4xl mx-auto">
             {openPositions.length > 0 ? (
-              openPositions.map((position, index) => (
+              openPositions.map((position: Position, index: number) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, x: -20 }}
@@ -327,7 +342,7 @@ export default function CareersPage() {
               "Professional development budget",
               "Remote work flexibility",
               "Team retreats and wellness programs"
-            ]).map((benefit, index) => (
+            ]).map((benefit: string, index: number) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}

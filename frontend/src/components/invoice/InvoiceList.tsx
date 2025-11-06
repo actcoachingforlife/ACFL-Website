@@ -7,7 +7,7 @@ import { Badge } from '../ui/badge';
 import InvoiceCard from './InvoiceCard';
 import CreateInvoiceModal from './CreateInvoiceModal';
 import { Search, Filter, Download, Plus } from 'lucide-react';
-import { useToast } from '../ui/use-toast';
+import { toast } from 'react-toastify';
 
 interface Invoice {
   id: string;
@@ -34,7 +34,6 @@ const InvoiceList: React.FC<InvoiceListProps> = ({ coachId, userRole }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [dateFilter, setDateFilter] = useState('all');
-  const { toast } = useToast();
 
   useEffect(() => {
     fetchInvoices();
@@ -64,11 +63,7 @@ const InvoiceList: React.FC<InvoiceListProps> = ({ coachId, userRole }) => {
       const data = await response.json();
       setInvoices(data.data || []);
     } catch (error) {
-      toast({
-        title: 'Error',
-        description: 'Failed to fetch invoices',
-        variant: 'destructive'
-      });
+      toast.error('Failed to fetch invoices');
     } finally {
       setLoading(false);
     }
@@ -151,18 +146,11 @@ const InvoiceList: React.FC<InvoiceListProps> = ({ coachId, userRole }) => {
 
       if (!response.ok) throw new Error('Failed to send invoice');
 
-      toast({
-        title: 'Success',
-        description: 'Invoice sent successfully'
-      });
+      toast.success('Invoice sent successfully');
 
       fetchInvoices(); // Refresh list
     } catch (error) {
-      toast({
-        title: 'Error',
-        description: 'Failed to send invoice',
-        variant: 'destructive'
-      });
+      toast.error('Failed to send invoice');
     }
   };
 
@@ -188,16 +176,9 @@ const InvoiceList: React.FC<InvoiceListProps> = ({ coachId, userRole }) => {
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
 
-      toast({
-        title: 'Success',
-        description: 'Invoice downloaded successfully'
-      });
+      toast.success('Invoice downloaded successfully');
     } catch (error) {
-      toast({
-        title: 'Error',
-        description: 'Failed to download invoice',
-        variant: 'destructive'
-      });
+      toast.error('Failed to download invoice');
     }
   };
 

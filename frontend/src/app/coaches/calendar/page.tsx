@@ -131,7 +131,10 @@ export default function UnifiedCalendarPage() {
 
   if (!coachId) {
     return (
-      <CoachPageWrapper>
+      <CoachPageWrapper
+        title="Calendar & Appointments"
+        description="Loading your calendar and appointment settings..."
+      >
         <div className="flex items-center justify-center py-12">
           <div className="text-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
@@ -143,18 +146,11 @@ export default function UnifiedCalendarPage() {
   }
 
   return (
-    <CoachPageWrapper>
+    <CoachPageWrapper
+      title="Calendar & Appointments"
+      description="Manage your appointments and calendar integrations in one place."
+    >
       <div className="space-y-6">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Calendar & Appointments</h1>
-            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 mt-1">
-              Manage your appointments and calendar integrations in one place.
-            </p>
-          </div>
-        </div>
-
         {/* Unified Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-4 h-auto p-1">

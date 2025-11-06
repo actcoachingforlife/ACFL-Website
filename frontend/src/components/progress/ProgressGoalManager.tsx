@@ -166,6 +166,8 @@ const ProgressGoalManager: React.FC<ProgressGoalManagerProps> = ({
         const mockGoal: ProgressGoal = {
           id: `goal-${Date.now()}`,
           ...goalData,
+          target_value: goalData.target_value ?? undefined,
+          target_date: goalData.target_date ?? undefined,
           status: 'active',
           current_progress: 0,
           progress_percentage: 0,

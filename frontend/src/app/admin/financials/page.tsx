@@ -3,14 +3,12 @@
 import { useState, useEffect } from 'react';
 import { getApiUrl } from '@/lib/api';
 import Pagination from '@/components/ui/pagination';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import {
   DollarSign,
   TrendingUp,
-  TrendingDown,
   CreditCard,
-  Users,
   FileText,
-  Download,
   Filter,
   Calendar,
   Search,
@@ -252,7 +250,7 @@ function RefundModal({ isOpen, onClose, transaction, onRefund }: RefundModalProp
             </button>
             <button
               type="submit"
-              disabled={!reason.trim() || isProcessing}
+              disabled={!reason.trim?.() || isProcessing}
               className="flex-1 px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isProcessing ? 'Processing...' : 'Process Refund'}
@@ -411,7 +409,13 @@ export default function FinancialManagement() {
 
   const handleRefund = async (transactionId: string, reason: string, amount?: number) => {
     try {
-      const requestBody: any = {
+      interface RefundRequest {
+        reason: string;
+        description: string;
+        amount_cents?: number;
+      }
+
+      const requestBody: RefundRequest = {
         reason: reason,
         description: `Admin initiated refund: ${reason}`
       };
@@ -612,96 +616,72 @@ export default function FinancialManagement() {
             </div>
 
             {/* Items Per Page */}
-            <div className="relative group">
-              <label htmlFor="items-per-page" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 <div className="flex items-center gap-2">
-                  <FileText className="w-4 h-4 text-gray-500 dark:text-gray-400 transition-transform duration-200 group-hover:scale-110" />
+                  <FileText className="w-4 h-4 text-gray-500 dark:text-gray-400" />
                   <span>Per Page</span>
                 </div>
               </label>
-              <div className="relative">
-                <select
-                  id="items-per-page"
-                  value={itemsPerPage}
-                  onChange={(e) => {
-                    setItemsPerPage(Number(e.target.value));
-                    setCurrentPage(1);
-                  }}
-                  className="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm hover:border-blue-400 dark:hover:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 transform hover:scale-[1.01] focus:scale-[1.01] appearance-none cursor-pointer"
-                >
-                  <option value={10}>10 items</option>
-                  <option value={20}>20 items</option>
-                  <option value={50}>50 items</option>
-                  <option value={100}>100 items</option>
-                </select>
-                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                  <svg className="w-4 h-4 text-gray-500 dark:text-gray-400 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </div>
-                <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-400 to-indigo-400 opacity-0 group-hover:opacity-10 transition-opacity duration-200 pointer-events-none"></div>
-              </div>
+              <Select value={itemsPerPage.toString()} onValueChange={(value) => {
+                setItemsPerPage(Number(value));
+                setCurrentPage(1);
+              }}>
+                <SelectTrigger className="w-full bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
+                  <SelectValue placeholder="Select items per page" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="10">10 items</SelectItem>
+                  <SelectItem value="20">20 items</SelectItem>
+                  <SelectItem value="50">50 items</SelectItem>
+                  <SelectItem value="100">100 items</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             {/* Status Filter */}
-            <div className="relative group">
-              <label htmlFor="status-filter" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 <div className="flex items-center gap-2">
-                  <Filter className="w-4 h-4 text-gray-500 dark:text-gray-400 transition-transform duration-200 group-hover:scale-110" />
+                  <Filter className="w-4 h-4 text-gray-500 dark:text-gray-400" />
                   <span>Status</span>
                 </div>
               </label>
-              <div className="relative">
-                <select
-                  id="status-filter"
-                  value={statusFilter}
-                  onChange={(e) => setStatusFilter(e.target.value)}
-                  className="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm hover:border-blue-400 dark:hover:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 transform hover:scale-[1.01] focus:scale-[1.01] appearance-none cursor-pointer"
-                >
-                  <option value="all">All Statuses</option>
-                  <option value="succeeded">Completed</option>
-                  <option value="authorized">Authorized</option>
-                  <option value="pending">Pending</option>
-                  <option value="failed">Failed</option>
-                  <option value="canceled">Canceled</option>
-                  <option value="refunded">Refunded</option>
-                </select>
-                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                  <svg className="w-4 h-4 text-gray-500 dark:text-gray-400 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </div>
-                <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-400 to-indigo-400 opacity-0 group-hover:opacity-10 transition-opacity duration-200 pointer-events-none"></div>
-              </div>
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger className="w-full bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
+                  <SelectValue placeholder="Select status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Statuses</SelectItem>
+                  <SelectItem value="succeeded">Completed</SelectItem>
+                  <SelectItem value="authorized">Authorized</SelectItem>
+                  <SelectItem value="pending">Pending</SelectItem>
+                  <SelectItem value="failed">Failed</SelectItem>
+                  <SelectItem value="canceled">Canceled</SelectItem>
+                  <SelectItem value="refunded">Refunded</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             {/* Date Filter */}
-            <div className="relative group">
-              <label htmlFor="date-filter" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-gray-500 dark:text-gray-400 transition-transform duration-200 group-hover:scale-110" />
+                  <Calendar className="w-4 h-4 text-gray-500 dark:text-gray-400" />
                   <span>Date Range</span>
                 </div>
               </label>
-              <div className="relative">
-                <select
-                  id="date-filter"
-                  value={dateFilter}
-                  onChange={(e) => setDateFilter(e.target.value)}
-                  className="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm hover:border-blue-400 dark:hover:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 transform hover:scale-[1.01] focus:scale-[1.01] appearance-none cursor-pointer"
-                >
-                  <option value="all">All Time</option>
-                  <option value="7days">Last 7 Days</option>
-                  <option value="30days">Last 30 Days</option>
-                  <option value="90days">Last 90 Days</option>
-                </select>
-                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                  <svg className="w-4 h-4 text-gray-500 dark:text-gray-400 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </div>
-                <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-400 to-indigo-400 opacity-0 group-hover:opacity-10 transition-opacity duration-200 pointer-events-none"></div>
-              </div>
+              <Select value={dateFilter} onValueChange={setDateFilter}>
+                <SelectTrigger className="w-full bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
+                  <SelectValue placeholder="Select date range" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Time</SelectItem>
+                  <SelectItem value="7days">Last 7 Days</SelectItem>
+                  <SelectItem value="30days">Last 30 Days</SelectItem>
+                  <SelectItem value="90days">Last 90 Days</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
 

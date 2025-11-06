@@ -1756,7 +1756,13 @@ export default function UserManagement() {
                         setStatusFilter(e.target.value);
                         setCurrentPage(1);
                       }}
-                      className="w-full px-4 py-2.5 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm hover:border-gray-400 dark:hover:border-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 appearance-none cursor-pointer"
+                      className="w-full px-4 py-2.5 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm hover:border-gray-400 dark:hover:border-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 appearance-none cursor-pointer [&::-ms-expand]:hidden"
+                      style={{
+                        WebkitAppearance: 'none',
+                        MozAppearance: 'none',
+                        appearance: 'none',
+                        backgroundImage: 'none'
+                      }}
                     >
                       <option value="all">All Status</option>
                       <option value="active">Active</option>
@@ -1792,7 +1798,13 @@ export default function UserManagement() {
                         setItemsPerPage(parseInt(e.target.value));
                         setCurrentPage(1);
                       }}
-                      className="w-full px-4 py-2.5 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm hover:border-gray-400 dark:hover:border-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 appearance-none cursor-pointer"
+                      className="w-full px-4 py-2.5 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm hover:border-gray-400 dark:hover:border-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 appearance-none cursor-pointer [&::-ms-expand]:hidden"
+                      style={{
+                        WebkitAppearance: 'none',
+                        MozAppearance: 'none',
+                        appearance: 'none',
+                        backgroundImage: 'none'
+                      }}
                     >
                       <option value={10}>10 users</option>
                       <option value={20}>20 users</option>

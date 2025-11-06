@@ -48,7 +48,7 @@ const spinAnimation = {
   transition: {
     duration: 2,
     repeat: Infinity,
-    ease: "linear",
+    ease: "linear" as const,
   },
 }
 
@@ -60,7 +60,7 @@ const pulseAnimation = {
   transition: {
     duration: 1.5,
     repeat: Infinity,
-    ease: "easeInOut",
+    ease: "easeInOut" as const,
   },
 }
 
@@ -72,7 +72,7 @@ const bounceAnimation = {
   transition: {
     duration: 1.2,
     repeat: Infinity,
-    ease: "easeInOut",
+    ease: "easeInOut" as const,
   },
 }
 
@@ -84,7 +84,7 @@ const breatheAnimation = {
   transition: {
     duration: 3,
     repeat: Infinity,
-    ease: "easeInOut",
+    ease: "easeInOut" as const,
   },
 }
 
@@ -95,7 +95,7 @@ const orbitAnimation = {
   transition: {
     duration: 4,
     repeat: Infinity,
-    ease: "linear",
+    ease: "linear" as const,
   },
 }
 
@@ -107,7 +107,7 @@ const waveAnimation = {
   transition: {
     duration: 2,
     repeat: Infinity,
-    ease: "easeInOut",
+    ease: "easeInOut" as const,
   },
 }
 
@@ -119,7 +119,7 @@ const staticAnimation = {
   transition: {
     duration: 2,
     repeat: Infinity,
-    ease: "easeInOut",
+    ease: "easeInOut" as const,
   },
 }
 

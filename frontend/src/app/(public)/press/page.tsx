@@ -19,6 +19,25 @@ interface ContentData {
   meta_description?: string
 }
 
+interface PressRelease {
+  date: string
+  title: string
+  excerpt: string
+  link: string
+}
+
+interface MediaKitItem {
+  title: string
+  description: string
+  size: string
+}
+
+interface Award {
+  year: string
+  title: string
+  org: string
+}
+
 export default function PressPage() {
   const [pressContent, setPressContent] = useState<ContentData | null>(null)
   const [loading, setLoading] = useState(true)
@@ -188,7 +207,7 @@ export default function PressPage() {
           </motion.div>
 
           <div className="space-y-6">
-            {pressReleases.map((release, index) => (
+            {pressReleases.map((release: PressRelease, index: number) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, x: -20 }}
@@ -242,7 +261,7 @@ export default function PressPage() {
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {mediaKit.map((item, index) => (
+            {mediaKit.map((item: MediaKitItem, index: number) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
@@ -283,7 +302,7 @@ export default function PressPage() {
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {awards.map((award, index) => (
+            {awards.map((award: Award, index: number) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
