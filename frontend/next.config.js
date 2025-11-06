@@ -4,14 +4,32 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  webpack: (config, { isServer }) => {
-    // Prevent socket.io-client from being bundled on the server side
+  // Skip static generation for specific dynamic routes
+  experimental: {
+    skipTrailingSlashRedirect: true,
+  },
+  webpack: (config, { isServer, webpack }) => {
+    // Add global polyfills for browser-only globals used by socket.io
     if (isServer) {
-      if (!Array.isArray(config.externals)) {
-        config.externals = [];
-      }
-      config.externals.push('socket.io-client', 'engine.io-client');
+      config.plugins = config.plugins || [];
+      config.plugins.push(
+        new webpack.DefinePlugin({
+          'self': 'global',
+          'window': 'global',
+        })
+      );
     }
+
+    // Add fallback for Node.js modules that socket.io might reference
+    config.resolve = config.resolve || {};
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      fs: false,
+      net: false,
+      tls: false,
+      dns: false,
+    };
+
     return config;
   },
   images: {
