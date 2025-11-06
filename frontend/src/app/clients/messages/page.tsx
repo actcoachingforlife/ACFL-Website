@@ -72,7 +72,7 @@ function CoachMessagesContent() {
 
 	const loadConversations = async (preserveManualConversations = false) => {
 		try {
-			const res = await fetch(`${API_URL}/api/coach/conversations`, {
+			const res = await fetch(`${API_URL}/api/client/conversations`, {
 				headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
 			})
 			const data = await res.json()
@@ -102,7 +102,7 @@ function CoachMessagesContent() {
 	const loadMessages = async (partnerId: string) => {
 		try {
 			const params = new URLSearchParams({ conversation_with: partnerId })
-			const res = await fetch(`${API_URL}/api/coach/messages?${params.toString()}`, {
+			const res = await fetch(`${API_URL}/api/client/messages?${params.toString()}`, {
 				headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
 			})
 			const data = await res.json()
@@ -120,7 +120,7 @@ function CoachMessagesContent() {
 				const unread = filteredMessages.filter(m => m.recipient_id === coachId && !m.read_at)
 				if (unread.length > 0) {
 					await Promise.all(
-						unread.map(m => fetch(`${API_URL}/api/coach/messages/${m.id}/read`, {
+						unread.map(m => fetch(`${API_URL}/api/client/messages/${m.id}/read`, {
 							method: 'PUT',
 							headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
 						}))
@@ -153,7 +153,7 @@ function CoachMessagesContent() {
 			// Check backend first to see if conversation already exists
 			if (userName) {
 				try {
-					const response = await fetch(`${API_URL}/api/coach/conversations`, {
+					const response = await fetch(`${API_URL}/api/client/conversations`, {
 						method: 'POST',
 						headers: {
 							'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -397,7 +397,7 @@ function CoachMessagesContent() {
 		const formData = new FormData()
 		formData.append('attachment', file)
 
-		const response = await fetch(`${API_URL}/api/coach/upload-attachment`, {
+		const response = await fetch(`${API_URL}/api/client/upload-attachment`, {
 			method: 'POST',
 			headers: {
 				'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -419,7 +419,7 @@ function CoachMessagesContent() {
 		}
 
 		try {
-			const response = await fetch(`${API_URL}/api/coach/conversations/${partnerId}`, {
+			const response = await fetch(`${API_URL}/api/client/conversations/${partnerId}`, {
 				method: 'DELETE',
 				headers: {
 					'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -449,7 +449,7 @@ function CoachMessagesContent() {
 		}
 
 		try {
-			const response = await fetch(`${API_URL}/api/coach/messages/${messageId}/everyone`, {
+			const response = await fetch(`${API_URL}/api/client/messages/${messageId}/everyone`, {
 				method: 'DELETE',
 				headers: {
 					'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -468,7 +468,7 @@ function CoachMessagesContent() {
 
 	const hideMessageForMe = async (messageId: string) => {
 		try {
-			const response = await fetch(`${API_URL}/api/coach/messages/${messageId}/hide`, {
+			const response = await fetch(`${API_URL}/api/client/messages/${messageId}/hide`, {
 				method: 'PUT',
 				headers: {
 					'Authorization': `Bearer ${localStorage.getItem('token')}`,

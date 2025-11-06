@@ -1564,6 +1564,68 @@ router.get('/coach/conversations', authenticate, requireActiveUser, async (req: 
   }
 });
 
+// Create or get conversation endpoint for coaches
+router.post('/coach/conversations', authenticate, requireActiveUser, async (req: Request & { user?: any }, res: Response) => {
+  try {
+    if (!req.user || req.user.role !== 'coach') {
+      return res.status(403).json({
+        success: false,
+        message: 'Access denied. Coach role required.'
+      });
+    }
+
+    const { partnerId } = req.body;
+
+    if (!partnerId) {
+      return res.status(400).json({
+        success: false,
+        message: 'partnerId is required'
+      });
+    }
+
+    // Get coach profile by email first
+    const { data: coachProfile, error: coachError } = await supabase
+      .from('coaches')
+      .select('id')
+      .ilike('email', req.user.email)
+      .single();
+
+    if (coachError || !coachProfile) {
+      return res.status(404).json({
+        success: false,
+        message: 'Coach profile not found'
+      });
+    }
+
+    const coachId = coachProfile.id;
+
+    // Check if conversation already exists by looking for messages between these users
+    const { data: existingMessages, error: messagesError } = await supabase
+      .from('messages')
+      .select('id')
+      .or(`and(sender_id.eq.${coachId},recipient_id.eq.${partnerId}),and(sender_id.eq.${partnerId},recipient_id.eq.${coachId})`)
+      .limit(1);
+
+    if (messagesError) {
+      throw messagesError;
+    }
+
+    const conversationExists = existingMessages && existingMessages.length > 0;
+
+    res.json({
+      success: true,
+      conversationExists,
+      message: conversationExists ? 'Conversation already exists' : 'Conversation created'
+    });
+  } catch (error) {
+    console.error('Create/get conversation error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to check conversation'
+    });
+  }
+});
+
 // Test messages table
 router.get('/coach/test-messages', authenticate, async (req: Request & { user?: any }, res: Response) => {
   try {

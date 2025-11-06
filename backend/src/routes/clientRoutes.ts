@@ -1740,6 +1740,68 @@ router.get('/client/conversations', authenticate, async (req: Request & { user?:
   }
 });
 
+// Create or get conversation endpoint for clients
+router.post('/client/conversations', authenticate, async (req: Request & { user?: any }, res: Response) => {
+  try {
+    if (!req.user || req.user.role !== 'client') {
+      return res.status(403).json({
+        success: false,
+        message: 'Access denied. Client role required.'
+      });
+    }
+
+    const { partnerId } = req.body;
+
+    if (!partnerId) {
+      return res.status(400).json({
+        success: false,
+        message: 'partnerId is required'
+      });
+    }
+
+    // Get client profile by email first
+    const { data: clientProfile, error: clientError } = await supabase
+      .from('clients')
+      .select('id')
+      .ilike('email', req.user.email)
+      .single();
+
+    if (clientError || !clientProfile) {
+      return res.status(404).json({
+        success: false,
+        message: 'Client profile not found'
+      });
+    }
+
+    const clientId = clientProfile.id;
+
+    // Check if conversation already exists by looking for messages between these users
+    const { data: existingMessages, error: messagesError } = await supabase
+      .from('messages')
+      .select('id')
+      .or(`and(sender_id.eq.${clientId},recipient_id.eq.${partnerId}),and(sender_id.eq.${partnerId},recipient_id.eq.${clientId})`)
+      .limit(1);
+
+    if (messagesError) {
+      throw messagesError;
+    }
+
+    const conversationExists = existingMessages && existingMessages.length > 0;
+
+    res.json({
+      success: true,
+      conversationExists,
+      message: conversationExists ? 'Conversation already exists' : 'Conversation created'
+    });
+  } catch (error) {
+    console.error('Create/get conversation error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to check conversation'
+    });
+  }
+});
+
 // Mark messages as read
 router.put('/client/messages/:messageId/read', authenticate, async (req: Request & { user?: any }, res: Response) => {
   try {

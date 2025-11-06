@@ -101,19 +101,21 @@ export const PricingPlanBuilder = ({
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold">Pricing Plans</h3>
-        <div className="flex gap-2">
-          <Button onClick={resetToDefaults} size="sm" variant="outline" className="text-blue-600 border-blue-600 hover:bg-blue-50">
-            <RotateCcw className="w-4 h-4 mr-2" />
-            Reset to Defaults
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <h3 className="text-base sm:text-lg font-semibold">Pricing Plans</h3>
+        <div className="flex flex-wrap gap-2">
+          <Button onClick={resetToDefaults} size="sm" variant="outline" className="text-blue-600 border-blue-600 hover:bg-blue-50 text-xs sm:text-sm">
+            <RotateCcw className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+            <span className="hidden sm:inline">Reset to Defaults</span>
+            <span className="sm:hidden">Reset</span>
           </Button>
-          <Button onClick={clearAllPlans} size="sm" variant="outline" className="text-red-600 border-red-600 hover:bg-red-50">
-            <Trash2 className="w-4 h-4 mr-2" />
-            Clear All
+          <Button onClick={clearAllPlans} size="sm" variant="outline" className="text-red-600 border-red-600 hover:bg-red-50 text-xs sm:text-sm">
+            <Trash2 className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+            <span className="hidden sm:inline">Clear All</span>
+            <span className="sm:hidden">Clear</span>
           </Button>
-          <Button onClick={addPlan} size="sm" className="bg-blue-600 hover:bg-blue-700">
-            <Plus className="w-4 h-4 mr-2" />
+          <Button onClick={addPlan} size="sm" className="bg-blue-600 hover:bg-blue-700 text-xs sm:text-sm">
+            <Plus className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
             Add Plan
           </Button>
         </div>
@@ -121,21 +123,23 @@ export const PricingPlanBuilder = ({
 
       {plans.map((plan, planIndex) => (
         <Card key={plan.id || planIndex} className="relative">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4 p-4 sm:p-6">
             <div className="flex items-center space-x-2">
               <GripVertical className="w-4 h-4 text-gray-400" />
-              <CardTitle className="text-base">Plan {planIndex + 1}</CardTitle>
+              <CardTitle className="text-sm sm:text-base">Plan {planIndex + 1}</CardTitle>
             </div>
             <Button
               onClick={() => deletePlan(planIndex)}
               size="sm"
               variant="destructive"
+              className="h-8 w-8 p-0 sm:h-auto sm:w-auto sm:p-2"
             >
-              <Trash2 className="w-4 h-4" />
+              <Trash2 className="w-3 h-3 sm:w-4 sm:h-4" />
+              <span className="sr-only">Delete plan</span>
             </Button>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <CardContent className="space-y-4 p-4 sm:p-6 pt-0">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium mb-1">Plan Name</label>
                 <Input
@@ -179,7 +183,7 @@ export const PricingPlanBuilder = ({
                 id={`popular-${planIndex}`}
                 checked={plan.popular || false}
                 onChange={(e) => updatePlan(planIndex, { popular: e.target.checked })}
-                className="rounded"
+                className="rounded h-4 w-4"
               />
               <label htmlFor={`popular-${planIndex}`} className="text-sm font-medium">
                 Mark as "Most Popular"
@@ -187,15 +191,17 @@ export const PricingPlanBuilder = ({
             </div>
 
             <div>
-              <div className="flex items-center justify-between mb-2">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
                 <label className="block text-sm font-medium">Features</label>
                 <Button
                   onClick={() => addFeature(planIndex)}
                   size="sm"
                   variant="outline"
+                  className="text-xs sm:text-sm"
                 >
-                  <Plus className="w-4 h-4 mr-1" />
-                  Add Feature
+                  <Plus className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                  <span className="hidden sm:inline">Add Feature</span>
+                  <span className="sm:hidden">Add</span>
                 </Button>
               </div>
               <div className="space-y-2">
@@ -205,14 +211,16 @@ export const PricingPlanBuilder = ({
                       value={feature}
                       onChange={(e) => updateFeature(planIndex, featureIndex, e.target.value)}
                       placeholder="e.g., 2 x 50-minute sessions monthly"
-                      className="flex-1"
+                      className="flex-1 text-sm"
                     />
                     <Button
                       onClick={() => deleteFeature(planIndex, featureIndex)}
                       size="sm"
                       variant="outline"
+                      className="h-8 w-8 p-0 sm:h-auto sm:w-auto sm:p-2"
                     >
-                      <X className="w-4 h-4" />
+                      <X className="w-3 h-3 sm:w-4 sm:h-4" />
+                      <span className="sr-only">Delete feature</span>
                     </Button>
                   </div>
                 ))}
@@ -224,9 +232,9 @@ export const PricingPlanBuilder = ({
 
       {plans.length === 0 && (
         <Card className="border-dashed border-2">
-          <CardContent className="text-center py-8">
-            <p className="text-gray-500 mb-4">No pricing plans yet</p>
-            <Button onClick={addPlan} className="bg-blue-600 hover:bg-blue-700">
+          <CardContent className="text-center py-6 sm:py-8 px-4">
+            <p className="text-gray-500 mb-4 text-sm sm:text-base">No pricing plans yet</p>
+            <Button onClick={addPlan} className="bg-blue-600 hover:bg-blue-700 text-sm sm:text-base">
               <Plus className="w-4 h-4 mr-2" />
               Add Your First Plan
             </Button>
@@ -302,19 +310,21 @@ export const FAQBuilder = ({
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold">FAQ Items</h3>
-        <div className="flex gap-2">
-          <Button onClick={resetToDefaults} size="sm" variant="outline" className="text-blue-600 border-blue-600 hover:bg-blue-50">
-            <RotateCcw className="w-4 h-4 mr-2" />
-            Reset to Defaults
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <h3 className="text-base sm:text-lg font-semibold">FAQ Items</h3>
+        <div className="flex flex-wrap gap-2">
+          <Button onClick={resetToDefaults} size="sm" variant="outline" className="text-blue-600 border-blue-600 hover:bg-blue-50 text-xs sm:text-sm">
+            <RotateCcw className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+            <span className="hidden sm:inline">Reset to Defaults</span>
+            <span className="sm:hidden">Reset</span>
           </Button>
-          <Button onClick={clearAllItems} size="sm" variant="outline" className="text-red-600 border-red-600 hover:bg-red-50">
-            <Trash2 className="w-4 h-4 mr-2" />
-            Clear All
+          <Button onClick={clearAllItems} size="sm" variant="outline" className="text-red-600 border-red-600 hover:bg-red-50 text-xs sm:text-sm">
+            <Trash2 className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+            <span className="hidden sm:inline">Clear All</span>
+            <span className="sm:hidden">Clear</span>
           </Button>
-          <Button onClick={addItem} size="sm" className="bg-blue-600 hover:bg-blue-700">
-            <Plus className="w-4 h-4 mr-2" />
+          <Button onClick={addItem} size="sm" className="bg-blue-600 hover:bg-blue-700 text-xs sm:text-sm">
+            <Plus className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
             Add FAQ
           </Button>
         </div>
@@ -322,20 +332,22 @@ export const FAQBuilder = ({
 
       {items.map((item, index) => (
         <Card key={item.id || index}>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4 p-4 sm:p-6">
             <div className="flex items-center space-x-2">
               <GripVertical className="w-4 h-4 text-gray-400" />
-              <CardTitle className="text-base">FAQ {index + 1}</CardTitle>
+              <CardTitle className="text-sm sm:text-base">FAQ {index + 1}</CardTitle>
             </div>
             <Button
               onClick={() => deleteItem(index)}
               size="sm"
               variant="destructive"
+              className="h-8 w-8 p-0 sm:h-auto sm:w-auto sm:p-2"
             >
-              <Trash2 className="w-4 h-4" />
+              <Trash2 className="w-3 h-3 sm:w-4 sm:h-4" />
+              <span className="sr-only">Delete FAQ</span>
             </Button>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-4 p-4 sm:p-6 pt-0">
             <div>
               <label className="block text-sm font-medium mb-1">Question</label>
               <Input
@@ -359,9 +371,9 @@ export const FAQBuilder = ({
 
       {items.length === 0 && (
         <Card className="border-dashed border-2">
-          <CardContent className="text-center py-8">
-            <p className="text-gray-500 mb-4">No FAQ items yet</p>
-            <Button onClick={addItem} className="bg-blue-600 hover:bg-blue-700">
+          <CardContent className="text-center py-6 sm:py-8 px-4">
+            <p className="text-gray-500 mb-4 text-sm sm:text-base">No FAQ items yet</p>
+            <Button onClick={addItem} className="bg-blue-600 hover:bg-blue-700 text-sm sm:text-base">
               <Plus className="w-4 h-4 mr-2" />
               Add Your First FAQ
             </Button>
@@ -456,21 +468,26 @@ export const ListBuilder = ({
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold">{title}</h3>
-        <div className="flex gap-2">
-          {getDefaultContent(fieldName, 'list_builder', pageContext).length > 0 && (
-            <Button onClick={resetToDefaults} size="sm" variant="outline" className="text-blue-600 border-blue-600 hover:bg-blue-50">
-              <RotateCcw className="w-4 h-4 mr-2" />
-              Reset to Defaults
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <h3 className="text-base sm:text-lg font-semibold">{title}</h3>
+        <div className="flex flex-wrap gap-2">
+          {(() => {
+            const defaultContent = getDefaultContent(fieldName, 'list_builder', pageContext);
+            return Array.isArray(defaultContent) && defaultContent.length > 0;
+          })() && (
+            <Button onClick={resetToDefaults} size="sm" variant="outline" className="text-blue-600 border-blue-600 hover:bg-blue-50 text-xs sm:text-sm">
+              <RotateCcw className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">Reset to Defaults</span>
+              <span className="sm:hidden">Reset</span>
             </Button>
           )}
-          <Button onClick={clearAllItems} size="sm" variant="outline" className="text-red-600 border-red-600 hover:bg-red-50">
-            <Trash2 className="w-4 h-4 mr-2" />
-            Clear All
+          <Button onClick={clearAllItems} size="sm" variant="outline" className="text-red-600 border-red-600 hover:bg-red-50 text-xs sm:text-sm">
+            <Trash2 className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+            <span className="hidden sm:inline">Clear All</span>
+            <span className="sm:hidden">Clear</span>
           </Button>
-          <Button onClick={addItem} size="sm" className="bg-blue-600 hover:bg-blue-700">
-            <Plus className="w-4 h-4 mr-2" />
+          <Button onClick={addItem} size="sm" className="bg-blue-600 hover:bg-blue-700 text-xs sm:text-sm">
+            <Plus className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
             Add {singular}
           </Button>
         </div>
@@ -478,20 +495,22 @@ export const ListBuilder = ({
 
       {items.map((item, index) => (
         <Card key={item.id || index}>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4 p-4 sm:p-6">
             <div className="flex items-center space-x-2">
               <GripVertical className="w-4 h-4 text-gray-400" />
-              <CardTitle className="text-base">{singular} {index + 1}</CardTitle>
+              <CardTitle className="text-sm sm:text-base">{singular} {index + 1}</CardTitle>
             </div>
             <Button
               onClick={() => deleteItem(index)}
               size="sm"
               variant="destructive"
+              className="h-8 w-8 p-0 sm:h-auto sm:w-auto sm:p-2"
             >
-              <Trash2 className="w-4 h-4" />
+              <Trash2 className="w-3 h-3 sm:w-4 sm:h-4" />
+              <span className="sr-only">Delete item</span>
             </Button>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-4 p-4 sm:p-6 pt-0">
             <div>
               <label className="block text-sm font-medium mb-1">Title</label>
               <Input
@@ -570,9 +589,9 @@ export const ListBuilder = ({
 
       {items.length === 0 && (
         <Card className="border-dashed border-2">
-          <CardContent className="text-center py-8">
-            <p className="text-gray-500 mb-4">No {title.toLowerCase()} yet</p>
-            <Button onClick={addItem} className="bg-blue-600 hover:bg-blue-700">
+          <CardContent className="text-center py-6 sm:py-8 px-4">
+            <p className="text-gray-500 mb-4 text-sm sm:text-base">No {title.toLowerCase()} yet</p>
+            <Button onClick={addItem} className="bg-blue-600 hover:bg-blue-700 text-sm sm:text-base">
               <Plus className="w-4 h-4 mr-2" />
               Add Your First {singular}
             </Button>
@@ -635,20 +654,22 @@ export const StatisticsBuilder = ({
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold">Statistics</h3>
-        <div className="flex gap-2">
-          <Button onClick={resetToDefaults} size="sm" variant="outline" className="text-blue-600 border-blue-600 hover:bg-blue-50">
-            <RotateCcw className="w-4 h-4 mr-2" />
-            Reset to Defaults
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <h3 className="text-base sm:text-lg font-semibold">Statistics</h3>
+        <div className="flex flex-wrap gap-2">
+          <Button onClick={resetToDefaults} size="sm" variant="outline" className="text-blue-600 border-blue-600 hover:bg-blue-50 text-xs sm:text-sm">
+            <RotateCcw className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+            <span className="hidden sm:inline">Reset to Defaults</span>
+            <span className="sm:hidden">Reset</span>
           </Button>
-          <Button onClick={clearAllStats} size="sm" variant="outline" className="text-red-600 border-red-600 hover:bg-red-50">
-            <Trash2 className="w-4 h-4 mr-2" />
-            Clear All
+          <Button onClick={clearAllStats} size="sm" variant="outline" className="text-red-600 border-red-600 hover:bg-red-50 text-xs sm:text-sm">
+            <Trash2 className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+            <span className="hidden sm:inline">Clear All</span>
+            <span className="sm:hidden">Clear</span>
           </Button>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {fields.map((field) => (
           <Card key={field.key}>
             <CardContent className="pt-6">
