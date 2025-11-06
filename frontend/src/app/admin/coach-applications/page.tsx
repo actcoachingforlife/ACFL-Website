@@ -322,9 +322,9 @@ export default function CoachApplicationsPage() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {/* Total Applications Card */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-5 md:p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105 cursor-pointer group border border-gray-200 animate-in fade-in slide-in-from-bottom-2" style={{ animationDelay: '0ms', animationFillMode: 'backwards' }}>
+        <div className="bg-white dark:bg-gray-800 rounded-xl p-3 sm:p-4 md:p-5 lg:p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105 cursor-pointer group border border-gray-200 animate-in fade-in slide-in-from-bottom-2" style={{ animationDelay: '0ms', animationFillMode: 'backwards' }}>
           <div className="flex items-center justify-between mb-3 sm:mb-4">
             <div className="w-9 h-9 sm:w-10 sm:h-10 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center transition-colors duration-300 group-hover:bg-blue-100 dark:group-hover:bg-blue-900/30">
               <FileCheck className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600 dark:text-gray-400 transition-colors duration-300 group-hover:text-blue-600 dark:group-hover:text-blue-400" />
@@ -345,7 +345,7 @@ export default function CoachApplicationsPage() {
         </div>
 
         {/* Pending Card */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-5 md:p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105 cursor-pointer group border border-gray-200 animate-in fade-in slide-in-from-bottom-2" style={{ animationDelay: '50ms', animationFillMode: 'backwards' }}>
+        <div className="bg-white dark:bg-gray-800 rounded-xl p-3 sm:p-4 md:p-5 lg:p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105 cursor-pointer group border border-gray-200 animate-in fade-in slide-in-from-bottom-2" style={{ animationDelay: '50ms', animationFillMode: 'backwards' }}>
           <div className="flex items-center justify-between mb-3 sm:mb-4">
             <div className="w-9 h-9 sm:w-10 sm:h-10 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center transition-colors duration-300 group-hover:bg-yellow-100 dark:group-hover:bg-yellow-900/30">
               <AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600 dark:text-gray-400 transition-colors duration-300 group-hover:text-yellow-600 dark:group-hover:text-yellow-400" />
@@ -366,7 +366,7 @@ export default function CoachApplicationsPage() {
         </div>
 
         {/* Approved Card */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-5 md:p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105 cursor-pointer group border border-gray-200 animate-in fade-in slide-in-from-bottom-2" style={{ animationDelay: '100ms', animationFillMode: 'backwards' }}>
+        <div className="bg-white dark:bg-gray-800 rounded-xl p-3 sm:p-4 md:p-5 lg:p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105 cursor-pointer group border border-gray-200 animate-in fade-in slide-in-from-bottom-2" style={{ animationDelay: '100ms', animationFillMode: 'backwards' }}>
           <div className="flex items-center justify-between mb-3 sm:mb-4">
             <div className="w-9 h-9 sm:w-10 sm:h-10 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center transition-colors duration-300 group-hover:bg-green-100 dark:group-hover:bg-green-900/30">
               <Check className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600 dark:text-gray-400 transition-colors duration-300 group-hover:text-green-600 dark:group-hover:text-green-400" />
@@ -387,7 +387,7 @@ export default function CoachApplicationsPage() {
         </div>
 
         {/* Under Review Card */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-5 md:p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105 cursor-pointer group border border-gray-200 animate-in fade-in slide-in-from-bottom-2" style={{ animationDelay: '150ms', animationFillMode: 'backwards' }}>
+        <div className="bg-white dark:bg-gray-800 rounded-xl p-3 sm:p-4 md:p-5 lg:p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105 cursor-pointer group border border-gray-200 animate-in fade-in slide-in-from-bottom-2" style={{ animationDelay: '150ms', animationFillMode: 'backwards' }}>
           <div className="flex items-center justify-between mb-3 sm:mb-4">
             <div className="w-9 h-9 sm:w-10 sm:h-10 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center transition-colors duration-300 group-hover:bg-indigo-100 dark:group-hover:bg-indigo-900/30">
               <User className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600 dark:text-gray-400 transition-colors duration-300 group-hover:text-indigo-600 dark:group-hover:text-indigo-400" />
@@ -409,26 +409,27 @@ export default function CoachApplicationsPage() {
       </div>
 
       {/* Enhanced Filters Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-200 dark:border-gray-700 mb-6 overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-200 dark:border-gray-700 mb-4 sm:mb-6 overflow-hidden">
         {/* Filter Header */}
-        <div className="bg-gradient-to-r from-blue-50 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/30 border-b border-gray-200 dark:border-gray-600 px-6 py-4">
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/30 border-b border-gray-200 dark:border-gray-600 px-4 sm:px-6 py-3 sm:py-4">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-            <div className="flex items-center gap-3">
-              <div className="flex items-center justify-center w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-                <Filter className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                <Filter className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 dark:text-blue-400" />
               </div>
               <div>
-                <h3 className="text-base font-semibold text-gray-900 dark:text-white">Filter Applications</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Refine your search to find specific applications</p>
+                <h3 className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">Filter Applications</h3>
+                <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 hidden sm:block">Refine your search to find specific applications</p>
               </div>
             </div>
 
             {/* Active Filter Count Badge */}
             {(startDate || endDate || statusFilter !== 'all' || searchTerm) && (
-              <div className="flex items-center gap-2">
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
-                  <Check className="w-3.5 h-3.5 mr-1.5" />
-                  {[startDate, endDate, statusFilter !== 'all', searchTerm].filter(Boolean).length} active
+              <div className="flex items-center gap-1 sm:gap-2">
+                <span className="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
+                  <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1 sm:mr-1.5" />
+                  <span className="hidden sm:inline">{[startDate, endDate, statusFilter !== 'all', searchTerm].filter(Boolean).length} active</span>
+                  <span className="sm:hidden">{[startDate, endDate, statusFilter !== 'all', searchTerm].filter(Boolean).length}</span>
                 </span>
                 <button
                   onClick={() => {
@@ -438,10 +439,11 @@ export default function CoachApplicationsPage() {
                     setSearchTerm('');
                     setCurrentPage(1);
                   }}
-                  className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/30 transition-all duration-200 whitespace-nowrap"
+                  className="inline-flex items-center px-2 sm:px-3 py-1.5 text-xs sm:text-sm font-medium text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/30 transition-all duration-200 whitespace-nowrap"
                 >
-                  <X className="w-4 h-4 mr-1.5" />
-                  Clear All
+                  <X className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-1.5" />
+                  <span className="hidden sm:inline">Clear All</span>
+                  <span className="sm:hidden">Clear</span>
                 </button>
               </div>
             )}
@@ -449,8 +451,8 @@ export default function CoachApplicationsPage() {
         </div>
 
         {/* Filter Controls */}
-        <div className="p-6">
-          <div className="space-y-6">
+        <div className="p-4 sm:p-6">
+          <div className="space-y-4 sm:space-y-6">
             {/* Search Bar - Full Width Priority */}
             <div>
               <label htmlFor="application-search" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -479,7 +481,7 @@ export default function CoachApplicationsPage() {
             </div>
 
             {/* Filter Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
               {/* Status Filter */}
               <div>
                 <label htmlFor="status-filter" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -599,12 +601,13 @@ export default function CoachApplicationsPage() {
 
             {/* Active Filter Tags */}
             {(startDate || endDate || statusFilter !== 'all' || searchTerm) && (
-              <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-gray-200 dark:border-gray-700">
-                <span className="text-sm font-medium text-gray-600 dark:text-gray-400">Active filters:</span>
+              <div className="flex flex-wrap items-center gap-1 sm:gap-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+                <span className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">Active filters:</span>
                 {searchTerm && (
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 rounded-full text-sm border border-blue-200 dark:border-blue-800">
-                    <Search className="w-3.5 h-3.5" />
-                    Search: {searchTerm.substring(0, 20)}{searchTerm.length > 20 ? '...' : ''}
+                  <span className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 rounded-full text-xs sm:text-sm border border-blue-200 dark:border-blue-800">
+                    <Search className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                    <span className="hidden sm:inline">Search: {searchTerm.substring(0, 20)}{searchTerm.length > 20 ? '...' : ''}</span>
+                    <span className="sm:hidden">{searchTerm.substring(0, 10)}{searchTerm.length > 10 ? '...' : ''}</span>
                     <button
                       onClick={() => {
                         setSearchTerm('');
@@ -618,9 +621,10 @@ export default function CoachApplicationsPage() {
                   </span>
                 )}
                 {statusFilter !== 'all' && (
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 rounded-full text-sm border border-green-200 dark:border-green-800">
-                    <FileCheck className="w-3.5 h-3.5" />
-                    Status: {statusFilter.replace('_', ' ')}
+                  <span className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 rounded-full text-xs sm:text-sm border border-green-200 dark:border-green-800">
+                    <FileCheck className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                    <span className="hidden sm:inline">Status: {statusFilter.replace('_', ' ')}</span>
+                    <span className="sm:hidden">{statusFilter.replace('_', ' ')}</span>
                     <button
                       onClick={() => {
                         setStatusFilter('all');
@@ -634,11 +638,12 @@ export default function CoachApplicationsPage() {
                   </span>
                 )}
                 {startDate && (
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 rounded-full text-sm border border-purple-200 dark:border-purple-800">
-                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <span className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 rounded-full text-xs sm:text-sm border border-purple-200 dark:border-purple-800">
+                    <svg className="w-3 h-3 sm:w-3.5 sm:h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
-                    After: {new Date(startDate).toLocaleDateString()}
+                    <span className="hidden sm:inline">After: {new Date(startDate).toLocaleDateString()}</span>
+                    <span className="sm:hidden">From: {new Date(startDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
                     <button
                       onClick={() => {
                         setStartDate('');
@@ -652,11 +657,12 @@ export default function CoachApplicationsPage() {
                   </span>
                 )}
                 {endDate && (
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-orange-50 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300 rounded-full text-sm border border-orange-200 dark:border-orange-800">
-                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <span className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 bg-orange-50 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300 rounded-full text-xs sm:text-sm border border-orange-200 dark:border-orange-800">
+                    <svg className="w-3 h-3 sm:w-3.5 sm:h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
-                    Before: {new Date(endDate).toLocaleDateString()}
+                    <span className="hidden sm:inline">Before: {new Date(endDate).toLocaleDateString()}</span>
+                    <span className="sm:hidden">To: {new Date(endDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
                     <button
                       onClick={() => {
                         setEndDate('');
@@ -673,13 +679,13 @@ export default function CoachApplicationsPage() {
             )}
 
             {/* Results Summary */}
-            <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
-              <div className="flex items-center gap-2 text-sm">
-                <div className="flex items-center justify-center w-8 h-8 bg-gray-100 dark:bg-gray-700 rounded-lg">
+            <div className="flex items-center justify-between pt-3 sm:pt-4 border-t border-gray-200 dark:border-gray-700">
+              <div className="flex items-center gap-2 text-xs sm:text-sm">
+                <div className="flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 bg-gray-100 dark:bg-gray-700 rounded-lg">
                   {loading ? (
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+                    <div className="animate-spin rounded-full h-3 w-3 sm:h-4 sm:w-4 border-b-2 border-blue-600"></div>
                   ) : (
-                    <FileCheck className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+                    <FileCheck className="w-3 h-3 sm:w-4 sm:h-4 text-gray-600 dark:text-gray-400" />
                   )}
                 </div>
                 <div>
@@ -687,7 +693,10 @@ export default function CoachApplicationsPage() {
                     {loading ? (
                       'Loading...'
                     ) : (
-                      <>Showing {((currentPage - 1) * itemsPerPage) + 1}-{Math.min(currentPage * itemsPerPage, totalItems)} of {totalItems}</>
+                      <>
+                        <span className="hidden sm:inline">Showing {((currentPage - 1) * itemsPerPage) + 1}-{Math.min(currentPage * itemsPerPage, totalItems)} of {totalItems}</span>
+                        <span className="sm:inline">{((currentPage - 1) * itemsPerPage) + 1}-{Math.min(currentPage * itemsPerPage, totalItems)} of {totalItems}</span>
+                      </>
                     )}
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-400">
@@ -943,30 +952,30 @@ export default function CoachApplicationsPage() {
               {applications.map((application, index) => (
                 <div
                   key={application.id}
-                  className="p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-all duration-200 animate-in fade-in slide-in-from-bottom-2"
+                  className="p-3 sm:p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-all duration-200 animate-in fade-in slide-in-from-bottom-2"
                   style={{ animationDelay: `${index * 50}ms`, animationFillMode: 'backwards' }}
                 >
-                  <div className="flex items-start space-x-3 mb-3">
-                    <div className="flex-shrink-0 h-10 w-10">
+                  <div className="flex items-start space-x-2 sm:space-x-3 mb-3">
+                    <div className="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10">
                       {application.profile_photo ? (
                         <img
                           src={application.profile_photo}
                           alt={`${application.first_name} ${application.last_name} profile`}
-                          className="h-10 w-10 rounded-full object-cover"
+                          className="h-8 w-8 sm:h-10 sm:w-10 rounded-full object-cover"
                         />
                       ) : (
-                        <div className="h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center">
-                          <span className="text-white text-sm font-medium">
+                        <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-blue-500 flex items-center justify-center">
+                          <span className="text-white text-xs sm:text-sm font-medium">
                             {application.first_name[0]}{application.last_name[0]}
                           </span>
                         </div>
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="text-sm font-medium text-gray-900 dark:text-white">
+                      <div className="text-sm font-medium text-gray-900 dark:text-white truncate">
                         {application.first_name} {application.last_name}
                       </div>
-                      <div className="text-sm text-gray-500 dark:text-gray-400 truncate">
+                      <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 truncate">
                         {application.email}
                       </div>
                     </div>
@@ -975,15 +984,15 @@ export default function CoachApplicationsPage() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-2 mb-3 text-sm">
+                  <div className="grid grid-cols-2 gap-2 mb-3 text-xs sm:text-sm">
                     <div>
-                      <span className="text-gray-500 dark:text-gray-400">Experience:</span>
-                      <div className="text-gray-900 dark:text-white font-medium">
+                      <span className="text-gray-500 dark:text-gray-400 block">Experience:</span>
+                      <div className="text-gray-900 dark:text-white font-medium truncate">
                         {application.coaching_experience_years}
                       </div>
                     </div>
                     <div>
-                      <span className="text-gray-500 dark:text-gray-400">Submitted:</span>
+                      <span className="text-gray-500 dark:text-gray-400 block">Submitted:</span>
                       <div className="text-gray-900 dark:text-white font-medium">
                         {new Date(application.submitted_at).toLocaleDateString('en-US', {
                           month: 'short',
@@ -993,12 +1002,29 @@ export default function CoachApplicationsPage() {
                     </div>
                   </div>
 
-                  <div className="flex flex-wrap gap-2">
+                  {/* Languages and Training Level */}
+                  <div className="mb-3 text-xs sm:text-sm">
+                    <div className="mb-2">
+                      <span className="text-gray-500 dark:text-gray-400 block">Languages:</span>
+                      <div className="text-gray-900 dark:text-white truncate">
+                        {application.languages_fluent?.slice(0, 2).join(', ') || 'Not specified'}
+                        {application.languages_fluent && application.languages_fluent.length > 2 && ` +${application.languages_fluent.length - 2}`}
+                      </div>
+                    </div>
+                    <div>
+                      <span className="text-gray-500 dark:text-gray-400 block">Training:</span>
+                      <div className="text-gray-900 dark:text-white truncate">
+                        {application.act_training_level}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap gap-1 sm:gap-2">
                     <Button
                       onClick={() => fetchApplicationDetails(application.id)}
                       variant="outline"
                       size="sm"
-                      className="flex-1 min-h-[44px] text-xs"
+                      className="flex-1 min-h-[40px] sm:min-h-[44px] text-xs px-2"
                     >
                       Review
                     </Button>
@@ -1006,7 +1032,7 @@ export default function CoachApplicationsPage() {
                       onClick={() => handleMessageApplicant(application)}
                       variant="outline"
                       size="sm"
-                      className="min-h-[44px] text-xs text-blue-600 border-blue-300 hover:bg-blue-50"
+                      className="min-h-[40px] sm:min-h-[44px] text-xs text-blue-600 border-blue-300 hover:bg-blue-50 px-2"
                     >
                       <MessageSquare className="h-3 w-3" />
                     </Button>
@@ -1015,7 +1041,7 @@ export default function CoachApplicationsPage() {
                         <Button
                           onClick={() => updateApplicationStatus(application.id, 'approved')}
                           size="sm"
-                          className="flex-1 bg-green-600 hover:bg-green-700 min-h-[44px] text-xs"
+                          className="flex-1 bg-green-600 hover:bg-green-700 min-h-[40px] sm:min-h-[44px] text-xs px-2"
                         >
                           Approve
                         </Button>
@@ -1023,7 +1049,7 @@ export default function CoachApplicationsPage() {
                           onClick={() => updateApplicationStatus(application.id, 'rejected', 'Application did not meet requirements')}
                           size="sm"
                           variant="destructive"
-                          className="flex-1 min-h-[44px] text-xs"
+                          className="flex-1 min-h-[40px] sm:min-h-[44px] text-xs px-2"
                         >
                           Reject
                         </Button>
@@ -1196,87 +1222,87 @@ const ApplicationDetailsModal = ({
         }`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="sticky top-0 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 backdrop-blur-sm bg-opacity-95 dark:bg-opacity-95 p-4 sm:p-6 z-10">
+        <div className="sticky top-0 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 backdrop-blur-sm bg-opacity-95 dark:bg-opacity-95 p-3 sm:p-6 z-10">
           <div className="flex justify-between items-start">
-            <div className="flex items-start space-x-3 sm:space-x-4 flex-1 min-w-0">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0">
+            <div className="flex items-start space-x-2 sm:space-x-4 flex-1 min-w-0">
+              <div className="w-8 h-8 sm:w-12 sm:h-12 flex-shrink-0">
                 {application.profile_photo ? (
                   <img
                     src={application.profile_photo}
                     alt={`${application.first_name} ${application.last_name} profile`}
-                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover"
+                    className="w-8 h-8 sm:w-12 sm:h-12 rounded-full object-cover"
                   />
                 ) : (
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm sm:text-lg">
+                  <div className="w-8 h-8 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-xs sm:text-lg">
                     {application.first_name[0]}{application.last_name[0]}
                   </div>
                 )}
               </div>
               <div className="min-w-0 flex-1">
-                <h2 id="application-modal-title" className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white truncate">
+                <h2 id="application-modal-title" className="text-base sm:text-2xl font-bold text-gray-900 dark:text-white truncate">
                   {application.first_name} {application.last_name}
                 </h2>
-                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 flex items-start sm:items-center">
-                  <span className="inline-block w-2 h-2 bg-green-500 rounded-full mr-2 mt-2 sm:mt-0 flex-shrink-0"></span>
-                  <span className="break-all">{application.email}</span>
+                <p className="text-xs sm:text-base text-gray-600 dark:text-gray-400 flex items-start sm:items-center">
+                  <span className="inline-block w-2 h-2 bg-green-500 rounded-full mr-2 mt-1 sm:mt-0 flex-shrink-0"></span>
+                  <span className="break-all text-xs sm:text-sm">{application.email}</span>
                 </p>
               </div>
             </div>
-            <div className="flex items-start space-x-2 sm:space-x-3 flex-shrink-0 ml-2">
+            <div className="flex items-start space-x-1 sm:space-x-3 flex-shrink-0 ml-1 sm:ml-2">
               <div className="hidden sm:block">
                 {getStatusBadge(application.status)}
               </div>
-              <Button 
-                onClick={handleClose} 
+              <Button
+                onClick={handleClose}
                 variant="ghost"
-                className="hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800 rounded-full h-8 w-8 sm:h-10 sm:w-10 p-0 min-h-[44px] sm:min-h-0 focus-ring"
+                className="hover:bg-gray-100 dark:text-white dark:hover:bg-gray-800 rounded-full h-6 w-6 sm:h-10 sm:w-10 p-0 min-h-[36px] sm:min-h-[44px] focus-ring"
                 aria-label="Close modal"
               >
-                <X className="w-4 h-4 sm:w-5 sm:h-5" />
+                <X className="w-3 h-3 sm:w-5 sm:h-5" />
               </Button>
             </div>
           </div>
-          <div className="block sm:hidden mt-3">
+          <div className="block sm:hidden mt-2">
             {getStatusBadge(application.status)}
           </div>
         </div>
 
-        <div className="p-4 sm:p-6 space-y-6 sm:space-y-8">
+        <div className="p-3 sm:p-6 space-y-4 sm:space-y-8">
           {/* Professional Background */}
-          <section className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-4 sm:p-6 border border-blue-200 dark:border-blue-800">
-            <div className="flex items-center space-x-2 mb-4 sm:mb-6">
-              <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-full">
-                <User className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 dark:text-blue-400" />
+          <section className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-3 sm:p-6 border border-blue-200 dark:border-blue-800">
+            <div className="flex items-center space-x-2 mb-3 sm:mb-6">
+              <div className="p-1.5 sm:p-2 bg-blue-100 dark:bg-blue-900/30 rounded-full">
+                <User className="w-3 h-3 sm:w-5 sm:h-5 text-blue-600 dark:text-blue-400" />
               </div>
-              <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">Professional Background</h3>
+              <h3 className="text-sm sm:text-lg font-semibold text-gray-900 dark:text-white">Professional Background</h3>
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-              <div className="space-y-3 sm:space-y-4">
-                <div className="bg-white dark:bg-gray-800 rounded-lg p-3 sm:p-4 border border-gray-200 dark:border-gray-700">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-6">
+              <div className="space-y-2 sm:space-y-4">
+                <div className="bg-white dark:bg-gray-800 rounded-lg p-2 sm:p-4 border border-gray-200 dark:border-gray-700">
                   <label className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">Education</label>
-                  <p className="text-sm text-gray-900 dark:text-white font-medium mt-1 break-words">{application.educational_background}</p>
+                  <p className="text-xs sm:text-sm text-gray-900 dark:text-white font-medium mt-1 break-words">{application.educational_background}</p>
                 </div>
-                <div className="bg-white dark:bg-gray-800 rounded-lg p-3 sm:p-4 border border-gray-200 dark:border-gray-700">
+                <div className="bg-white dark:bg-gray-800 rounded-lg p-2 sm:p-4 border border-gray-200 dark:border-gray-700">
                   <label className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">Experience</label>
-                  <p className="text-sm text-gray-900 dark:text-white font-medium mt-1 break-words">{application.coaching_experience_years}</p>
+                  <p className="text-xs sm:text-sm text-gray-900 dark:text-white font-medium mt-1 break-words">{application.coaching_experience_years}</p>
                 </div>
-                <div className="bg-white dark:bg-gray-800 rounded-lg p-3 sm:p-4 border border-gray-200 dark:border-gray-700">
+                <div className="bg-white dark:bg-gray-800 rounded-lg p-2 sm:p-4 border border-gray-200 dark:border-gray-700">
                   <label className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">ACT Training Level</label>
-                  <p className="text-sm text-gray-900 dark:text-white font-medium mt-1 break-words">{application.act_training_level}</p>
+                  <p className="text-xs sm:text-sm text-gray-900 dark:text-white font-medium mt-1 break-words">{application.act_training_level}</p>
                 </div>
               </div>
-              <div className="bg-white dark:bg-gray-800 rounded-lg p-3 sm:p-4 border border-gray-200 dark:border-gray-700">
-                <label className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3 block">Professional Certifications</label>
-                <div className="space-y-2 max-h-32 overflow-y-auto custom-scrollbar">
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-2 sm:p-4 border border-gray-200 dark:border-gray-700">
+                <label className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2 sm:mb-3 block">Professional Certifications</label>
+                <div className="space-y-1 sm:space-y-2 max-h-24 sm:max-h-32 overflow-y-auto custom-scrollbar">
                   {(application.professional_certifications?.length ?? 0) > 0 ? (
                     application.professional_certifications?.map((cert, index) => (
-                      <div key={index} className="flex items-start space-x-2 p-2 bg-gray-50 dark:bg-gray-700 rounded-md">
-                        <div className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0 mt-2"></div>
-                        <span className="text-sm text-gray-700 dark:text-gray-300 break-words">{cert}</span>
+                      <div key={index} className="flex items-start space-x-1 sm:space-x-2 p-1.5 sm:p-2 bg-gray-50 dark:bg-gray-700 rounded-md">
+                        <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-blue-500 rounded-full flex-shrink-0 mt-1.5 sm:mt-2"></div>
+                        <span className="text-xs sm:text-sm text-gray-700 dark:text-gray-300 break-words">{cert}</span>
                       </div>
                     ))
                   ) : (
-                    <p className="text-sm text-gray-500 dark:text-gray-400">None specified</p>
+                    <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">None specified</p>
                   )}
                 </div>
               </div>
@@ -1284,17 +1310,17 @@ const ApplicationDetailsModal = ({
           </section>
 
           {/* Specialization */}
-          <section className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-xl p-4 sm:p-6 border border-purple-200 dark:border-purple-800">
-            <div className="flex items-center space-x-2 mb-4 sm:mb-6">
-              <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-full">
-                <Users className="w-4 h-4 sm:w-5 sm:h-5 text-purple-600 dark:text-purple-400" />
+          <section className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-xl p-3 sm:p-6 border border-purple-200 dark:border-purple-800">
+            <div className="flex items-center space-x-2 mb-3 sm:mb-6">
+              <div className="p-1.5 sm:p-2 bg-purple-100 dark:bg-purple-900/30 rounded-full">
+                <Users className="w-3 h-3 sm:w-5 sm:h-5 text-purple-600 dark:text-purple-400" />
               </div>
-              <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">Specialization & Expertise</h3>
+              <h3 className="text-sm sm:text-lg font-semibold text-gray-900 dark:text-white">Specialization & Expertise</h3>
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-              <div className="bg-white dark:bg-gray-800 rounded-lg p-3 sm:p-4 border border-gray-200 dark:border-gray-700">
-                <label className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3 block">Areas of Expertise</label>
-                <div className="flex flex-wrap gap-1 sm:gap-2">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-6">
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-2 sm:p-4 border border-gray-200 dark:border-gray-700">
+                <label className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2 sm:mb-3 block">Areas of Expertise</label>
+                <div className="flex flex-wrap gap-0.5 sm:gap-2">
                   {(application.coaching_expertise?.length ?? 0) > 0 ? (
                     application.coaching_expertise?.map((area, index) => (
                       <Badge key={index} className="bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 border-purple-200 dark:border-purple-700 text-xs break-words mobile-badge">
@@ -1302,13 +1328,13 @@ const ApplicationDetailsModal = ({
                       </Badge>
                     ))
                   ) : (
-                    <p className="text-sm text-gray-500 dark:text-gray-400">None specified</p>
+                    <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">None specified</p>
                   )}
                 </div>
               </div>
-              <div className="bg-white dark:bg-gray-800 rounded-lg p-3 sm:p-4 border border-gray-200 dark:border-gray-700">
-                <label className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3 block">Comfortable Age Groups</label>
-                <div className="flex flex-wrap gap-1 sm:gap-2">
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-2 sm:p-4 border border-gray-200 dark:border-gray-700">
+                <label className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2 sm:mb-3 block">Comfortable Age Groups</label>
+                <div className="flex flex-wrap gap-0.5 sm:gap-2">
                   {(application.age_groups_comfortable?.length ?? 0) > 0 ? (
                     application.age_groups_comfortable?.map((group, index) => (
                       <Badge key={index} className="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 text-xs break-words mobile-badge">
@@ -1316,7 +1342,7 @@ const ApplicationDetailsModal = ({
                       </Badge>
                     ))
                   ) : (
-                    <p className="text-sm text-gray-500 dark:text-gray-400">None specified</p>
+                    <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">None specified</p>
                   )}
                 </div>
               </div>
@@ -1324,80 +1350,80 @@ const ApplicationDetailsModal = ({
           </section>
 
           {/* Coaching Philosophy */}
-          <section className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl p-4 sm:p-6 border border-green-200 dark:border-green-800">
-            <div className="flex items-center space-x-2 mb-4 sm:mb-6">
-              <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-full">
-                <FileCheck className="w-4 h-4 sm:w-5 sm:h-5 text-green-600 dark:text-green-400" />
+          <section className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl p-3 sm:p-6 border border-green-200 dark:border-green-800">
+            <div className="flex items-center space-x-2 mb-3 sm:mb-6">
+              <div className="p-1.5 sm:p-2 bg-green-100 dark:bg-green-900/30 rounded-full">
+                <FileCheck className="w-3 h-3 sm:w-5 sm:h-5 text-green-600 dark:text-green-400" />
               </div>
-              <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">Coaching Philosophy & Approach</h3>
+              <h3 className="text-sm sm:text-lg font-semibold text-gray-900 dark:text-white">Coaching Philosophy & Approach</h3>
             </div>
-            <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg border border-gray-200 dark:border-gray-700 mb-4 sm:mb-6">
+            <div className="bg-white dark:bg-gray-800 p-3 sm:p-6 rounded-lg border border-gray-200 dark:border-gray-700 mb-3 sm:mb-6">
               <label className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2 block">Philosophy Statement</label>
               <div className="prose dark:prose-invert max-w-none">
-                <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed italic break-words">
+                <p className="text-xs sm:text-sm text-gray-700 dark:text-gray-300 leading-relaxed italic break-words">
                   "{application.coaching_philosophy}"
                 </p>
               </div>
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-              <div className="bg-white dark:bg-gray-800 rounded-lg p-3 sm:p-4 border border-gray-200 dark:border-gray-700">
-                <label className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3 block">Techniques Used</label>
-                <div className="space-y-2 max-h-32 overflow-y-auto custom-scrollbar">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-6">
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-2 sm:p-4 border border-gray-200 dark:border-gray-700">
+                <label className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2 sm:mb-3 block">Techniques Used</label>
+                <div className="space-y-1 sm:space-y-2 max-h-24 sm:max-h-32 overflow-y-auto custom-scrollbar">
                   {(application.coaching_techniques?.length ?? 0) > 0 ? (
                     application.coaching_techniques?.map((technique, index) => (
-                      <div key={index} className="flex items-start space-x-2 p-2 bg-green-50 dark:bg-green-900/20 rounded-md">
-                        <div className="w-1.5 h-1.5 bg-green-500 rounded-full flex-shrink-0 mt-2"></div>
-                        <span className="text-sm text-gray-700 dark:text-gray-300 break-words">{technique}</span>
+                      <div key={index} className="flex items-start space-x-1 sm:space-x-2 p-1.5 sm:p-2 bg-green-50 dark:bg-green-900/20 rounded-md">
+                        <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-green-500 rounded-full flex-shrink-0 mt-1 sm:mt-2"></div>
+                        <span className="text-xs sm:text-sm text-gray-700 dark:text-gray-300 break-words">{technique}</span>
                       </div>
                     ))
                   ) : (
-                    <p className="text-sm text-gray-500 dark:text-gray-400">None specified</p>
+                    <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">None specified</p>
                   )}
                 </div>
               </div>
-              <div className="bg-white dark:bg-gray-800 rounded-lg p-3 sm:p-4 border border-gray-200 dark:border-gray-700">
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-2 sm:p-4 border border-gray-200 dark:border-gray-700">
                 <label className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2 block">Session Structure</label>
-                <p className="text-sm text-gray-900 dark:text-white font-medium break-words">{application.session_structure}</p>
+                <p className="text-xs sm:text-sm text-gray-900 dark:text-white font-medium break-words">{application.session_structure}</p>
               </div>
             </div>
           </section>
 
           {/* Ethics & Crisis Management */}
-          <section className="bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 rounded-xl p-4 sm:p-6 border border-orange-200 dark:border-orange-800">
-            <div className="flex items-center space-x-2 mb-4 sm:mb-6">
-              <div className="p-2 bg-orange-100 dark:bg-orange-900/30 rounded-full">
-                <AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5 text-orange-600 dark:text-orange-400" />
+          <section className="bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 rounded-xl p-3 sm:p-6 border border-orange-200 dark:border-orange-800">
+            <div className="flex items-center space-x-2 mb-3 sm:mb-6">
+              <div className="p-1.5 sm:p-2 bg-orange-100 dark:bg-orange-900/30 rounded-full">
+                <AlertTriangle className="w-3 h-3 sm:w-5 sm:h-5 text-orange-600 dark:text-orange-400" />
               </div>
-              <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">Ethics & Crisis Management</h3>
+              <h3 className="text-sm sm:text-lg font-semibold text-gray-900 dark:text-white">Ethics & Crisis Management</h3>
             </div>
-            <div className="space-y-4 text-sm">
-              <div className="bg-white dark:bg-gray-800 rounded-lg p-3 sm:p-4 border border-gray-200 dark:border-gray-700">
+            <div className="space-y-3 sm:space-y-4 text-xs sm:text-sm">
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-2 sm:p-4 border border-gray-200 dark:border-gray-700">
                 <p className="font-medium mb-2 text-gray-900 dark:text-white"><strong>Scope Handling Approach:</strong></p>
-                <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded mt-1 break-words text-gray-900 dark:text-white">
+                <div className="bg-gray-50 dark:bg-gray-700 p-2 sm:p-3 rounded mt-1 break-words text-gray-900 dark:text-white">
                   {application.scope_handling_approach}
                 </div>
               </div>
               
-              <div className="bg-white dark:bg-gray-800 rounded-lg p-3 sm:p-4 border border-gray-200 dark:border-gray-700">
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-2 sm:p-4 border border-gray-200 dark:border-gray-700">
                 <p className="font-medium break-words text-gray-900 dark:text-white"><strong>Professional Discipline History:</strong> {application.professional_discipline_history ? 'Yes' : 'No'}</p>
                 {application.professional_discipline_history && application.discipline_explanation && (
-                  <div className="bg-yellow-50 dark:bg-yellow-900/20 p-3 rounded mt-2">
+                  <div className="bg-yellow-50 dark:bg-yellow-900/20 p-2 sm:p-3 rounded mt-2">
                     <p className="break-words text-gray-900 dark:text-white"><strong>Explanation:</strong> {application.discipline_explanation}</p>
                   </div>
                 )}
               </div>
               
-              <div className="bg-white dark:bg-gray-800 rounded-lg p-3 sm:p-4 border border-gray-200 dark:border-gray-700">
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-2 sm:p-4 border border-gray-200 dark:border-gray-700">
                 <p className="font-medium break-words text-gray-900 dark:text-white"><strong>Boundary Maintenance:</strong> {application.boundary_maintenance_approach}</p>
               </div>
               
-              <div className="bg-white dark:bg-gray-800 rounded-lg p-3 sm:p-4 border border-gray-200 dark:border-gray-700">
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-2 sm:p-4 border border-gray-200 dark:border-gray-700">
                 <p className="font-medium break-words text-gray-900 dark:text-white"><strong>Comfort with Suicidal Thoughts:</strong> {application.comfortable_with_suicidal_thoughts}</p>
               </div>
               
-              <div className="bg-white dark:bg-gray-800 rounded-lg p-3 sm:p-4 border border-gray-200 dark:border-gray-700">
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-2 sm:p-4 border border-gray-200 dark:border-gray-700">
                 <p className="font-medium mb-2 text-gray-900 dark:text-white"><strong>Self-Harm Protocol:</strong></p>
-                <div className="bg-gray-50 dark:bg-gray-700 p-3 rounded mt-1 break-words text-gray-900 dark:text-white">
+                <div className="bg-gray-50 dark:bg-gray-700 p-2 sm:p-3 rounded mt-1 break-words text-gray-900 dark:text-white">
                   {application.self_harm_protocol}
                 </div>
               </div>
@@ -1405,23 +1431,23 @@ const ApplicationDetailsModal = ({
           </section>
 
           {/* Availability & Technology */}
-          <section className="bg-gradient-to-r from-teal-50 to-cyan-50 dark:from-teal-900/20 dark:to-cyan-900/20 rounded-xl p-4 sm:p-6 border border-teal-200 dark:border-teal-800">
-            <div className="flex items-center space-x-2 mb-4 sm:mb-6">
-              <div className="p-2 bg-teal-100 dark:bg-teal-900/30 rounded-full">
-                <Check className="w-4 h-4 sm:w-5 sm:h-5 text-teal-600 dark:text-teal-400" />
+          <section className="bg-gradient-to-r from-teal-50 to-cyan-50 dark:from-teal-900/20 dark:to-cyan-900/20 rounded-xl p-3 sm:p-6 border border-teal-200 dark:border-teal-800">
+            <div className="flex items-center space-x-2 mb-3 sm:mb-6">
+              <div className="p-1.5 sm:p-2 bg-teal-100 dark:bg-teal-900/30 rounded-full">
+                <Check className="w-3 h-3 sm:w-5 sm:h-5 text-teal-600 dark:text-teal-400" />
               </div>
-              <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">Availability & Technology</h3>
+              <h3 className="text-sm sm:text-lg font-semibold text-gray-900 dark:text-white">Availability & Technology</h3>
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 text-sm">
-              <div className="bg-white dark:bg-gray-800 rounded-lg p-3 sm:p-4 border border-gray-200 dark:border-gray-700 space-y-3">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-6 text-xs sm:text-sm">
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-2 sm:p-4 border border-gray-200 dark:border-gray-700 space-y-2 sm:space-y-3">
                 <p className="break-words text-gray-900 dark:text-white"><strong>Weekly Hours:</strong> {application.weekly_hours_available}</p>
                 <p className="break-words text-gray-900 dark:text-white"><strong>Session Length:</strong> {application.preferred_session_length}</p>
                 <p className="break-words text-gray-900 dark:text-white"><strong>Video Comfort:</strong> {application.video_conferencing_comfort}</p>
                 <p className="break-words text-gray-900 dark:text-white"><strong>Internet Quality:</strong> {application.internet_connection_quality}</p>
               </div>
-              <div className="bg-white dark:bg-gray-800 rounded-lg p-3 sm:p-4 border border-gray-200 dark:border-gray-700">
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-2 sm:p-4 border border-gray-200 dark:border-gray-700">
                 <p className="font-medium mb-2 text-gray-900 dark:text-white"><strong>Availability Times:</strong></p>
-                <div className="flex flex-wrap gap-1 mt-1 mb-4">
+                <div className="flex flex-wrap gap-0.5 sm:gap-1 mt-1 mb-3 sm:mb-4">
                   {(application.availability_times?.length ?? 0) > 0 ? (
                     application.availability_times?.map((time, index) => (
                       <Badge key={index} variant="outline" className="text-xs break-words">
@@ -1429,12 +1455,12 @@ const ApplicationDetailsModal = ({
                       </Badge>
                     ))
                   ) : (
-                    <p className="text-sm text-gray-500 dark:text-gray-400">None specified</p>
+                    <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">None specified</p>
                   )}
                 </div>
 
                 <p className="font-medium mb-2 text-gray-900 dark:text-white"><strong>Languages:</strong></p>
-                <div className="flex flex-wrap gap-1 mt-1">
+                <div className="flex flex-wrap gap-0.5 sm:gap-1 mt-1">
                   {(application.languages_fluent?.length ?? 0) > 0 ? (
                     application.languages_fluent?.map((lang, index) => (
                       <Badge key={index} variant="secondary" className="text-xs break-words">
@@ -1442,7 +1468,7 @@ const ApplicationDetailsModal = ({
                       </Badge>
                     ))
                   ) : (
-                    <p className="text-sm text-gray-500 dark:text-gray-400">None specified</p>
+                    <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">None specified</p>
                   )}
                 </div>
               </div>
@@ -1450,23 +1476,23 @@ const ApplicationDetailsModal = ({
           </section>
 
           {/* Professional References */}
-          <section className="bg-gradient-to-r from-indigo-50 to-blue-50 dark:from-indigo-900/20 dark:to-blue-900/20 rounded-xl p-4 sm:p-6 border border-indigo-200 dark:border-indigo-800">
-            <div className="flex items-center space-x-2 mb-4 sm:mb-6">
-              <div className="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-full">
-                <Users className="w-4 h-4 sm:w-5 sm:h-5 text-indigo-600 dark:text-indigo-400" />
+          <section className="bg-gradient-to-r from-indigo-50 to-blue-50 dark:from-indigo-900/20 dark:to-blue-900/20 rounded-xl p-3 sm:p-6 border border-indigo-200 dark:border-indigo-800">
+            <div className="flex items-center space-x-2 mb-3 sm:mb-6">
+              <div className="p-1.5 sm:p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-full">
+                <Users className="w-3 h-3 sm:w-5 sm:h-5 text-indigo-600 dark:text-indigo-400" />
               </div>
-              <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">Professional References</h3>
+              <h3 className="text-sm sm:text-lg font-semibold text-gray-900 dark:text-white">Professional References</h3>
             </div>
-            <div className="grid gap-4">
+            <div className="grid gap-3 sm:gap-4">
               {application.references.map((ref, index) => (
-                <div key={index} className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-3 sm:p-4">
-                  <h4 className="font-medium text-gray-900 dark:text-white mb-3">Reference {index + 1}</h4>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-sm">
-                    <div className="space-y-2">
+                <div key={index} className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-2 sm:p-4">
+                  <h4 className="font-medium text-gray-900 dark:text-white mb-2 sm:mb-3">Reference {index + 1}</h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 text-xs sm:text-sm">
+                    <div className="space-y-1 sm:space-y-2">
                       <p className="break-words text-gray-900 dark:text-white"><strong>Name:</strong> {ref.name}</p>
                       <p className="break-words text-gray-900 dark:text-white"><strong>Title:</strong> {ref.title}</p>
                     </div>
-                    <div className="space-y-2">
+                    <div className="space-y-1 sm:space-y-2">
                       <p className="break-words text-gray-900 dark:text-white"><strong>Organization:</strong> {ref.organization}</p>
                       <p className="break-all text-gray-900 dark:text-white"><strong>Email:</strong> {ref.email}</p>
                       {ref.phone && <p className="break-words text-gray-900 dark:text-white"><strong>Phone:</strong> {ref.phone}</p>}
@@ -1509,44 +1535,46 @@ const ApplicationDetailsModal = ({
           )}
 
           {/* Action Buttons */}
-          <div className="border-t border-gray-200 dark:border-gray-700 pt-4 sm:pt-6 bg-gray-50 dark:bg-gray-800/50 -mx-4 sm:-mx-6 px-4 sm:px-6 pb-4 sm:pb-6 rounded-b-xl">
-            <div className="flex flex-col space-y-4 sm:flex-row sm:justify-between sm:items-center sm:space-y-0 mb-4">
+          <div className="border-t border-gray-200 dark:border-gray-700 pt-3 sm:pt-6 bg-gray-50 dark:bg-gray-800/50 -mx-3 sm:-mx-6 px-3 sm:px-6 pb-3 sm:pb-6 rounded-b-xl">
+            <div className="flex flex-col space-y-3 sm:flex-row sm:justify-between sm:items-center sm:space-y-0 mb-3 sm:mb-4">
               <div className="flex-1">
-                <h4 className="font-semibold text-gray-900 dark:text-white text-base sm:text-lg">
+                <h4 className="font-semibold text-gray-900 dark:text-white text-sm sm:text-lg">
                   {application.status === 'pending' ? 'Application Review' : 'Application Actions'}
                 </h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                   {application.status === 'pending' ? 'Make a decision on this application' : 'Available actions for this application'}
                 </p>
               </div>
-              <div className="flex flex-col space-y-3 sm:flex-row sm:space-y-0 sm:space-x-3">
+              <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-3">
                 <Button
                   onClick={handleMessageApplicant}
                   variant="outline"
-                  className="w-full sm:w-auto border-blue-300 text-blue-700 hover:bg-blue-50 dark:border-blue-700 dark:text-blue-400 dark:hover:bg-blue-900/20 transition-all duration-200 min-h-[44px] focus-ring"
+                  className="w-full sm:w-auto border-blue-300 text-blue-700 hover:bg-blue-50 dark:border-blue-700 dark:text-blue-400 dark:hover:bg-blue-900/20 transition-all duration-200 min-h-[40px] sm:min-h-[44px] focus-ring px-2 sm:px-4"
                 >
-                  <MessageSquare className="w-4 h-4 mr-2" />
-                  Message Applicant
+                  <MessageSquare className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                  <span className="hidden sm:inline">Message Applicant</span>
+                  <span className="sm:hidden">Message</span>
                 </Button>
-                
+                 
                 {application.status === 'pending' && (
                   <>
                     <Button
                       onClick={() => setShowRejectionForm(true)}
                       variant="outline"
                       disabled={loading}
-                      className="w-full sm:w-auto border-red-300 text-red-700 hover:bg-red-50 dark:border-red-700 dark:text-red-400 dark:hover:bg-red-900/20 transition-all duration-200 min-h-[44px] focus-ring"
+                      className="w-full sm:w-auto border-red-300 text-red-700 hover:bg-red-50 dark:border-red-700 dark:text-red-400 dark:hover:bg-red-900/20 transition-all duration-200 min-h-[40px] sm:min-h-[44px] focus-ring px-2 sm:px-4"
                     >
-                      <X className="w-4 h-4 mr-2" />
-                      Reject with Notes
+                      <X className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                      <span className="hidden sm:inline">Reject with Notes</span>
+                      <span className="sm:hidden">Reject</span>
                     </Button>
-                    
+                     
                     <Button
                       onClick={() => setShowApprovalForm(true)}
                       disabled={loading}
-                      className="w-full sm:w-auto bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800 text-white transition-all duration-200 hover:scale-105 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 min-h-[44px] focus-ring"
+                      className="w-full sm:w-auto bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800 text-white transition-all duration-200 hover:scale-105 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 min-h-[40px] sm:min-h-[44px] focus-ring px-2 sm:px-4"
                     >
-                      <Check className="w-4 h-4 mr-2" />
+                      <Check className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
                       <span className="hidden sm:inline">Approve with Notes</span>
                       <span className="sm:hidden">Approve</span>
                     </Button>
@@ -1557,45 +1585,45 @@ const ApplicationDetailsModal = ({
               
               {/* Approval Form */}
               {showApprovalForm && (
-                <div className="mt-4 p-4 sm:p-6 border border-green-200 dark:border-green-800 rounded-xl bg-green-50 dark:bg-green-900/20 animate-in slide-in-from-top duration-300">
-                  <div className="flex items-center space-x-2 mb-4">
-                    <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-full">
-                      <Check className="w-4 h-4 sm:w-5 sm:h-5 text-green-600 dark:text-green-400" />
+                <div className="mt-3 sm:mt-4 p-3 sm:p-6 border border-green-200 dark:border-green-800 rounded-xl bg-green-50 dark:bg-green-900/20 animate-in slide-in-from-top duration-300">
+                  <div className="flex items-center space-x-2 mb-3 sm:mb-4">
+                    <div className="p-1.5 sm:p-2 bg-green-100 dark:bg-green-900/30 rounded-full">
+                      <Check className="w-3 h-3 sm:w-5 sm:h-5 text-green-600 dark:text-green-400" />
                     </div>
-                    <h4 className="font-semibold text-green-800 dark:text-green-300 text-sm sm:text-base">Approval Notes</h4>
+                    <h4 className="font-semibold text-green-800 dark:text-green-300 text-xs sm:text-base">Approval Notes</h4>
                   </div>
                   <textarea
                     value={approvalNotes}
                     onChange={(e) => setApprovalNotes(e.target.value)}
-                    className="w-full px-3 sm:px-4 py-3 border border-green-300 dark:border-green-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-colors text-sm sm:text-base min-h-[120px] focus-ring-inset"
-                    rows={4}
+                    className="w-full px-2 sm:px-4 py-2 sm:py-3 border border-green-300 dark:border-green-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-colors text-xs sm:text-sm min-h-[100px] sm:min-h-[120px] focus-ring-inset"
+                    rows={3}
                     placeholder="Add any notes about the approval (optional). These notes will be saved for internal review purposes..."
                   />
-                  <div className="flex flex-col space-y-3 sm:flex-row sm:justify-end sm:space-y-0 sm:space-x-3 mt-4">
+                  <div className="flex flex-col space-y-2 sm:flex-row sm:justify-end sm:space-y-0 sm:space-x-3 mt-3 sm:mt-4">
                     <Button
                       onClick={() => {
                         setShowApprovalForm(false);
                         setApprovalNotes('');
                       }}
                       variant="outline"
-                      className="w-full sm:w-auto transition-all duration-200 min-h-[44px] order-2 sm:order-1 focus-ring"
+                      className="w-full sm:w-auto transition-all duration-200 min-h-[40px] sm:min-h-[44px] order-2 sm:order-1 focus-ring px-2 sm:px-4"
                     >
                       Cancel
                     </Button>
                     <Button
                       onClick={handleApprove}
                       disabled={loading}
-                      className="w-full sm:w-auto bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800 text-white transition-all duration-200 hover:scale-105 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 min-h-[44px] order-1 sm:order-2 focus-ring"
+                      className="w-full sm:w-auto bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800 text-white transition-all duration-200 hover:scale-105 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 min-h-[40px] sm:min-h-[44px] order-1 sm:order-2 focus-ring px-2 sm:px-4"
                     >
                       {loading ? (
                         <>
-                          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                          <div className="w-3 h-3 sm:w-4 sm:h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-1 sm:mr-2" />
                           <span className="hidden sm:inline">Approving...</span>
                           <span className="sm:hidden">Approving...</span>
                         </>
                       ) : (
                         <>
-                          <Check className="w-4 h-4 mr-2" />
+                          <Check className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
                           <span className="hidden sm:inline">Confirm Approval</span>
                           <span className="sm:hidden">Approve</span>
                         </>
@@ -1607,12 +1635,12 @@ const ApplicationDetailsModal = ({
 
               {/* Rejection Form */}
               {showRejectionForm && (
-                <div className="mt-4 p-4 sm:p-6 border border-red-200 dark:border-red-800 rounded-xl bg-red-50 dark:bg-red-900/20 animate-in slide-in-from-top duration-300">
-                  <div className="flex items-center space-x-2 mb-4">
-                    <div className="p-2 bg-red-100 dark:bg-red-900/30 rounded-full">
-                      <AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5 text-red-600 dark:text-red-400" />
+                <div className="mt-3 sm:mt-4 p-3 sm:p-6 border border-red-200 dark:border-red-800 rounded-xl bg-red-50 dark:bg-red-900/20 animate-in slide-in-from-top duration-300">
+                  <div className="flex items-center space-x-2 mb-3 sm:mb-4">
+                    <div className="p-1.5 sm:p-2 bg-red-100 dark:bg-red-900/30 rounded-full">
+                      <AlertTriangle className="w-3 h-3 sm:w-5 sm:h-5 text-red-600 dark:text-red-400" />
                     </div>
-                    <h4 className="font-semibold text-red-800 dark:text-red-300 text-sm sm:text-base">Rejection Reason</h4>
+                    <h4 className="font-semibold text-red-800 dark:text-red-300 text-xs sm:text-base">Rejection Reason</h4>
                   </div>
                   <textarea
                     value={rejectionReason}
@@ -1620,17 +1648,17 @@ const ApplicationDetailsModal = ({
                       setRejectionReason(e.target.value);
                       if (validationError) setValidationError('');
                     }}
-                    className="w-full px-3 sm:px-4 py-3 border border-red-300 dark:border-red-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-colors text-sm sm:text-base min-h-[120px] focus-ring-inset"
-                    rows={4}
+                    className="w-full px-2 sm:px-4 py-2 sm:py-3 border border-red-300 dark:border-red-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-colors text-xs sm:text-sm min-h-[100px] sm:min-h-[120px] focus-ring-inset"
+                    rows={3}
                     placeholder="Please provide a detailed reason for rejection. This will be included in the notification email to the applicant..."
                   />
                   {validationError && (
-                    <p className="text-red-600 dark:text-red-400 text-sm mt-2 flex items-center">
-                      <AlertTriangle className="w-4 h-4 mr-1" />
+                    <p className="text-red-600 dark:text-red-400 text-xs sm:text-sm mt-2 flex items-center">
+                      <AlertTriangle className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
                       {validationError}
                     </p>
                   )}
-                  <div className="flex flex-col space-y-3 sm:flex-row sm:justify-end sm:space-y-0 sm:space-x-3 mt-4">
+                  <div className="flex flex-col space-y-2 sm:flex-row sm:justify-end sm:space-y-0 sm:space-x-3 mt-3 sm:mt-4">
                     <Button
                       onClick={() => {
                         setShowRejectionForm(false);
@@ -1638,24 +1666,24 @@ const ApplicationDetailsModal = ({
                         setValidationError('');
                       }}
                       variant="outline"
-                      className="w-full sm:w-auto transition-all duration-200 min-h-[44px] order-2 sm:order-1 focus-ring"
+                      className="w-full sm:w-auto transition-all duration-200 min-h-[40px] sm:min-h-[44px] order-2 sm:order-1 focus-ring px-2 sm:px-4"
                     >
                       Cancel
                     </Button>
                     <Button
                       onClick={handleReject}
                       disabled={loading || !rejectionReason.trim()}
-                      className="w-full sm:w-auto bg-red-600 hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-800 text-white transition-all duration-200 hover:scale-105 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 min-h-[44px] order-1 sm:order-2 focus-ring"
+                      className="w-full sm:w-auto bg-red-600 hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-800 text-white transition-all duration-200 hover:scale-105 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 min-h-[40px] sm:min-h-[44px] order-1 sm:order-2 focus-ring px-2 sm:px-4"
                     >
                       {loading ? (
                         <>
-                          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                          <div className="w-3 h-3 sm:w-4 sm:h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-1 sm:mr-2" />
                           <span className="hidden sm:inline">Rejecting...</span>
                           <span className="sm:hidden">Rejecting...</span>
                         </>
                       ) : (
                         <>
-                          <X className="w-4 h-4 mr-2" />
+                          <X className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
                           <span className="hidden sm:inline">Confirm Rejection</span>
                           <span className="sm:hidden">Reject</span>
                         </>

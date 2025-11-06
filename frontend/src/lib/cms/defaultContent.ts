@@ -586,7 +586,7 @@ export const getDefaultContent = (fieldName: string, fieldType: string, pageCont
     case 'stats_builder':
       if (pageContext === 'pricing') return defaultStatistics.pricing;
       if (pageContext === 'group-coaching') return defaultStatistics.groupCoaching;
-      if (pageContext === 'corporate-coaching') return defaultStatistics.corporateCoaching;
+      if (pageContext === 'corporate') return defaultStatistics.corporateCoaching;
       return defaultStatistics.about;
 
     case 'list_builder':

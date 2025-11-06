@@ -499,9 +499,9 @@ const PAGE_TEMPLATES = {
 };
 
 export default function ContentManagement() {
-  const [selectedPage, setSelectedPage] = useState<string>('help');
+  const [selectedPage, setSelectedPage] = useState<keyof typeof PAGE_TEMPLATES>('help');
   const [pageContent, setPageContent] = useState<StaticContent | null>(null);
-  const [formData, setFormData] = useState<any>({});
+  const [formData, setFormData] = useState<Record<string, any>>({});
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [editingSections, setEditingSections] = useState<Set<string>>(new Set());
@@ -543,7 +543,7 @@ export default function ContentManagement() {
   };
 
   const handleSectionChange = (sectionId: string, fieldName: string, value: any) => {
-    setFormData(prev => ({
+    setFormData((prev: Record<string, any>) => ({
       ...prev,
       [sectionId]: {
         ...prev[sectionId],
@@ -569,7 +569,7 @@ export default function ContentManagement() {
     if (pageContent && pageContent.content) {
       try {
         const originalData = JSON.parse(pageContent.content);
-        setFormData(prev => ({
+        setFormData((prev: Record<string, any>) => ({
           ...prev,
           [sectionId]: originalData[sectionId] || {}
         }));
@@ -589,7 +589,7 @@ export default function ContentManagement() {
     setSaving(true);
     try {
       const contentData = {
-        title: `${PAGE_TEMPLATES[selectedPage].name}`,
+        title: `${PAGE_TEMPLATES[selectedPage as keyof typeof PAGE_TEMPLATES].name}`,
         slug: selectedPage,
         content: JSON.stringify(formData),
         content_type: selectedPage,
@@ -805,7 +805,7 @@ export default function ContentManagement() {
             {key: 'completionRate', label: 'Completion Rate', suffix: '%'},
             {key: 'averageRating', label: 'Average Rating', suffix: '/5'}
           ];
-        } else if (selectedPage === 'corporate-coaching') {
+        } else if (selectedPage === 'corporate') {
           statFields = [
             {key: 'companiesServed', label: 'Companies Served', suffix: '+'},
             {key: 'employeesImpacted', label: 'Employees Impacted', suffix: '+'},
@@ -953,31 +953,32 @@ export default function ContentManagement() {
     }
   };
 
-  const currentTemplate = PAGE_TEMPLATES[selectedPage];
+  const currentTemplate = PAGE_TEMPLATES[selectedPage as keyof typeof PAGE_TEMPLATES];
 
   return (
     <div className="w-full">
       {/* Header */}
-      <div className="mb-8">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="mb-6 sm:mb-8">
+        <div className="flex flex-col gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Content Management</h1>
-            <p className="text-gray-600 dark:text-gray-400">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">Content Management</h1>
+            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
               Manage content for public pages with structured editing
             </p>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             {pageContent && (
               <button
                 onClick={togglePublishStatus}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+                className={`flex items-center gap-2 px-3 py-2 sm:px-4 rounded-lg transition-colors text-sm sm:text-base ${
                   pageContent.is_published
                     ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-900/50'
                     : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                 }`}
               >
                 {pageContent.is_published ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
-                {pageContent.is_published ? 'Published' : 'Draft'}
+                <span className="hidden sm:inline">{pageContent.is_published ? 'Published' : 'Draft'}</span>
+                <span className="sm:hidden">{pageContent.is_published ? 'Pub' : 'Draft'}</span>
               </button>
             )}
           </div>
@@ -985,25 +986,25 @@ export default function ContentManagement() {
       </div>
 
       {/* Page Selector */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 mb-6">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Select Page to Edit</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 gap-4 mb-4">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6 mb-6">
+        <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-4">Select Page to Edit</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 mb-4">
           {Object.entries(PAGE_TEMPLATES).map(([key, template]) => {
             const IconComponent = template.icon;
             return (
               <button
                 key={key}
-                onClick={() => setSelectedPage(key)}
-                className={`p-4 rounded-lg border transition-colors ${
+                onClick={() => setSelectedPage(key as keyof typeof PAGE_TEMPLATES)}
+                className={`p-3 sm:p-4 rounded-lg border transition-colors ${
                   selectedPage === key
                     ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
                     : 'border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
                 }`}
               >
-                <IconComponent className={`w-6 h-6 mx-auto mb-2 ${
+                <IconComponent className={`w-5 h-5 sm:w-6 sm:h-6 mx-auto mb-1 sm:mb-2 ${
                   selectedPage === key ? 'text-blue-600' : 'text-gray-500'
                 }`} />
-                <p className={`text-sm font-medium ${
+                <p className={`text-xs sm:text-sm font-medium ${
                   selectedPage === key ? 'text-blue-600' : 'text-gray-900 dark:text-white'
                 }`}>
                   {template.name}
@@ -1016,11 +1017,11 @@ export default function ContentManagement() {
 
       {/* Content Editor */}
       {loading ? (
-        <div className="flex items-center justify-center py-12 mb-6">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 dark:border-blue-400"></div>
+        <div className="flex items-center justify-center py-8 sm:py-12 mb-6">
+          <div className="animate-spin rounded-full h-6 w-6 sm:h-8 sm:w-8 border-b-2 border-blue-600 dark:border-blue-400"></div>
         </div>
       ) : (
-        <div className="space-y-6 mb-6">
+        <div className="space-y-4 sm:space-y-6 mb-6">
           {currentTemplate.sections.map((section) => {
             const isEditing = editingSections.has(section.id);
 
@@ -1033,44 +1034,48 @@ export default function ContentManagement() {
                     : 'border-gray-200 dark:border-gray-700'
                 }`}
               >
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-4 pb-2 border-b border-gray-200 dark:border-gray-600">
-                    <div className="flex items-center gap-3">
-                      <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                <div className="p-4 sm:p-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4 pb-2 border-b border-gray-200 dark:border-gray-600">
+                    <div className="flex items-center gap-2 sm:gap-3">
+                      <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">
                         {section.title}
                       </h3>
                       {isEditing && (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
+                        <span className="inline-flex items-center px-2 py-0.5 sm:px-2.5 sm:py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
                           <Edit2 className="w-3 h-3 mr-1" />
-                          Editing
+                          <span className="hidden sm:inline">Editing</span>
+                          <span className="sm:hidden">Edit</span>
                         </span>
                       )}
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex gap-1 sm:gap-2">
                       {!isEditing ? (
                         <button
                           onClick={() => toggleEditSection(section.id)}
-                          className="inline-flex items-center px-3 py-1.5 border border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 rounded-md hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors text-sm font-medium"
+                          className="inline-flex items-center px-2 py-1.5 sm:px-3 sm:py-1.5 border border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 rounded-md hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors text-xs sm:text-sm font-medium"
                         >
-                          <Edit2 className="w-4 h-4 mr-1.5" />
-                          Edit
+                          <Edit2 className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-1.5" />
+                          <span className="hidden sm:inline">Edit</span>
+                          <span className="sm:hidden">Edit</span>
                         </button>
                       ) : (
                         <>
                           <button
                             onClick={() => saveSection(section.id)}
                             disabled={saving}
-                            className="inline-flex items-center px-3 py-1.5 bg-green-600 dark:bg-green-700 text-white rounded-md hover:bg-green-700 dark:hover:bg-green-600 transition-colors text-sm font-medium disabled:opacity-50"
+                            className="inline-flex items-center px-2 py-1.5 sm:px-3 sm:py-1.5 bg-green-600 dark:bg-green-700 text-white rounded-md hover:bg-green-700 dark:hover:bg-green-600 transition-colors text-xs sm:text-sm font-medium disabled:opacity-50"
                           >
-                            <Check className="w-4 h-4 mr-1.5" />
-                            {saving ? 'Saving...' : 'Save'}
+                            <Check className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-1.5" />
+                            <span className="hidden sm:inline">{saving ? 'Saving...' : 'Save'}</span>
+                            <span className="sm:hidden">{saving ? '...' : 'Save'}</span>
                           </button>
                           <button
                             onClick={() => cancelEditSection(section.id)}
-                            className="inline-flex items-center px-3 py-1.5 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-sm font-medium"
+                            className="inline-flex items-center px-2 py-1.5 sm:px-3 sm:py-1.5 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-xs sm:text-sm font-medium"
                           >
-                            <X className="w-4 h-4 mr-1.5" />
-                            Cancel
+                            <X className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-1.5" />
+                            <span className="hidden sm:inline">Cancel</span>
+                            <span className="sm:hidden">X</span>
                           </button>
                         </>
                       )}
@@ -1078,14 +1083,14 @@ export default function ContentManagement() {
                   </div>
 
                   {isEditing ? (
-                    <div className="space-y-6">
+                    <div className="space-y-4 sm:space-y-6">
                       {section.fields.map((field) => (
                         <div key={field.name} className="pb-2">
                           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 mt-1">
                             {field.label}
                           </label>
                           {renderField(section.id, field)}
-                          {field.description && (
+                          {'description' in field && field.description && (
                             <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{field.description}</p>
                           )}
                         </div>
@@ -1095,20 +1100,21 @@ export default function ContentManagement() {
                     <div>
                       {section.fields.length > 0 && (
                         <div className="mb-4 p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-200 dark:border-gray-600">
-                          <p className="text-sm text-gray-600 dark:text-gray-400 flex items-center">
-                            <Eye className="w-4 h-4 mr-2" />
-                            View mode - Click the Edit button to modify this section
+                          <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 flex items-center">
+                            <Eye className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
+                            <span className="hidden sm:inline">View mode - Click the Edit button to modify this section</span>
+                            <span className="sm:hidden">Tap Edit to modify</span>
                           </p>
                         </div>
                       )}
-                      <div className="space-y-6">
+                      <div className="space-y-4 sm:space-y-6">
                         {section.fields.map((field) => (
                           <div key={field.name} className="pb-2">
                             <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1 mt-1">
                               {field.label}
                             </label>
                             {renderReadOnlyField(section.id, field)}
-                            {field.description && (
+                            {'description' in field && field.description && (
                               <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{field.description}</p>
                             )}
                           </div>
@@ -1125,8 +1131,8 @@ export default function ContentManagement() {
 
       {/* Page Status */}
       {pageContent && (
-        <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 mb-6">
-          <p className="text-sm text-gray-600 dark:text-gray-400">
+        <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-3 sm:p-4 mb-6">
+          <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
             Last updated: {new Date(pageContent.updated_at).toLocaleString()}
           </p>
         </div>
