@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useAuth } from '@/contexts/AuthContext'
 import { User, Paperclip, Trash2, Download, X, MoreVertical, EyeOff, ArrowLeft, Send, Search, Filter, Users, MessageCircle, Smile } from 'lucide-react'
-import { io } from 'socket.io-client'
 
 type Conversation = {
 	partnerId: string
@@ -284,15 +283,18 @@ function CoachMessagesContent() {
 	}, [activePartnerId])
 
 	// Socket.IO Realtime
-	const socketRef = useRef<ReturnType<typeof io> | null>(null)
+	const socketRef = useRef<any>(null)
 
 	useEffect(() => {
-		if (!user?.id) return
-		const socket = io(API_URL, {
-			transports: ['websocket'],
-			auth: { token: `Bearer ${localStorage.getItem('token')}` }
-		})
-		socketRef.current = socket
+		if (!user?.id || typeof window === 'undefined') return
+
+		// Dynamically import socket.io-client to avoid build-time issues
+		import('socket.io-client').then(({ io }) => {
+			const socket = io(API_URL, {
+				transports: ['websocket'],
+				auth: { token: `Bearer ${localStorage.getItem('token')}` }
+			})
+			socketRef.current = socket
 
 		socket.on('connect', () => {
 			// Connected
@@ -325,6 +327,9 @@ function CoachMessagesContent() {
 					? { ...m, body: 'This message was deleted', deleted_for_everyone: true, deleted_at: new Date().toISOString() }
 					: m
 			))
+		})
+		}).catch((error) => {
+			console.error('Failed to load socket.io-client:', error)
 		})
 
 		return () => {
@@ -973,3 +978,6 @@ function CoachMessagesContent() {
 export default function CoachMessagesPage() {
 	return <CoachMessagesContent />
 }
+
+// Force dynamic rendering - disable static optimization for this page
+export const dynamic = 'force-dynamic';

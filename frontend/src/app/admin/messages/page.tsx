@@ -9,7 +9,6 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useAuth } from '@/contexts/AuthContext'
 import { User, Paperclip, Trash2, Download, X, MoreVertical, EyeOff, ArrowLeft, Send, Search, Filter, Users, MessageCircle, Smile } from 'lucide-react'
-import { io } from 'socket.io-client'
 
 type Conversation = {
 	partnerId: string
@@ -315,47 +314,53 @@ function AdminMessagesContent() {
 	}, [activePartnerId])
 
 	// Socket.IO Realtime
-	const socketRef = useRef<ReturnType<typeof io> | null>(null)
+	const socketRef = useRef<any>(null)
 
 	useEffect(() => {
-		if (!user?.id) return
-		const socket = io(API_URL, {
-			transports: ['websocket'],
-			auth: { token: `Bearer ${localStorage.getItem('token')}` }
-		})
-		socketRef.current = socket
+		if (!user?.id || typeof window === 'undefined') return
 
-		socket.on('connect', () => {
-			// Connected
-		})
+		// Dynamically import socket.io-client to avoid build-time issues
+		import('socket.io-client').then(({ io }) => {
+			const socket = io(API_URL, {
+				transports: ['websocket'],
+				auth: { token: `Bearer ${localStorage.getItem('token')}` }
+			})
+			socketRef.current = socket
 
-		socket.on('message:new', async (msg: Message) => {
-			const partnerId = activePartnerId
-			const involvesActive = partnerId && (msg.sender_id === partnerId || msg.recipient_id === partnerId)
+			socket.on('connect', () => {
+				// Connected
+			})
 
-			if (involvesActive) {
-				setMessages(prev => [...prev, msg])
-				if (msg.recipient_id === (user?.id || '') && !msg.read_at) {
-					socket.emit('message:read', { messageIds: [msg.id] })
+			socket.on('message:new', async (msg: Message) => {
+				const partnerId = activePartnerId
+				const involvesActive = partnerId && (msg.sender_id === partnerId || msg.recipient_id === partnerId)
+
+				if (involvesActive) {
+					setMessages(prev => [...prev, msg])
+					if (msg.recipient_id === (user?.id || '') && !msg.read_at) {
+						socket.emit('message:read', { messageIds: [msg.id] })
+					}
+					loadConversations(true) // Preserve manual conversations
+					setTimeout(() => scrollerRef.current?.scrollTo({ top: scrollerRef.current.scrollHeight, behavior: 'smooth' }), 0)
+				} else {
+					loadConversations(true) // Preserve manual conversations
 				}
-				loadConversations(true) // Preserve manual conversations
-				setTimeout(() => scrollerRef.current?.scrollTo({ top: scrollerRef.current.scrollHeight, behavior: 'smooth' }), 0)
-			} else {
-				loadConversations(true) // Preserve manual conversations
-			}
-		})
+			})
 
-		socket.on('message:read', ({ id, read_at }: { id: string; read_at: string }) => {
-			setMessages(prev => prev.map(m => m.id === id ? { ...m, read_at } as Message : m))
-		})
+			socket.on('message:read', ({ id, read_at }: { id: string; read_at: string }) => {
+				setMessages(prev => prev.map(m => m.id === id ? { ...m, read_at } as Message : m))
+			})
 
-		socket.on('message:deleted_everyone', ({ messageId, deletedBy }: { messageId: string; deletedBy: string }) => {
-			// Update the message to show it was deleted
-			setMessages(prev => prev.map(m =>
-				m.id === messageId
-					? { ...m, body: 'This message was deleted', deleted_for_everyone: true, deleted_at: new Date().toISOString() }
-					: m
-			))
+			socket.on('message:deleted_everyone', ({ messageId, deletedBy }: { messageId: string; deletedBy: string }) => {
+				// Update the message to show it was deleted
+				setMessages(prev => prev.map(m =>
+					m.id === messageId
+						? { ...m, body: 'This message was deleted', deleted_for_everyone: true, deleted_at: new Date().toISOString() }
+						: m
+				))
+			})
+		}).catch((error) => {
+			console.error('Failed to load socket.io-client:', error)
 		})
 
 		return () => {
@@ -1055,3 +1060,6 @@ t									</div>
 export default function AdminMessagesPage() {
 	return <AdminMessagesContent />
 }
+
+// Force dynamic rendering - disable static optimization for this page
+export const dynamic = 'force-dynamic';
