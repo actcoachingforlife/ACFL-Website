@@ -59,7 +59,7 @@ const nextConfig = {
         headers: [
           {
             key: "Content-Security-Policy",
-            value: `default-src 'self' ${squareDomains}; font-src 'self' data: https:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-eval' 'unsafe-inline' https: ${squareDomains}; img-src 'self' data: https:; connect-src ${connectSrc}; frame-src 'self' ${squareDomains}; child-src 'self' ${squareDomains};`,
+            value: `default-src 'self' ${squareDomains}; font-src 'self' data: https:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-eval' 'unsafe-inline' https: ${squareDomains}; img-src 'self' data: https:; connect-src ${connectSrc}; frame-src 'self' ${squareDomains} https://maps.google.com https://www.google.com https://www.openstreetmap.org; child-src 'self' ${squareDomains} https://maps.google.com https://www.google.com https://www.openstreetmap.org;`,
           },
         ],
       },

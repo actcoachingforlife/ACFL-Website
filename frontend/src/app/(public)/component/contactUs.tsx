@@ -46,12 +46,18 @@ const Contact = () => {
             </div>
            </div>
 
-            {/* Image Section */}
+            {/* Google Maps iframe */}
             <div className="overflow-hidden shadow-sm">
-                <img
-                    src={contactUsPhoto.src}
-                    alt="Sydney Opera House"
-                    className="w-full h-auto object-cover"
+                <iframe
+                    src="https://maps.google.com/maps?q=Level+5,+123+Business+Street,+Sydney+NSW+2000&output=embed"
+                    width="100%"
+                    height="450"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Level 5, 123 Business Street, Sydney NSW 2000"
+                    className="w-full"
                 />
             </div>
         </div>
