@@ -16,7 +16,10 @@ import {
   Clock,
   RefreshCw,
   Plus,
-  Search
+  Search,
+  Filter,
+  Calendar,
+  DollarSign
 } from 'lucide-react';
 
 interface Payment {
@@ -62,6 +65,12 @@ export default function ClientRefundRequest({ clientId }: ClientRefundRequestPro
   const [refundMethod, setRefundMethod] = useState('original_payment');
   const [description, setDescription] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
+
+  // Filter states for refund history
+  const [refundSearchTerm, setRefundSearchTerm] = useState('');
+  const [itemsPerPage, setItemsPerPage] = useState(20);
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [dateFilter, setDateFilter] = useState('all');
 
   const refundReasons = [
     { value: 'requested_by_customer', label: 'Customer Request' },
@@ -246,6 +255,56 @@ export default function ClientRefundRequest({ clientId }: ClientRefundRequestPro
     payment.id.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // Filter refund requests based on search term, status, and date range
+  const filteredAndSortedRefunds = [...refundRequests]
+    .filter(refund => {
+      // Search filter
+      if (refundSearchTerm) {
+        const searchLower = refundSearchTerm.toLowerCase();
+        const matchesSearch =
+          refund.id.toLowerCase().includes(searchLower) ||
+          refund.reason.toLowerCase().includes(searchLower) ||
+          (refund.description && refund.description.toLowerCase().includes(searchLower)) ||
+          refund.refund_method.toLowerCase().includes(searchLower);
+        if (!matchesSearch) return false;
+      }
+
+      // Status filter
+      if (statusFilter !== 'all' && refund.status.toLowerCase() !== statusFilter.toLowerCase()) {
+        return false;
+      }
+
+      // Date range filter
+      if (dateFilter !== 'all') {
+        const refundDate = new Date(refund.created_at);
+        const now = new Date();
+        const daysDiff = Math.floor((now.getTime() - refundDate.getTime()) / (1000 * 60 * 60 * 24));
+
+        switch (dateFilter) {
+          case 'today':
+            if (daysDiff > 0) return false;
+            break;
+          case 'week':
+            if (daysDiff > 7) return false;
+            break;
+          case 'month':
+            if (daysDiff > 30) return false;
+            break;
+          case 'quarter':
+            if (daysDiff > 90) return false;
+            break;
+        }
+      }
+
+      return true;
+    })
+    .sort((a, b) => {
+      const dateA = new Date(a.created_at).getTime();
+      const dateB = new Date(b.created_at).getTime();
+      return dateB - dateA; // Most recent first
+    })
+    .slice(0, itemsPerPage);
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -413,70 +472,320 @@ export default function ClientRefundRequest({ clientId }: ClientRefundRequestPro
         </Card>
       )}
 
-      {/* Refund Requests History */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Refund History</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {refundRequests.length === 0 ? (
-            <div className="text-center py-8 text-muted-foreground">
+      {/* Filter Section */}
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-700 dark:to-gray-750 border-b border-gray-200 dark:border-gray-600 px-6 py-4">
+          <div className="flex items-center gap-3">
+            <div className="flex items-center justify-center w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+              <Filter className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            </div>
+            <div>
+              <h3 className="text-base font-semibold text-gray-900 dark:text-white">Filter Refunds</h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Search and filter refund requests</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="refund-search" className="text-sm font-medium">Search</Label>
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                <Input
+                  id="refund-search"
+                  placeholder="Search refunds..."
+                  value={refundSearchTerm}
+                  onChange={(e) => setRefundSearchTerm(e.target.value)}
+                  className="pl-9"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="status-filter" className="text-sm font-medium">Status</Label>
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger id="status-filter">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Status</SelectItem>
+                  <SelectItem value="pending">Pending</SelectItem>
+                  <SelectItem value="processing">Processing</SelectItem>
+                  <SelectItem value="approved">Approved</SelectItem>
+                  <SelectItem value="completed">Completed</SelectItem>
+                  <SelectItem value="rejected">Rejected</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="date-filter" className="text-sm font-medium">Date Range</Label>
+              <Select value={dateFilter} onValueChange={setDateFilter}>
+                <SelectTrigger id="date-filter">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Time</SelectItem>
+                  <SelectItem value="today">Today</SelectItem>
+                  <SelectItem value="week">Last 7 Days</SelectItem>
+                  <SelectItem value="month">Last 30 Days</SelectItem>
+                  <SelectItem value="quarter">Last 90 Days</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="items-per-page" className="text-sm font-medium">Items Per Page</Label>
+              <Select value={itemsPerPage.toString()} onValueChange={(value) => setItemsPerPage(Number(value))}>
+                <SelectTrigger id="items-per-page">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="10">10 items</SelectItem>
+                  <SelectItem value="20">20 items</SelectItem>
+                  <SelectItem value="50">50 items</SelectItem>
+                  <SelectItem value="100">100 items</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              Showing <span className="font-semibold text-gray-900 dark:text-white">{filteredAndSortedRefunds.length}</span> of{' '}
+              <span className="font-semibold text-gray-900 dark:text-white">{refundRequests.length}</span> refund requests
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Refund Requests History - Desktop Table View */}
+      <div className="hidden xl:block bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-700 dark:to-gray-750 border-b border-gray-200 dark:border-gray-600 px-6 py-4">
+          <div className="flex items-center gap-3">
+            <div className="flex items-center justify-center w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+              <DollarSign className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            </div>
+            <div>
+              <h3 className="text-base font-semibold text-gray-900 dark:text-white">Refund History</h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Track your refund requests</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="overflow-x-auto">
+          {filteredAndSortedRefunds.length === 0 ? (
+            <div className="text-center py-12 text-muted-foreground">
               No refund requests found
             </div>
           ) : (
-            <div className="space-y-4">
-              {refundRequests.map((refund) => (
-                <div key={refund.id} className="flex items-center justify-between p-4 border rounded-lg">
-                  <div className="flex items-center gap-3 flex-1">
-                    {getStatusIcon(refund.status)}
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="font-medium">
-                          Refund Request
-                        </span>
-                        <Badge variant={getStatusBadgeVariant(refund.status)}>
-                          {refund.status}
-                        </Badge>
+            <table className="w-full">
+              <thead className="bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-700">
+                <tr>
+                  <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    Refund ID
+                  </th>
+                  <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    Amount
+                  </th>
+                  <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    Reason
+                  </th>
+                  <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    Method
+                  </th>
+                  <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    Status
+                  </th>
+                  <th className="text-left px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    Date Requested
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                {filteredAndSortedRefunds.map((refund) => (
+                  <tr
+                    key={refund.id}
+                    className="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors"
+                  >
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center gap-2">
+                        {getStatusIcon(refund.status)}
+                        <div>
+                          <div className="text-sm font-medium text-gray-900 dark:text-white">
+                            {refund.id.slice(-8).toUpperCase()}
+                          </div>
+                          {refund.description && (
+                            <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                              {refund.description.length > 30
+                                ? refund.description.substring(0, 30) + '...'
+                                : refund.description}
+                            </div>
+                          )}
+                        </div>
                       </div>
-                      <p className="text-sm text-muted-foreground">
-                        Reason: {refund.reason.replace(/_/g, ' ')}
-                      </p>
-                      {refund.description && (
-                        <p className="text-sm text-muted-foreground">
-                          {refund.description}
-                        </p>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm font-semibold text-green-600 dark:text-green-400">
+                        {formatCurrency(refund.amount_cents)}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="text-sm text-gray-900 dark:text-white">
+                        {refund.reason.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-700 dark:text-gray-300">
+                        {refund.refund_method.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <Badge variant={getStatusBadgeVariant(refund.status)}>
+                        {refund.status.toUpperCase()}
+                      </Badge>
+                      {refund.rejection_reason && (
+                        <div className="text-xs text-red-600 dark:text-red-400 mt-1">
+                          {refund.rejection_reason}
+                        </div>
                       )}
-                      <div className="flex items-center gap-4 mt-1">
-                        <p className="text-xs text-muted-foreground">
-                          Requested: {new Date(refund.created_at).toLocaleDateString()}
-                        </p>
-                        {refund.reviewed_at && (
-                          <p className="text-xs text-muted-foreground">
-                            Reviewed: {new Date(refund.reviewed_at).toLocaleDateString()}
-                          </p>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-700 dark:text-gray-300">
+                        {new Date(refund.created_at).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric'
+                        })}
+                      </div>
+                      {refund.reviewed_at && (
+                        <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                          Reviewed: {new Date(refund.reviewed_at).toLocaleDateString('en-US', {
+                            month: 'short',
+                            day: 'numeric'
+                          })}
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+      </div>
+
+      {/* Refund Requests History - Mobile Card View */}
+      <div className="xl:hidden space-y-4">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-700 dark:to-gray-750 border-b border-gray-200 dark:border-gray-600 px-6 py-4">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center justify-center w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                <DollarSign className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+              </div>
+              <div>
+                <h3 className="text-base font-semibold text-gray-900 dark:text-white">Refund History</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Track your refund requests</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-4">
+            {filteredAndSortedRefunds.length === 0 ? (
+              <div className="text-center py-12 text-muted-foreground">
+                No refund requests found
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {filteredAndSortedRefunds.map((refund) => (
+                  <Card key={refund.id} className="border-gray-200 dark:border-gray-700">
+                    <CardContent className="p-4">
+                      <div className="space-y-3">
+                        {/* Header with status and amount */}
+                        <div className="flex items-start justify-between">
+                          <div className="flex items-center gap-2">
+                            {getStatusIcon(refund.status)}
+                            <div>
+                              <div className="text-sm font-medium text-gray-900 dark:text-white">
+                                Refund #{refund.id.slice(-8).toUpperCase()}
+                              </div>
+                              <Badge variant={getStatusBadgeVariant(refund.status)} className="mt-1">
+                                {refund.status.toUpperCase()}
+                              </Badge>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <div className="text-lg font-bold text-green-600 dark:text-green-400">
+                              {formatCurrency(refund.amount_cents)}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Details */}
+                        <div className="space-y-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+                          <div className="flex justify-between text-sm">
+                            <span className="text-gray-500 dark:text-gray-400">Reason:</span>
+                            <span className="text-gray-900 dark:text-white font-medium">
+                              {refund.reason.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                            </span>
+                          </div>
+                          <div className="flex justify-between text-sm">
+                            <span className="text-gray-500 dark:text-gray-400">Method:</span>
+                            <span className="text-gray-900 dark:text-white">
+                              {refund.refund_method.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                            </span>
+                          </div>
+                          <div className="flex justify-between text-sm">
+                            <span className="text-gray-500 dark:text-gray-400">Requested:</span>
+                            <span className="text-gray-900 dark:text-white">
+                              {new Date(refund.created_at).toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'short',
+                                day: 'numeric'
+                              })}
+                            </span>
+                          </div>
+                          {refund.reviewed_at && (
+                            <div className="flex justify-between text-sm">
+                              <span className="text-gray-500 dark:text-gray-400">Reviewed:</span>
+                              <span className="text-gray-900 dark:text-white">
+                                {new Date(refund.reviewed_at).toLocaleDateString('en-US', {
+                                  year: 'numeric',
+                                  month: 'short',
+                                  day: 'numeric'
+                                })}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Description */}
+                        {refund.description && (
+                          <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                              {refund.description}
+                            </p>
+                          </div>
+                        )}
+
+                        {/* Rejection reason */}
+                        {refund.rejection_reason && (
+                          <div className="pt-2 border-t border-red-200 dark:border-red-900/30 bg-red-50 dark:bg-red-900/10 -mx-4 -mb-4 px-4 py-3">
+                            <p className="text-sm font-medium text-red-600 dark:text-red-400">
+                              Rejection Reason: {refund.rejection_reason}
+                            </p>
+                          </div>
                         )}
                       </div>
-                      {refund.rejection_reason && (
-                        <p className="text-sm text-red-600 mt-1">
-                          Rejection Reason: {refund.rejection_reason}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-lg font-bold text-green-600">
-                      {formatCurrency(refund.amount_cents)}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      Via {refund.refund_method.replace(/_/g, ' ')}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </CardContent>
-      </Card>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

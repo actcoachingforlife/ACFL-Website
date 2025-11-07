@@ -12,8 +12,14 @@ import {
   AlertCircle,
   CheckCircle,
   Clock,
-  RefreshCw
+  RefreshCw,
+  Filter,
+  Search,
+  FileText,
+  CalendarIcon
 } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import { Input } from '../ui/input';
 import { getApiUrl } from '@/lib/api';
 
 interface PayoutRequest {
@@ -53,6 +59,10 @@ export default function CoachPayoutRequest({ coachId }: CoachPayoutRequestProps)
   const [notes, setNotes] = useState('');
   const [customAmount, setCustomAmount] = useState('');
   const [useCustomAmount, setUseCustomAmount] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [itemsPerPage, setItemsPerPage] = useState(20);
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [dateFilter, setDateFilter] = useState('all');
 
   const fetchData = async () => {
     try {
@@ -199,6 +209,51 @@ export default function CoachPayoutRequest({ coachId }: CoachPayoutRequestProps)
     }
   };
 
+  // Apply filters to payout requests
+  const filteredAndSortedPayouts = [...payoutRequests]
+    .filter(payout => {
+      // Search filter
+      if (searchTerm) {
+        const searchLower = searchTerm.toLowerCase();
+        const matchesSearch =
+          payout.id.toLowerCase().includes(searchLower) ||
+          payout.payout_method.toLowerCase().includes(searchLower);
+        if (!matchesSearch) return false;
+      }
+
+      // Status filter
+      if (statusFilter !== 'all' && payout.status.toLowerCase() !== statusFilter.toLowerCase()) {
+        return false;
+      }
+
+      // Date range filter
+      if (dateFilter !== 'all') {
+        const payoutDate = new Date(payout.created_at);
+        const now = new Date();
+        const daysDiff = Math.floor((now.getTime() - payoutDate.getTime()) / (1000 * 60 * 60 * 24));
+
+        switch (dateFilter) {
+          case '7days':
+            if (daysDiff > 7) return false;
+            break;
+          case '30days':
+            if (daysDiff > 30) return false;
+            break;
+          case '90days':
+            if (daysDiff > 90) return false;
+            break;
+        }
+      }
+
+      return true;
+    })
+    .sort((a, b) => {
+      const dateA = new Date(a.created_at).getTime();
+      const dateB = new Date(b.created_at).getTime();
+      return dateB - dateA; // Most recent first
+    })
+    .slice(0, itemsPerPage);
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -342,65 +397,295 @@ export default function CoachPayoutRequest({ coachId }: CoachPayoutRequestProps)
         </CardContent>
       </Card>
 
+      {/* Filter Section */}
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-700 dark:to-gray-750 border-b border-gray-200 dark:border-gray-600 px-6 py-4">
+          <div className="flex items-center gap-3">
+            <div className="flex items-center justify-center w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+              <Filter className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            </div>
+            <div>
+              <h3 className="text-base font-semibold text-gray-900 dark:text-white">Filter Payouts</h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Search and filter payout records</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {/* Search Payouts */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                <Search className="h-4 w-4" />
+                Search Payouts
+              </label>
+              <div className="relative">
+                <Input
+                  type="text"
+                  placeholder="Search by ID or method..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-3 pr-3 py-2"
+                />
+              </div>
+            </div>
+
+            {/* Per Page */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                <FileText className="h-4 w-4" />
+                Per Page
+              </label>
+              <Select
+                value={itemsPerPage.toString()}
+                onValueChange={(value) => setItemsPerPage(parseInt(value))}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="10">10 items</SelectItem>
+                  <SelectItem value="20">20 items</SelectItem>
+                  <SelectItem value="50">50 items</SelectItem>
+                  <SelectItem value="100">100 items</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Status Filter */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                <FileText className="h-4 w-4" />
+                Status
+              </label>
+              <Select
+                value={statusFilter}
+                onValueChange={setStatusFilter}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Statuses</SelectItem>
+                  <SelectItem value="completed">Completed</SelectItem>
+                  <SelectItem value="pending">Pending</SelectItem>
+                  <SelectItem value="processing">Processing</SelectItem>
+                  <SelectItem value="failed">Failed</SelectItem>
+                  <SelectItem value="rejected">Rejected</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Date Range */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                <CalendarIcon className="h-4 w-4" />
+                Date Range
+              </label>
+              <Select
+                value={dateFilter}
+                onValueChange={setDateFilter}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Time</SelectItem>
+                  <SelectItem value="7days">Last 7 Days</SelectItem>
+                  <SelectItem value="30days">Last 30 Days</SelectItem>
+                  <SelectItem value="90days">Last 90 Days</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          {/* Showing results */}
+          <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              Showing <span className="font-semibold text-gray-900 dark:text-white">{filteredAndSortedPayouts.length}</span> of{' '}
+              <span className="font-semibold text-gray-900 dark:text-white">{payoutRequests.length}</span> payout requests
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* Recent Payout Requests */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Payout History</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {payoutRequests.length === 0 ? (
-            <div className="text-center py-8 text-muted-foreground">
-              No payout requests found
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Payout History</h2>
+        </div>
+
+        {/* Desktop Table View */}
+        <div className="hidden xl:block overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+            <thead className="bg-gray-50 dark:bg-gray-900/50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Payout ID
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Method
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Amount
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Net Amount
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Status
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  Date
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+              {filteredAndSortedPayouts.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="px-6 py-12 text-center">
+                    <DollarSign className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No payout requests found</h3>
+                    <p className="text-gray-500 dark:text-gray-400">
+                      Your payout history will appear here
+                    </p>
+                  </td>
+                </tr>
+              ) : (
+                filteredAndSortedPayouts.map((payout) => (
+                  <tr key={payout.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                    <td className="px-6 py-4">
+                      <div className="text-sm text-gray-900 dark:text-white font-medium">
+                        {payout.id.slice(0, 8)}...
+                      </div>
+                      {payout.metadata?.payment_count && (
+                        <div className="text-sm text-gray-500 dark:text-gray-400">
+                          {payout.metadata.payment_count} payment{payout.metadata.payment_count !== 1 ? 's' : ''}
+                        </div>
+                      )}
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="text-sm text-gray-900 dark:text-white">
+                        Bank Transfer
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm font-medium text-gray-900 dark:text-white">
+                        {formatCurrency(payout.amount_cents)}
+                      </div>
+                      {payout.fees_cents > 0 && (
+                        <div className="text-sm text-gray-500 dark:text-gray-400">
+                          Fee: {formatCurrency(payout.fees_cents)}
+                        </div>
+                      )}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm font-medium text-green-600 dark:text-green-400">
+                        {formatCurrency(payout.net_amount_cents)}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                        payout.status.toLowerCase() === 'completed' ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300' :
+                        payout.status.toLowerCase() === 'pending' || payout.status.toLowerCase() === 'processing' ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300' :
+                        payout.status.toLowerCase() === 'failed' || payout.status.toLowerCase() === 'rejected' ? 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300' :
+                        'bg-gray-100 dark:bg-gray-900/30 text-gray-800 dark:text-gray-300'
+                      }`}>
+                        {payout.status}
+                      </span>
+                      {payout.status === 'rejected' && payout.metadata?.rejection_reason && (
+                        <div className="text-xs text-red-600 dark:text-red-400 mt-1">
+                          {payout.metadata.rejection_reason}
+                        </div>
+                      )}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                      {new Date(payout.created_at).toLocaleDateString()}
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Mobile Card View */}
+        <div className="xl:hidden divide-y divide-gray-200 dark:divide-gray-700">
+          {filteredAndSortedPayouts.length === 0 ? (
+            <div className="p-8 text-center">
+              <DollarSign className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No payout requests found</h3>
+              <p className="text-gray-500 dark:text-gray-400">
+                Your payout history will appear here
+              </p>
             </div>
           ) : (
-            <div className="space-y-4">
-              {payoutRequests.map((payout) => (
-                <div key={payout.id} className="flex items-center justify-between p-4 border rounded-lg">
-                  <div className="flex items-center gap-3 flex-1">
-                    {getStatusIcon(payout.status)}
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="font-medium">
-                          Bank Transfer
-                        </span>
-                        <Badge variant={getStatusBadgeVariant(payout.status)}>
-                          {payout.status}
-                        </Badge>
+            filteredAndSortedPayouts.map((payout) => (
+              <div key={`mobile-${payout.id}`} className="p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                <div className="space-y-3">
+                  {/* Header with Status and Amount */}
+                  <div className="flex items-center justify-between">
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                      payout.status.toLowerCase() === 'completed' ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300' :
+                      payout.status.toLowerCase() === 'pending' || payout.status.toLowerCase() === 'processing' ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300' :
+                      payout.status.toLowerCase() === 'failed' || payout.status.toLowerCase() === 'rejected' ? 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300' :
+                      'bg-gray-100 dark:bg-gray-900/30 text-gray-800 dark:text-gray-300'
+                    }`}>
+                      {payout.status}
+                    </span>
+                    <div className="text-right">
+                      <div className="text-lg font-semibold text-gray-900 dark:text-white">
+                        {formatCurrency(payout.amount_cents)}
                       </div>
-                      <p className="text-sm text-muted-foreground">
-                        Requested: {new Date(payout.created_at).toLocaleDateString()}
-                      </p>
-                      {payout.metadata?.payment_count && (
-                        <p className="text-sm text-muted-foreground">
-                          {payout.metadata.payment_count} payment{payout.metadata.payment_count !== 1 ? 's' : ''}
-                        </p>
-                      )}
-                      {payout.status === 'rejected' && payout.metadata?.rejection_reason && (
-                        <p className="text-sm text-red-600 mt-1">
-                          Reason: {payout.metadata.rejection_reason}
-                        </p>
-                      )}
+                      <div className="text-xs text-green-600 dark:text-green-400">
+                        Net: {formatCurrency(payout.net_amount_cents)}
+                      </div>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <p className="text-lg font-bold">
-                      {formatCurrency(payout.amount_cents)}
-                    </p>
-                    {payout.fees_cents > 0 && (
-                      <p className="text-sm text-muted-foreground">
-                        Fee: {formatCurrency(payout.fees_cents)}
-                      </p>
+
+                  {/* Payout ID */}
+                  <div>
+                    <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Payout ID</div>
+                    <div className="text-sm font-mono text-gray-900 dark:text-white">
+                      {payout.id.slice(0, 8)}...
+                    </div>
+                  </div>
+
+                  {/* Method and Details */}
+                  <div>
+                    <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Method</div>
+                    <div className="text-sm text-gray-900 dark:text-white">Bank Transfer</div>
+                    {payout.metadata?.payment_count && (
+                      <div className="text-sm text-gray-500 dark:text-gray-400">
+                        {payout.metadata.payment_count} payment{payout.metadata.payment_count !== 1 ? 's' : ''}
+                      </div>
                     )}
-                    <p className="text-sm font-medium text-green-600">
-                      Net: {formatCurrency(payout.net_amount_cents)}
-                    </p>
+                  </div>
+
+                  {/* Rejection Reason */}
+                  {payout.status === 'rejected' && payout.metadata?.rejection_reason && (
+                    <div className="text-sm text-red-600 dark:text-red-400 p-2 bg-red-50 dark:bg-red-900/20 rounded">
+                      Reason: {payout.metadata.rejection_reason}
+                    </div>
+                  )}
+
+                  {/* Footer with Date */}
+                  <div className="flex items-center justify-between pt-2 border-t border-gray-100 dark:border-gray-700">
+                    <div className="text-xs text-gray-500 dark:text-gray-400">
+                      {new Date(payout.created_at).toLocaleDateString()}
+                    </div>
+                    {payout.fees_cents > 0 && (
+                      <div className="text-xs text-gray-500 dark:text-gray-400">
+                        Fee: {formatCurrency(payout.fees_cents)}
+                      </div>
+                    )}
                   </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }
