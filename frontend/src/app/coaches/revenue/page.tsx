@@ -5,6 +5,8 @@ import CoachPageWrapper from '@/components/CoachPageWrapper'
 import { getApiUrl } from '@/lib/api'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import {
   DollarSign,
   TrendingUp,
@@ -15,7 +17,11 @@ import {
   RefreshCw,
   Star,
   Target,
-  BarChart3
+  BarChart3,
+  Filter,
+  Search,
+  FileText,
+  Calendar as CalendarIcon
 } from 'lucide-react'
 import axios from 'axios'
 
@@ -24,6 +30,12 @@ export default function CoachRevenuePage() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
   const [selectedPeriod, setSelectedPeriod] = useState('month')
+
+  // Filter states
+  const [searchTerm, setSearchTerm] = useState('')
+  const [itemsPerPage, setItemsPerPage] = useState(20)
+  const [statusFilter, setStatusFilter] = useState('all')
+  const [dateFilter, setDateFilter] = useState('all')
 
   const API_URL = getApiUrl()
 
@@ -63,6 +75,44 @@ export default function CoachRevenuePage() {
 
   const stats = revenueData?.stats || {}
   const trends = revenueData?.trends || {}
+
+  // Apply filters to revenue activity
+  const filteredActivities = (revenueData?.recentActivity || [])
+    .filter((activity: any) => {
+      // Search filter
+      if (searchTerm) {
+        const searchLower = searchTerm.toLowerCase();
+        const matchesSearch = activity.clientName?.toLowerCase().includes(searchLower);
+        if (!matchesSearch) return false;
+      }
+
+      // Status filter
+      if (statusFilter !== 'all' && activity.status.toLowerCase() !== statusFilter.toLowerCase()) {
+        return false;
+      }
+
+      // Date range filter
+      if (dateFilter !== 'all') {
+        const activityDate = new Date(activity.date);
+        const now = new Date();
+        const daysDiff = Math.floor((now.getTime() - activityDate.getTime()) / (1000 * 60 * 60 * 24));
+
+        switch (dateFilter) {
+          case '7days':
+            if (daysDiff > 7) return false;
+            break;
+          case '30days':
+            if (daysDiff > 30) return false;
+            break;
+          case '90days':
+            if (daysDiff > 90) return false;
+            break;
+        }
+      }
+
+      return true;
+    })
+    .slice(0, itemsPerPage);
 
   return (
     <CoachPageWrapper title="Revenue & Performance" description="Track your earnings and performance metrics">
@@ -244,82 +294,299 @@ export default function CoachRevenuePage() {
         </Card>
       </div>
 
-      {/* Recent Activity */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <Clock className="w-5 h-5" />
-            <span>Recent Revenue Activity</span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          {isLoading ? (
-            <div className="text-center py-8">
-              <RefreshCw className="w-8 h-8 animate-spin mx-auto mb-4 text-gray-400" />
-              <p className="text-gray-500">Loading recent activity...</p>
+      {/* Filter Section */}
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden mb-6">
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-700 dark:to-gray-750 border-b border-gray-200 dark:border-gray-600 px-6 py-4">
+          <div className="flex items-center gap-3">
+            <div className="flex items-center justify-center w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+              <Filter className="w-5 h-5 text-blue-600 dark:text-blue-400" />
             </div>
-          ) : (
-            <div className="space-y-4">
-              {(revenueData?.recentActivity || []).length === 0 ? (
-                <div className="text-center py-8 text-gray-500">
-                  <BarChart3 className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-                  <p>No recent activity</p>
-                  <p className="text-sm">Complete sessions to see revenue activity</p>
+            <div>
+              <h3 className="text-base font-semibold text-gray-900 dark:text-white">Filter Revenue Activity</h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Search and filter revenue records</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {/* Search Activity */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                <Search className="h-4 w-4" />
+                Search Activity
+              </label>
+              <div className="relative">
+                <Input
+                  type="text"
+                  placeholder="Search by client name..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-3 pr-3 py-2"
+                />
+              </div>
+            </div>
+
+            {/* Per Page */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                <FileText className="h-4 w-4" />
+                Per Page
+              </label>
+              <Select
+                value={itemsPerPage.toString()}
+                onValueChange={(value) => setItemsPerPage(parseInt(value))}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="10">10 items</SelectItem>
+                  <SelectItem value="20">20 items</SelectItem>
+                  <SelectItem value="50">50 items</SelectItem>
+                  <SelectItem value="100">100 items</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Status Filter */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                <FileText className="h-4 w-4" />
+                Status
+              </label>
+              <Select
+                value={statusFilter}
+                onValueChange={setStatusFilter}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Statuses</SelectItem>
+                  <SelectItem value="completed">Completed</SelectItem>
+                  <SelectItem value="refunded">Refunded</SelectItem>
+                  <SelectItem value="partially_refunded">Partially Refunded</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Date Range */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                <CalendarIcon className="h-4 w-4" />
+                Date Range
+              </label>
+              <Select
+                value={dateFilter}
+                onValueChange={setDateFilter}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Time</SelectItem>
+                  <SelectItem value="7days">Last 7 Days</SelectItem>
+                  <SelectItem value="30days">Last 30 Days</SelectItem>
+                  <SelectItem value="90days">Last 90 Days</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          {/* Showing results */}
+          <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              Showing <span className="font-semibold text-gray-900 dark:text-white">{filteredActivities.length}</span> of{' '}
+              <span className="font-semibold text-gray-900 dark:text-white">{revenueData?.recentActivity?.length || 0}</span> activities
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Recent Revenue Activity Table */}
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Recent Revenue Activity</h2>
+        </div>
+
+        {isLoading ? (
+          <div className="text-center py-8">
+            <RefreshCw className="w-8 h-8 animate-spin mx-auto mb-4 text-gray-400 dark:text-white" />
+            <p className="text-gray-500 dark:text-gray-400">Loading recent activity...</p>
+          </div>
+        ) : (
+          <>
+            {/* Desktop Table View */}
+            <div className="hidden xl:block overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                <thead className="bg-gray-50 dark:bg-gray-900/50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                      Client
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                      Date
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                      Duration
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                      Amount
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                      Status
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                  {filteredActivities.length === 0 ? (
+                    <tr>
+                      <td colSpan={5} className="px-6 py-12 text-center">
+                        <BarChart3 className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                        <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No revenue activity found</h3>
+                        <p className="text-gray-500 dark:text-gray-400">
+                          Complete sessions to see revenue activity
+                        </p>
+                      </td>
+                    </tr>
+                  ) : (
+                    filteredActivities.map((activity: any, index: number) => {
+                      const isRefunded = activity.status === 'refunded' || activity.status === 'partially_refunded';
+                      const refundAmount = activity.refundAmount || 0;
+
+                      return (
+                        <tr key={index} className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                          <td className="px-6 py-4">
+                            <div className="text-sm font-medium text-gray-900 dark:text-white">
+                              {activity.clientName}
+                            </div>
+                            <div className="text-sm text-gray-500 dark:text-gray-400">
+                              Session
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                            {new Date(activity.date).toLocaleDateString()}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-sm text-gray-900 dark:text-white">
+                              {activity.duration} min
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {isRefunded ? (
+                              <div>
+                                <div className="text-sm font-medium text-red-600 dark:text-red-400 line-through">
+                                  +${activity.amount}
+                                </div>
+                                {refundAmount > 0 && (
+                                  <div className="text-xs text-red-600 dark:text-red-400">
+                                    -${refundAmount} refunded
+                                  </div>
+                                )}
+                              </div>
+                            ) : (
+                              <div className="text-sm font-medium text-green-600 dark:text-green-400">
+                                +${activity.amount}
+                              </div>
+                            )}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                              isRefunded
+                                ? 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300'
+                                : 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300'
+                            }`}>
+                              {activity.status === 'partially_refunded' ? 'Partially Refunded' : isRefunded ? 'Refunded' : 'Completed'}
+                            </span>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Mobile Card View */}
+            <div className="xl:hidden divide-y divide-gray-200 dark:divide-gray-700">
+              {filteredActivities.length === 0 ? (
+                <div className="p-8 text-center">
+                  <BarChart3 className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No revenue activity found</h3>
+                  <p className="text-gray-500 dark:text-gray-400">
+                    Complete sessions to see revenue activity
+                  </p>
                 </div>
               ) : (
-                (revenueData?.recentActivity || []).map((activity: any, index: number) => {
+                filteredActivities.map((activity: any, index: number) => {
                   const isRefunded = activity.status === 'refunded' || activity.status === 'partially_refunded';
                   const refundAmount = activity.refundAmount || 0;
 
                   return (
-                    <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                      <div className="flex items-center space-x-3">
-                        <div className={`p-2 rounded-full ${
-                          isRefunded
-                            ? 'bg-red-100 dark:bg-red-900/30'
-                            : 'bg-green-100 dark:bg-green-900/30'
-                        }`}>
-                          <DollarSign className={`w-4 h-4 ${
+                    <div key={`mobile-${index}`} className="p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                      <div className="space-y-3">
+                        {/* Header with Status and Amount */}
+                        <div className="flex items-center justify-between">
+                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                             isRefunded
-                              ? 'text-red-600 dark:text-red-400'
-                              : 'text-green-600 dark:text-green-400'
-                          }`} />
+                              ? 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300'
+                              : 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300'
+                          }`}>
+                            {activity.status === 'partially_refunded' ? 'Partially Refunded' : isRefunded ? 'Refunded' : 'Completed'}
+                          </span>
+                          <div className="text-right">
+                            {isRefunded ? (
+                              <>
+                                <div className="text-lg font-semibold text-red-600 dark:text-red-400 line-through">
+                                  +${activity.amount}
+                                </div>
+                                {refundAmount > 0 && (
+                                  <div className="text-xs text-red-600 dark:text-red-400">
+                                    -${refundAmount} refunded
+                                  </div>
+                                )}
+                              </>
+                            ) : (
+                              <div className="text-lg font-semibold text-green-600 dark:text-green-400">
+                                +${activity.amount}
+                              </div>
+                            )}
+                          </div>
                         </div>
+
+                        {/* Client Name */}
                         <div>
-                          <p className="font-medium text-sm">
-                            Session with {activity.clientName}
-                            {isRefunded && (
-                              <span className="ml-2 text-xs px-2 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded">
-                                {activity.status === 'partially_refunded' ? 'Partially Refunded' : 'Refunded'}
-                              </span>
-                            )}
-                          </p>
-                          <p className="text-xs text-gray-500">
-                            {new Date(activity.date).toLocaleDateString()}
-                          </p>
+                          <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Client</div>
+                          <div className="text-sm font-medium text-gray-900 dark:text-white">
+                            {activity.clientName}
+                          </div>
                         </div>
-                      </div>
-                      <div className="text-right">
-                        {isRefunded ? (
-                          <>
-                            <p className="font-bold text-red-600 line-through">+${activity.amount}</p>
-                            {refundAmount > 0 && (
-                              <p className="text-xs text-red-600">-${refundAmount} refunded</p>
-                            )}
-                          </>
-                        ) : (
-                          <p className="font-bold text-green-600">+${activity.amount}</p>
-                        )}
-                        <p className="text-xs text-gray-500">{activity.duration}min</p>
+
+                        {/* Session Details */}
+                        <div className="grid grid-cols-2 gap-3">
+                          <div>
+                            <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Duration</div>
+                            <div className="text-sm text-gray-900 dark:text-white">
+                              {activity.duration} min
+                            </div>
+                          </div>
+                          <div>
+                            <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Date</div>
+                            <div className="text-sm text-gray-900 dark:text-white">
+                              {new Date(activity.date).toLocaleDateString()}
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   );
                 })
               )}
             </div>
-          )}
-        </CardContent>
-      </Card>
+          </>
+        )}
+      </div>
     </CoachPageWrapper>
   )
 }
