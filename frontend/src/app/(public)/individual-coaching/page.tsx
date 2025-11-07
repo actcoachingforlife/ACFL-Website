@@ -31,41 +31,17 @@ export default function IndividualCoachingPage() {
         <NavbarLandingPage />
       </nav>
 
-      {/* Hero Section - Personal growth starts here */}
-      <section className="relative py-32 md:py-40 lg:py-48 bg-[url('/images/indiv-hero.png')] bg-cover bg-center bg-no-repeat">
-        <div className="absolute inset-0 bg-black/40"></div>
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center"
-          >
-            <p className="text-sm text-white/80 uppercase tracking-wider mb-6">Transform</p>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tight">
-              Personal growth starts here
-            </h1>
-            <p className="text-lg md:text-xl text-white/90 mb-10 max-w-3xl mx-auto leading-relaxed">
-              Personalized ACT coaching designed to help you break through barriers and live with purpose and clarity
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="/assessment">
-                <Button className="bg-teal-600 hover:bg-teal-700 text-white rounded-lg px-10 py-4 text-lg font-medium transition-all shadow-md hover:shadow-lg">
-                  Start assessment
-                </Button>
-              </a>
-              <a href="/pricing">
-                <Button className="border-2 border-white bg-transparent hover:bg-white/10 text-white rounded-lg px-10 py-4 text-lg font-medium transition-all shadow-sm">
-                  View plans
-                </Button>
-              </a>
-            </div>
-          </motion.div>
-        </div>
+      {/* Hero Section - Image Only */}
+      <section className="relative h-[400px]">
+        <img
+          src="/images/indiv-hero.png"
+          alt="Individual Coaching"
+          className="w-full h-full object-cover"
+        />
       </section>
 
       {/* Coaching that fits your life */}
-      <section className="py-20 bg-white dark:bg-gray-900">
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -74,141 +50,123 @@ export default function IndividualCoachingPage() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <p className="text-sm text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">Flexible</p>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6">
+            <p className="text-sm text-gray-500 uppercase tracking-wider mb-4">FLEXIBLE</p>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
               Coaching that fits your life
             </h2>
-            <p className="text-gray-600 dark:text-gray-400 text-lg md:text-xl max-w-3xl mx-auto mb-10">
+            <p className="text-gray-600 text-lg max-w-3xl mx-auto mb-10">
               We understand that every person's journey is unique. Our coaching adapts to your schedule and preferred communication style.
             </p>
 
             {/* Tabs */}
-            <div className="flex flex-wrap justify-center gap-6 mb-12">
+            <div className="flex justify-center gap-12 mb-16">
               <button
                 onClick={() => setActiveTab('video')}
-                className={`text-sm font-medium transition-colors ${activeTab === 'video' ? 'text-gray-900 dark:text-white border-b-2 border-gray-900 dark:border-white pb-1' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
+                className={`text-base font-medium transition-colors pb-2 ${activeTab === 'video' ? 'text-gray-900 border-b-2 border-gray-900' : 'text-gray-500 hover:text-gray-900'}`}
               >
                 Video sessions
               </button>
               <button
                 onClick={() => setActiveTab('phone')}
-                className={`text-sm font-medium transition-colors ${activeTab === 'phone' ? 'text-gray-900 dark:text-white border-b-2 border-gray-900 dark:border-white pb-1' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
+                className={`text-base font-medium transition-colors pb-2 ${activeTab === 'phone' ? 'text-gray-900 border-b-2 border-gray-900' : 'text-gray-500 hover:text-gray-900'}`}
               >
                 Phone calls
               </button>
               <button
                 onClick={() => setActiveTab('text')}
-                className={`text-sm font-medium transition-colors ${activeTab === 'text' ? 'text-gray-900 dark:text-white border-b-2 border-gray-900 dark:border-white pb-1' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
+                className={`text-base font-medium transition-colors pb-2 ${activeTab === 'text' ? 'text-gray-900 border-b-2 border-gray-900' : 'text-gray-500 hover:text-gray-900'}`}
               >
                 Text support
               </button>
             </div>
           </motion.div>
 
-          {/* Content Box */}
+          {/* Content Grid */}
           <motion.div
             key={activeTab}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="border-2 border-gray-900 dark:border-white rounded-none overflow-hidden"
+            className="grid md:grid-cols-2 gap-16 items-center max-w-6xl mx-auto"
           >
-            <div className="grid md:grid-cols-2">
-              {/* Left Content */}
-              <div className="p-8 md:p-12 lg:p-16 bg-white dark:bg-gray-800 flex items-center min-h-[300px] md:min-h-[400px]">
-                {activeTab === 'video' && (
-                  <div className="max-w-lg space-y-6">
-                    <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-widest font-medium">Video</p>
-                    <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white leading-tight">
-                      Face-to-face connection
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm md:text-base leading-relaxed">
-                      Engage with your coach through high-quality video platforms that feel personal and effective.
-                    </p>
-                    <div className="flex flex-wrap gap-4 pt-2">
-                      <Button className="bg-teal-600 hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600 text-white rounded-lg px-6 py-3 font-medium transition-all shadow-md hover:shadow-lg">
-                        Explore video
-                      </Button>
-                      <button className="border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg px-6 py-3 font-medium transition-all shadow-sm flex items-center gap-2">
-                        Learn more
-                        <ChevronRight className="w-4 h-4" />
-                      </button>
-                    </div>
+            {/* Left Content */}
+            <div className="order-2 md:order-1">
+              {activeTab === 'video' && (
+                <div className="space-y-6">
+                  <p className="text-sm text-gray-500 uppercase tracking-wider">VIDEO</p>
+                  <h3 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
+                    Face-to-face connection
+                  </h3>
+                  <p className="text-gray-600 text-lg leading-relaxed">
+                    Engage with your coach through high-quality video platforms that feel personal and effective.
+                  </p>
+                  <div className="flex gap-4 pt-4">
+                    <button className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 rounded-lg font-medium transition-colors">
+                      Explore video
+                    </button>
+                    <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 px-8 py-3 rounded-lg font-medium flex items-center gap-2 transition-colors">
+                      Learn more
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
                   </div>
-                )}
-                {activeTab === 'phone' && (
-                  <div className="max-w-lg space-y-6">
-                    <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-widest font-medium">Phone</p>
-                    <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white leading-tight">
-                      Convenient audio sessions
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm md:text-base leading-relaxed">
-                      Connect with your coach via phone for flexible, on-the-go coaching that fits your busy lifestyle.
-                    </p>
-                    <div className="flex flex-wrap gap-4 pt-2">
-                      <Button className="bg-teal-600 hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600 text-white rounded-lg px-6 py-3 font-medium transition-all shadow-md hover:shadow-lg">
-                        Explore phone
-                      </Button>
-                      <button className="border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg px-6 py-3 font-medium transition-all shadow-sm flex items-center gap-2">
-                        Learn more
-                        <ChevronRight className="w-4 h-4" />
-                      </button>
-                    </div>
+                </div>
+              )}
+              {activeTab === 'phone' && (
+                <div className="space-y-6">
+                  <p className="text-sm text-gray-500 uppercase tracking-wider">PHONE</p>
+                  <h3 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
+                    Convenient audio sessions
+                  </h3>
+                  <p className="text-gray-600 text-lg leading-relaxed">
+                    Connect with your coach via phone for flexible, on-the-go coaching that fits your busy lifestyle.
+                  </p>
+                  <div className="flex gap-4 pt-4">
+                    <button className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 rounded-lg font-medium transition-colors">
+                      Explore phone
+                    </button>
+                    <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 px-8 py-3 rounded-lg font-medium flex items-center gap-2 transition-colors">
+                      Learn more
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
                   </div>
-                )}
-                {activeTab === 'text' && (
-                  <div className="max-w-lg space-y-6">
-                    <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-widest font-medium">Text</p>
-                    <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white leading-tight">
-                      Ongoing messaging support
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm md:text-base leading-relaxed">
-                      Stay connected with your coach between sessions through secure messaging for continuous guidance.
-                    </p>
-                    <div className="flex flex-wrap gap-4 pt-2">
-                      <Button className="bg-teal-600 hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600 text-white rounded-lg px-6 py-3 font-medium transition-all shadow-md hover:shadow-lg">
-                        Explore text
-                      </Button>
-                      <button className="border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg px-6 py-3 font-medium transition-all shadow-sm flex items-center gap-2">
-                        Learn more
-                        <ChevronRight className="w-4 h-4" />
-                      </button>
-                    </div>
+                </div>
+              )}
+              {activeTab === 'text' && (
+                <div className="space-y-6">
+                  <p className="text-sm text-gray-500 uppercase tracking-wider">TEXT</p>
+                  <h3 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
+                    Ongoing messaging support
+                  </h3>
+                  <p className="text-gray-600 text-lg leading-relaxed">
+                    Stay connected with your coach between sessions through secure messaging for continuous guidance.
+                  </p>
+                  <div className="flex gap-4 pt-4">
+                    <button className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 rounded-lg font-medium transition-colors">
+                      Explore text
+                    </button>
+                    <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 px-8 py-3 rounded-lg font-medium flex items-center gap-2 transition-colors">
+                      Learn more
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
                   </div>
-                )}
-              </div>
+                </div>
+              )}
+            </div>
 
-              {/* Right Image */}
-              <div className="relative min-h-[300px] md:min-h-[400px] overflow-hidden">
-                {activeTab === 'video' && (
-                  <img
-                    src="/images/indiv-f2f.png"
-                    alt="Face-to-face connection"
-                    className="w-full h-full object-cover"
-                  />
-                )}
-                {activeTab === 'phone' && (
-                  <img
-                    src="/images/indiv-audio.png"
-                    alt="Convenient audio sessions"
-                    className="w-full h-full object-cover"
-                  />
-                )}
-                {activeTab === 'text' && (
-                  <img
-                    src="/images/indiv-chat.png"
-                    alt="Ongoing messaging support"
-                    className="w-full h-full object-cover"
-                  />
-                )}
-              </div>
+            {/* Right Image */}
+            <div className="order-1 md:order-2">
+              <img
+                src={activeTab === 'video' ? '/images/indiv-f2f.png' : activeTab === 'phone' ? '/images/indiv-audio.png' : '/images/indiv-chat.png'}
+                alt="Coaching session"
+                className="w-full h-[500px] object-cover rounded-lg"
+              />
             </div>
           </motion.div>
         </div>
       </section>
 
       {/* Coaching plans that adapt */}
-      <section className="py-20 bg-gray-50 dark:bg-gray-800">
+      <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -217,11 +175,11 @@ export default function IndividualCoachingPage() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <p className="text-sm text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">Flexible</p>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6">
+            <p className="text-sm text-gray-500 uppercase tracking-wider mb-4">FLEXIBLE</p>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
               Coaching plans that adapt
             </h2>
-            <p className="text-gray-600 dark:text-gray-400 text-lg md:text-xl max-w-3xl mx-auto mb-10">
+            <p className="text-gray-600 text-lg max-w-3xl mx-auto mb-10">
               Choose the rhythm that matches your personal growth journey
             </p>
           </motion.div>
@@ -233,7 +191,7 @@ export default function IndividualCoachingPage() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
-              className="border-2 border-gray-900 dark:border-white rounded-none overflow-hidden bg-white dark:bg-gray-800"
+              className="bg-white rounded-lg overflow-hidden shadow-sm"
             >
               <div className="grid md:grid-rows-[1fr_auto]">
                 {/* Top Image */}
@@ -246,23 +204,21 @@ export default function IndividualCoachingPage() {
                 </div>
 
                 {/* Bottom Content */}
-                <div className="p-8 bg-white dark:bg-gray-800">
-                  <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-widest font-medium mb-4">Monthly</p>
-                  <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">
+                <div className="p-8">
+                  <p className="text-sm text-gray-500 uppercase tracking-wider mb-4">MONTHLY</p>
+                  <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 leading-tight">
                     Deep dive into personal transformation
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-6 leading-relaxed">
+                  <p className="text-gray-600 text-sm mb-6 leading-relaxed">
                     Four intensive sessions to unlock complex challenges and create meaningful change.
                   </p>
-                  <div className="flex flex-wrap gap-4">
-                    <a href="/pricing">
-                      <Button className="bg-teal-600 hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600 text-white rounded-lg px-6 py-3 font-medium transition-all shadow-md hover:shadow-lg">
-                        Select
-                      </Button>
-                    </a>
-                    <button className="border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg px-6 py-3 font-medium transition-all shadow-sm flex items-center gap-2">
+                  <div className="flex gap-4">
+                    <button className="bg-teal-600 hover:bg-teal-700 text-white rounded-lg px-8 py-3 font-medium transition-colors">
+                      Select
+                    </button>
+                    <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg px-8 py-3 font-medium flex items-center gap-2 transition-colors">
                       Details
-                      <ChevronRight className="w-4 h-4" />
+                      <ArrowRight className="w-4 h-4" />
                     </button>
                   </div>
                 </div>
@@ -275,7 +231,7 @@ export default function IndividualCoachingPage() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
-              className="border-2 border-gray-900 dark:border-white rounded-none overflow-hidden bg-white dark:bg-gray-800"
+              className="bg-white rounded-lg overflow-hidden shadow-sm"
             >
               <div className="grid md:grid-rows-[1fr_auto]">
                 {/* Top Image */}
@@ -288,23 +244,21 @@ export default function IndividualCoachingPage() {
                 </div>
 
                 {/* Bottom Content */}
-                <div className="p-8 bg-white dark:bg-gray-800">
-                  <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-widest font-medium mb-4">Weekly</p>
-                  <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">
+                <div className="p-8">
+                  <p className="text-sm text-gray-500 uppercase tracking-wider mb-4">WEEKLY</p>
+                  <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 leading-tight">
                     Consistent support for ongoing growth
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-6 leading-relaxed">
+                  <p className="text-gray-600 text-sm mb-6 leading-relaxed">
                     Regular check-ins for sustained momentum and address emerging challenges in real time.
                   </p>
-                  <div className="flex flex-wrap gap-4">
-                    <a href="/pricing">
-                      <Button className="bg-teal-600 hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600 text-white rounded-lg px-6 py-3 font-medium transition-all shadow-md hover:shadow-lg">
-                        Choose
-                      </Button>
-                    </a>
-                    <button className="border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg px-6 py-3 font-medium transition-all shadow-sm flex items-center gap-2">
+                  <div className="flex gap-4">
+                    <button className="bg-teal-600 hover:bg-teal-700 text-white rounded-lg px-8 py-3 font-medium transition-colors">
+                      Choose
+                    </button>
+                    <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg px-8 py-3 font-medium flex items-center gap-2 transition-colors">
                       Learn
-                      <ChevronRight className="w-4 h-4" />
+                      <ArrowRight className="w-4 h-4" />
                     </button>
                   </div>
                 </div>
@@ -394,21 +348,19 @@ export default function IndividualCoachingPage() {
 
           {/* CTA Buttons */}
           <div className="flex justify-center gap-4">
-            <a href="/assessment">
-              <Button className="bg-teal-600 hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600 text-white rounded-lg px-6 py-3 font-medium transition-all shadow-md hover:shadow-lg">
-                Start
-              </Button>
-            </a>
-            <Button className="border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg px-6 py-3 font-medium transition-all shadow-sm flex items-center gap-2">
+            <button className="bg-teal-600 hover:bg-teal-700 text-white rounded-lg px-8 py-3 font-medium transition-colors">
+              Start
+            </button>
+            <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg px-8 py-3 font-medium flex items-center gap-2 transition-colors">
               Learn
-              <ChevronRight className="w-4 h-4" />
-            </Button>
+              <ArrowRight className="w-4 h-4" />
+            </button>
           </div>
         </div>
       </section>
 
       {/* Science-backed personal growth */}
-      <section className="py-20 bg-gray-50 dark:bg-gray-800">
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -417,11 +369,11 @@ export default function IndividualCoachingPage() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <p className="text-sm text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">Proven</p>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6">
+            <p className="text-sm text-gray-500 uppercase tracking-wider mb-4">PROVEN</p>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
               Science-backed personal growth
             </h2>
-            <p className="text-gray-600 dark:text-gray-400 text-lg md:text-xl max-w-3xl mx-auto mb-10">
+            <p className="text-gray-600 text-lg max-w-3xl mx-auto mb-10">
               Evidence-based approach rooted in psychological research
             </p>
           </motion.div>
@@ -433,7 +385,7 @@ export default function IndividualCoachingPage() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
-              className="border-2 border-gray-900 dark:border-white rounded-none overflow-hidden bg-white dark:bg-gray-800"
+              className="bg-white rounded-lg overflow-hidden shadow-sm"
             >
               <div className="grid md:grid-rows-[auto_1fr]">
                 {/* Top Image */}
@@ -446,21 +398,21 @@ export default function IndividualCoachingPage() {
                 </div>
 
                 {/* Bottom Content */}
-                <div className="p-8 bg-white dark:bg-gray-800">
-                  <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-widest font-medium mb-4">Research</p>
-                  <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">
+                <div className="p-8">
+                  <p className="text-sm text-gray-500 uppercase tracking-wider mb-4">RESEARCH</p>
+                  <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 leading-tight">
                     Acceptance and commitment therapy fundamentals
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-6 leading-relaxed">
+                  <p className="text-gray-600 text-sm mb-6 leading-relaxed">
                     Psychological techniques validated by decades of clinical research and practice
                   </p>
-                  <div className="flex flex-wrap gap-4">
-                    <Button className="bg-teal-600 hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600 text-white rounded-lg px-6 py-3 font-medium transition-all shadow-md hover:shadow-lg">
+                  <div className="flex gap-4">
+                    <button className="bg-teal-600 hover:bg-teal-700 text-white rounded-lg px-8 py-3 font-medium transition-colors">
                       Explore
-                    </Button>
-                    <button className="border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg px-6 py-3 font-medium transition-all shadow-sm flex items-center gap-2">
+                    </button>
+                    <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg px-8 py-3 font-medium flex items-center gap-2 transition-colors">
                       Learn
-                      <ChevronRight className="w-4 h-4" />
+                      <ArrowRight className="w-4 h-4" />
                     </button>
                   </div>
                 </div>
@@ -473,7 +425,7 @@ export default function IndividualCoachingPage() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
-              className="border-2 border-gray-900 dark:border-white rounded-none overflow-hidden bg-white dark:bg-gray-800"
+              className="bg-white rounded-lg overflow-hidden shadow-sm"
             >
               <div className="grid md:grid-rows-[auto_1fr]">
                 {/* Top Image */}
@@ -486,21 +438,21 @@ export default function IndividualCoachingPage() {
                 </div>
 
                 {/* Bottom Content */}
-                <div className="p-8 bg-white dark:bg-gray-800">
-                  <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-widest font-medium mb-4">Support</p>
-                  <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">
+                <div className="p-8">
+                  <p className="text-sm text-gray-500 uppercase tracking-wider mb-4">SUPPORT</p>
+                  <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 leading-tight">
                     Continuous guidance between sessions
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-6 leading-relaxed">
+                  <p className="text-gray-600 text-sm mb-6 leading-relaxed">
                     Secure messaging platform provides support and quick check-ins
                   </p>
-                  <div className="flex flex-wrap gap-4">
-                    <Button className="bg-teal-600 hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600 text-white rounded-lg px-6 py-3 font-medium transition-all shadow-md hover:shadow-lg">
+                  <div className="flex gap-4">
+                    <button className="bg-teal-600 hover:bg-teal-700 text-white rounded-lg px-8 py-3 font-medium transition-colors">
                       Connect
-                    </Button>
-                    <button className="border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg px-6 py-3 font-medium transition-all shadow-sm flex items-center gap-2">
+                    </button>
+                    <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg px-8 py-3 font-medium flex items-center gap-2 transition-colors">
                       Discover
-                      <ChevronRight className="w-4 h-4" />
+                      <ArrowRight className="w-4 h-4" />
                     </button>
                   </div>
                 </div>
@@ -759,12 +711,18 @@ export default function IndividualCoachingPage() {
             </div>
           </div>
 
-          {/* Image Section */}
+          {/* Google Maps iframe */}
           <div className="overflow-hidden shadow-sm">
-            <img
-              src={contactUsPhoto.src}
-              alt="Sydney Opera House"
-              className="w-full h-auto object-cover"
+            <iframe
+              src="https://maps.google.com/maps?q=Level+5,+123+Business+Street,+Sydney+NSW+2000&output=embed"
+              width="100%"
+              height="450"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Level 5, 123 Business Street, Sydney NSW 2000"
+              className="w-full"
             />
           </div>
         </div>

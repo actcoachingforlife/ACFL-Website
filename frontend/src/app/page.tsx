@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Poppins } from 'next/font/google';
+import { Poppins } from "next/font/google";
 import { Button } from "@/components/ui/button";
 import ShinyText from "@/components/ShinyText";
 import Footer from "@/components/Footer";
@@ -25,9 +25,9 @@ import imgthree from "./(public)/images/HomeImg3.png";
 import imgfour from "./(public)/images/HomeImg4.png";
 
 const poppins = Poppins({
-  weight: ['300', '400', '500', '600', '700'],
-  subsets: ['latin'],
-  display: 'swap',
+  weight: ["300", "400", "500", "600", "700"],
+  subsets: ["latin"],
+  display: "swap",
 });
 
 export default function HomePage() {
@@ -95,115 +95,46 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* How It Works */}
       <section id="how-it-works" className="py-12 md:py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
-          <div className="text-center mb-16">
-            <p className="text-sm uppercase tracking-wider text-gray-600 mb-4">
+          <div className="text-center mb-10">
+            <p className="text-sm uppercase tracking-wider text-gray-600 mb-2">
               Coaching
             </p>
-            <h1 className="text-5xl font-bold text-gray-900 mb-4">
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
               Why choose ACT coaching
             </h1>
-            <p className="text-xl text-gray-600">
+            <p className="text-base md:text-lg text-gray-600">
               Proven strategies for personal and professional growth
             </p>
           </div>
 
-          {/* Cards Grid */}
-          <div className="flex flex-col lg:flex-row gap-6">
-            {/* Card 1 - Evidence-based approach (with hover state) */}
-            <div className="relative h-80 rounded-lg overflow-hidden group cursor-pointer flex-1 transition-all duration-500 lg:hover:flex-[2]">
+          {/* Image Row */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="rounded-xl overflow-hidden h-64 md:h-72">
               <img
                 src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80"
-                alt="Modern office"
-                className="absolute inset-0 w-full h-full object-cover brightness-50"
+                alt="Group coaching"
+                className="w-full h-full object-cover"
                 loading="lazy"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-black/30 group-hover:from-black/80 group-hover:to-black/40 transition-all duration-300"></div>
-              <div className="relative h-full p-8 flex flex-col justify-between text-white">
-                <div>
-                  <h2 className="text-3xl font-bold mb-4">
-                    Evidence-based approach
-                  </h2>
-                  <p className="text-sm text-gray-200 mb-6">
-                    We promise three to five perfectly matched coaches within 24
-                    hours.
-                  </p>
-                </div>
-                <div className="flex gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <button className="text-sm px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg transition-all shadow-sm">
-                    Learn more
-                  </button>
-                  <button className="text-sm px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg transition-all shadow-sm flex items-center gap-2">
-                    How it works
-                    <span>→</span>
-                  </button>
-                </div>
-              </div>
             </div>
-
-            {/* Card 2 - Flexible session formats */}
-            <div className="relative h-80 rounded-lg overflow-hidden group cursor-pointer flex-1 transition-all duration-500 lg:hover:flex-[2]">
+            <div className="rounded-xl overflow-hidden h-64 md:h-72">
               <img
                 src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&q=80"
-                alt="Coaching session"
-                className="absolute inset-0 w-full h-full object-cover brightness-50"
+                alt="One-on-one coaching"
+                className="w-full h-full object-cover"
                 loading="lazy"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-black/30 group-hover:from-black/80 group-hover:to-black/40 transition-all duration-300"></div>
-              <div className="relative h-full p-8 flex flex-col justify-between text-white">
-                <div>
-                  <h2 className="text-3xl font-bold mb-4">
-                    Flexible session formats
-                  </h2>
-                  <p className="text-sm text-gray-200 mb-6">
-                    Scientifically validated techniques that drive real, lasting
-                    change.
-                  </p>
-                </div>
-                <div className="flex gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <button className="text-sm px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg transition-all shadow-sm">
-                    Learn more
-                  </button>
-                  <button className="text-sm px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg transition-all shadow-sm flex items-center gap-2">
-                    How it works
-                    <span>→</span>
-                  </button>
-                </div>
-              </div>
             </div>
-
-            {/* Card 3 - Flexible session formats */}
-            <div className="relative h-80 rounded-lg overflow-hidden group cursor-pointer flex-1 transition-all duration-500 lg:hover:flex-[2]">
+            <div className="rounded-xl overflow-hidden h-64 md:h-72">
               <img
                 src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=80"
-                alt="Mobile coaching"
-                className="absolute inset-0 w-full h-full object-cover brightness-50"
+                alt="Online coaching"
+                className="w-full h-full object-cover"
                 loading="lazy"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-black/30 group-hover:from-black/80 group-hover:to-black/40 transition-all duration-300"></div>
-              <div className="relative h-full p-8 flex flex-col justify-between text-white">
-                <div>
-                  <h2 className="text-3xl font-bold mb-4">
-                    Flexible session formats
-                  </h2>
-                  <p className="text-sm text-gray-200 mb-6">
-                    Video, phone, and text coaching to fit your lifestyle and
-                    preferences.
-                  </p>
-                </div>
-                <div className="flex gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <button className="text-sm px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg transition-all shadow-sm">
-                    Learn more
-                  </button>
-                  <button className="text-sm px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg transition-all shadow-sm flex items-center gap-2">
-                    How it works
-                    <span>→</span>
-                  </button>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -313,125 +244,57 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Services Section */}
-      <section id="services" className="py-12 md:py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Header */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-16"
-          >
-            <p className="text-sm uppercase tracking-wider text-gray-600 mb-4">
-              Services
-            </p>
-            <h1 className="text-5xl font-bold text-gray-900 mb-4">
-              Coaching solutions for every need
-            </h1>
-            <p className="text-xl text-gray-600">
-              Personalized support across individual, group, and corporate
-              programs
-            </p>
-          </motion.div>
+    {/* Services Section */}
+<section id="services" className="py-12 md:py-16 bg-white">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    {/* Header */}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      className="text-center mb-10"
+    >
+      <p className="text-sm uppercase tracking-wider text-gray-600 mb-2">
+        Services
+      </p>
+      <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+        Coaching solutions for every need
+      </h1>
+      <p className="text-base md:text-lg text-gray-600">
+        Personalized support across individual, group, and corporate programs
+      </p>
+    </motion.div>
 
-          {/* Cards Grid */}
-          <div className="flex flex-col lg:flex-row gap-6">
-            {/* Card 1 - Individual coaching plans */}
-            <div className="relative h-80 rounded-lg overflow-hidden group cursor-pointer flex-1 transition-all duration-500 lg:hover:flex-[2]">
-              <img
-                src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80"
-                alt="Individual coaching"
-                className="absolute inset-0 w-full h-full object-cover brightness-50"
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-black/30 group-hover:from-black/80 group-hover:to-black/40 transition-all duration-300"></div>
-              <div className="relative h-full p-8 flex flex-col justify-between text-white">
-                <div>
-                  <p className="text-sm text-gray-300 mb-2">Recommended</p>
-                  <h2 className="text-3xl font-bold mb-4">
-                    Individual coaching plans
-                  </h2>
-                  <p className="text-sm text-gray-200 mb-6">
-                    Tailored one-on-one sessions addressing personal growth and
-                    specific challenges.
-                  </p>
-                </div>
-                <div className="flex gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <a href="/pricing">
-                    <button className="text-sm px-4 py-2 bg-white/20 hover:bg-white/30 rounded transition-colors">
-                      View plans
-                    </button>
-                  </a>
-                  <a href="/assessment">
-                    <button className="text-sm px-4 py-2 bg-white/20 hover:bg-white/30 rounded transition-colors">
-                      Book consultation →
-                    </button>
-                  </a>
-                </div>
-              </div>
-            </div>
+    {/* Image Row */}
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="rounded-xl overflow-hidden h-64 md:h-72">
+        <img
+          src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80"
+          alt="Individual coaching"
+          className="w-full h-full object-cover"
+          loading="lazy"
+        />
+      </div>
+      <div className="rounded-xl overflow-hidden h-64 md:h-72">
+        <img
+          src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&q=80"
+          alt="Group coaching"
+          className="w-full h-full object-cover"
+          loading="lazy"
+        />
+      </div>
+      <div className="rounded-xl overflow-hidden h-64 md:h-72">
+        <img
+          src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=80"
+          alt="Corporate wellness"
+          className="w-full h-full object-cover"
+          loading="lazy"
+        />
+      </div>
+    </div>
+  </div>
+</section>
 
-            {/* Card 2 - Group coaching programs */}
-            <div className="relative h-80 rounded-lg overflow-hidden group cursor-pointer flex-1 transition-all duration-500 lg:hover:flex-[2]">
-              <img
-                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&q=80"
-                alt="Group coaching"
-                className="absolute inset-0 w-full h-full object-cover brightness-50"
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-black/30 group-hover:from-black/80 group-hover:to-black/40 transition-all duration-300"></div>
-              <div className="relative h-full p-8 flex flex-col justify-between text-white">
-                <div>
-                  <h2 className="text-3xl font-bold mb-4">
-                    Group coaching programs
-                  </h2>
-                  <p className="text-sm text-gray-200 mb-6">
-                    Collaborative sessions focusing on shared goals and
-                    collective growth.
-                  </p>
-                </div>
-                <div className="flex gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <a href="/group-coaching">
-                    <button className="text-sm px-4 py-2 bg-white/20 hover:bg-white/30 rounded transition-colors">
-                      Explore groups →
-                    </button>
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            {/* Card 3 - Corporate wellness programs */}
-            <div className="relative h-80 rounded-lg overflow-hidden group cursor-pointer flex-1 transition-all duration-500 lg:hover:flex-[2]">
-              <img
-                src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=80"
-                alt="Corporate wellness"
-                className="absolute inset-0 w-full h-full object-cover brightness-50"
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-black/30 group-hover:from-black/80 group-hover:to-black/40 transition-all duration-300"></div>
-              <div className="relative h-full p-8 flex flex-col justify-between text-white">
-                <div>
-                  <h2 className="text-3xl font-bold mb-4">
-                    Corporate wellness programs
-                  </h2>
-                  <p className="text-sm text-gray-200 mb-6">
-                    Organizational solutions for leadership development and team
-                    performance.
-                  </p>
-                </div>
-                <div className="flex gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <a href="/corporate">
-                    <button className="text-sm px-4 py-2 bg-white/20 hover:bg-white/30 rounded transition-colors">
-                      Contact sales →
-                    </button>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       <section id="services" className="py-12 md:py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -520,7 +383,9 @@ export default function HomePage() {
             className="flex flex-col md:flex-row justify-center gap-4"
           >
             <div className="flex flex-col text-center mb-16">
-              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Start your transformation today</h1>
+              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                Start your transformation today
+              </h1>
               <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
                 Unlock your potential with personalized coaching matched to your
                 unique journey
@@ -565,4 +430,4 @@ export default function HomePage() {
 }
 
 // Force dynamic rendering - disable static optimization for this page
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";

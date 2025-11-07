@@ -28,50 +28,13 @@ export default function BlogPage() {
       <nav>
         <NavbarLandingPage />
       </nav>
-      {/* Hero Section */}
-      <section className="relative py-20 md:py-32 bg-[url('/images/corporate-hero.png')] bg-cover bg-center bg-no-repeat">
-        {/* Dark overlay for better text readability */}
-        <div className="absolute inset-0 bg-black/50"></div>
-
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center"
-          >
-            <p className="text-sm text-white/80 uppercase tracking-wider mb-6">
-              Transform
-            </p>
-
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tight">
-              Group coaching for growth
-            </h1>
-            <p className="text-lg md:text-xl text-white/90 mb-12 max-w-3xl mx-auto leading-relaxed">
-              Unlock collective potential through evidence-based ACT coaching
-              designed to help teams and individuals breakthrough personal and
-              professional barriers{" "}
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Button className="border-2 border-gray-300 bg-white hover:bg-gray-50 text-gray-700 rounded-lg px-8 py-6 text-lg font-semibold transition-all shadow-sm">
-                  Explore
-                </Button>
-              </motion.div>
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Button className="bg-teal-600 hover:bg-teal-700 text-white rounded-lg px-8 py-6 text-lg font-semibold transition-all shadow-md hover:shadow-lg">
-                  Assessment
-                </Button>
-              </motion.div>
-            </div>
-          </motion.div>
-        </div>
+      {/* Hero Section - Image Only */}
+      <section className="relative h-[400px]">
+        <img
+          src="/images/pricing-hero.png"
+          alt="Group Coaching"
+          className="w-full h-full object-cover"
+        />
       </section>
 
       <section className="relative py-20 md:py-32">

@@ -3,586 +3,444 @@
 import { useState } from "react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import GradientText from "@/components/GradientText"
-import CountUp from "@/components/CountUp"
-import SpotlightCard from "@/components/SpotlightCard"
-import ShinyText from "@/components/ShinyText"
 import NavbarLandingPage from "@/components/NavbarLandingPage"
 import Footer from "@/components/Footer"
-import contactUsPhoto from "@/app/(public)/images/contactUs.png"
+import Contact from "../component/contactUs"
 import {
   CheckCircle,
   Star,
-  Clock,
-  Calendar,
-  Users,
-  Shield,
-  MessageSquare,
-  ChevronRight,
-  Mail,
-  Phone,
-  MapPin,
+  ArrowRight,
 } from "lucide-react"
-
-// Static pricing plans
-const plans = {
-  monthly: {
-    name: "Monthly Sessions",
-    description: "Perfect for ongoing support",
-    price: 99.95,
-    sessions: 2,
-    features: [
-      "2 x 50-minute sessions monthly",
-      "Qualified ACT coach matching",
-      "Unlimited messaging support",
-      "Flexible scheduling",
-      "Progress tracking tools",
-      "24/7 platform access"
-    ]
-  },
-  weekly: {
-    name: "Weekly Sessions",
-    description: "Intensive transformation support",
-    price: 149.95,
-    sessions: 4,
-    popular: true,
-    features: [
-      "4 x 50-minute sessions monthly",
-      "Priority coach matching",
-      "Unlimited messaging support",
-      "Flexible scheduling",
-      "Advanced progress tracking",
-      "Priority support & booking"
-    ]
-  }
-}
 
 export default function PricingPage() {
   const [isYearly, setIsYearly] = useState(false)
   const [activeTab, setActiveTab] = useState('qualified')
 
-  // Calculate yearly prices (assuming 10% discount for yearly)
-  const getPrice = (monthlyPrice: number) => {
-    if (isYearly) {
-      return (monthlyPrice * 12 * 0.9).toFixed(2) // 10% discount for yearly
-    }
-    return monthlyPrice.toFixed(2)
-  }
-
-  const getPriceLabel = () => isYearly ? '/year' : '/month'
-
   return (
-    <div className="flex flex-col min-h-screen bg-white dark:bg-gray-900">
+    <div className="flex flex-col min-h-screen bg-white">
       {/* Navigation */}
       <nav>
         <NavbarLandingPage />
       </nav>
 
       {/* Hero Section */}
-      <section className="relative py-32 md:py-40 lg:py-48 bg-[url('/images/pricing-hero.png')] bg-cover bg-center bg-no-repeat">
-        <div className="absolute inset-0 bg-black/40"></div>
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center"
-          >
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tight">
-              Choose your coaching plan
-            </h1>
-            <p className="text-lg md:text-xl text-white/90 mb-10 max-w-3xl mx-auto leading-relaxed">
-              Professional ACT coaching designed to transform your life. Experienced coaches deliver personalized support through flexible, evidence-based sessions that meet you where you are.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="/assessment">
-                <Button className="bg-teal-600 hover:bg-teal-700 text-white rounded-lg px-10 py-4 text-lg font-medium transition-all shadow-md hover:shadow-lg">
-                  Start assessment
-                </Button>
-              </a>
-              <Button className="border-2 border-white bg-transparent hover:bg-white/10 text-white rounded-lg px-10 py-4 text-lg font-medium transition-all shadow-sm">
-                Learn more
-              </Button>
-            </div>
-          </motion.div>
-        </div>
+      <section className="relative h-[400px] bg-[url('/images/pricing-hero.png')] bg-cover bg-center bg-no-repeat">
+        <div className="absolute inset-0 bg-black/20"></div>
       </section>
 
-      {/* Coaching Plans Section with Toggle */}
-      <section className="py-20 bg-white dark:bg-gray-900">
+      {/* Coaching Plans Section */}
+      <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Header */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <p className="text-sm text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">Invest</p>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6">
+          <div className="text-center mb-12">
+            <p className="text-sm text-gray-500 uppercase tracking-wider mb-4">INVEST</p>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
               Coaching plans
             </h2>
-            <p className="text-gray-600 dark:text-gray-400 text-lg md:text-xl max-w-3xl mx-auto mb-10">
+            <p className="text-gray-600 text-lg mb-8">
               Transform your life with personalized ACT coaching
             </p>
 
-            {/* Toggle Tabs */}
-            <div className="inline-flex border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden mb-12">
-              <motion.button
+            {/* Toggle Buttons */}
+            <div className="inline-flex rounded-lg border border-gray-300 overflow-hidden">
+              <button
                 onClick={() => setIsYearly(false)}
-                className={`px-6 py-2 text-sm font-medium transition-colors duration-200 ${
+                className={`px-8 py-2 font-medium transition-colors ${
                   !isYearly
-                    ? 'bg-teal-600 dark:bg-teal-500 text-white'
-                    : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                    ? 'bg-teal-600 text-white'
+                    : 'bg-white text-gray-700 hover:bg-gray-50'
                 }`}
-                whileHover={{ scale: isYearly ? 1.02 : 1 }}
-                whileTap={{ scale: 0.98 }}
               >
                 Monthly
-              </motion.button>
-              <motion.button
+              </button>
+              <button
                 onClick={() => setIsYearly(true)}
-                className={`px-6 py-2 text-sm font-medium transition-colors duration-200 border-l border-gray-300 dark:border-gray-600 ${
+                className={`px-8 py-2 font-medium transition-colors border-l border-gray-300 ${
                   isYearly
-                    ? 'bg-teal-600 dark:bg-teal-500 text-white'
-                    : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                    ? 'bg-teal-600 text-white'
+                    : 'bg-white text-gray-700 hover:bg-gray-50'
                 }`}
-                whileHover={{ scale: !isYearly ? 1.02 : 1 }}
-                whileTap={{ scale: 0.98 }}
               >
                 Yearly
-              </motion.button>
+              </button>
             </div>
-          </motion.div>
+          </div>
 
           {/* Pricing Cards */}
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {/* Monthly Sessions Plan */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="border-2 border-gray-900 dark:border-white rounded-none p-10 bg-white dark:bg-gray-800 flex flex-col cursor-pointer"
+              transition={{ duration: 0.6 }}
+              className="bg-white border border-gray-200 rounded-lg p-8 shadow-sm"
             >
-              <div className="text-center mb-8">
-                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-6">Monthly sessions</h3>
-                <div className="flex items-baseline justify-center mb-8">
-                  <span className="text-5xl font-bold text-gray-900 dark:text-white">
-                    ${isYearly ? getPrice(plans.monthly.price).split('.')[0] : Math.floor(plans.monthly.price)}
-                  </span>
-                  <span className="text-3xl font-bold text-gray-900 dark:text-white">
-                    .{isYearly ? getPrice(plans.monthly.price).split('.')[1] : String(plans.monthly.price).split('.')[1]}
-                  </span>
+              <p className="text-sm text-teal-600 uppercase tracking-wider mb-4 font-medium">
+                MONTHLY SESSIONS
+              </p>
+
+              <div className="mb-6">
+                <div className="text-5xl font-bold text-red-500 mb-2">
+                  ${isYearly ? '1,079.40' : '99.95'}
                 </div>
+                <p className="text-gray-600 text-sm">
+                  Launch your dream site in days, not months.
+                </p>
               </div>
 
-              <ul className="space-y-4 mb-10 flex-grow">
-                <li className="flex items-start">
-                  <CheckCircle className="w-5 h-5 text-gray-900 dark:text-white mr-3 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700 dark:text-gray-300 text-sm">Qualified ACT coach matching</span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="w-5 h-5 text-gray-900 dark:text-white mr-3 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700 dark:text-gray-300 text-sm">Unlimited messaging support</span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="w-5 h-5 text-gray-900 dark:text-white mr-3 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700 dark:text-gray-300 text-sm">Flexible session scheduling</span>
-                </li>
-              </ul>
+              <button className="w-full bg-gray-900 hover:bg-gray-800 text-white py-3 rounded-lg font-medium mb-8 transition-colors">
+                START MONTHLY PLAN
+              </button>
 
-              <a href="/assessment" className="block mt-auto">
-                <Button className="w-full bg-teal-600 hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600 text-white rounded-lg px-6 py-3 font-medium transition-all shadow-md hover:shadow-lg">
-                  Start monthly plan
-                </Button>
-              </a>
+              <div className="mb-6">
+                <p className="text-sm font-semibold text-gray-900 mb-4">Features :</p>
+                <ul className="space-y-3">
+                  <li className="flex items-start">
+                    <CheckCircle className="w-5 h-5 text-red-500 mr-3 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-700 text-sm">Qualified ACT coach matching</span>
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle className="w-5 h-5 text-red-500 mr-3 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-700 text-sm">Unlimited messaging support</span>
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle className="w-5 h-5 text-red-500 mr-3 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-700 text-sm">Flexible session scheduling</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="flex items-center gap-2 mt-8 pt-6 border-t border-gray-200">
+                <div className="w-8 h-8 bg-gradient-to-br from-orange-400 to-pink-500 rounded-full"></div>
+                <span className="text-sm font-semibold text-gray-900">ACT COACHING FOR LIFE</span>
+              </div>
             </motion.div>
 
             {/* Weekly Sessions Plan */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="border-2 border-gray-900 dark:border-white rounded-none p-10 bg-white dark:bg-gray-800 flex flex-col cursor-pointer"
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="bg-white border border-gray-200 rounded-lg p-8 shadow-sm"
             >
-              <div className="text-center mb-8">
-                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-6">Weekly sessions</h3>
-                <div className="flex items-baseline justify-center mb-8">
-                  <span className="text-5xl font-bold text-gray-900 dark:text-white">
-                    ${isYearly ? getPrice(plans.weekly.price).split('.')[0] : Math.floor(plans.weekly.price)}
-                  </span>
-                  <span className="text-3xl font-bold text-gray-900 dark:text-white">
-                    .{isYearly ? getPrice(plans.weekly.price).split('.')[1] : String(plans.weekly.price).split('.')[1]}
-                  </span>
+              <p className="text-sm text-teal-600 uppercase tracking-wider mb-4 font-medium">
+                WEEKLY SESSIONS
+              </p>
+
+              <div className="mb-6">
+                <div className="text-5xl font-bold text-red-500 mb-2">
+                  ${isYearly ? '1,619.40' : '149.95'}
                 </div>
+                <p className="text-gray-600 text-sm">
+                  Launch your dream site in days, not months.
+                </p>
               </div>
 
-              <ul className="space-y-4 mb-10 flex-grow">
-                <li className="flex items-start">
-                  <CheckCircle className="w-5 h-5 text-gray-900 dark:text-white mr-3 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700 dark:text-gray-300 text-sm">Priority coach matching</span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="w-5 h-5 text-gray-900 dark:text-white mr-3 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700 dark:text-gray-300 text-sm">Unlimited messaging support</span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="w-5 h-5 text-gray-900 dark:text-white mr-3 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700 dark:text-gray-300 text-sm">Flexible session scheduling</span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="w-5 h-5 text-gray-900 dark:text-white mr-3 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700 dark:text-gray-300 text-sm">Advanced progress tracking</span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="w-5 h-5 text-gray-900 dark:text-white mr-3 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700 dark:text-gray-300 text-sm">Priority support and booking</span>
-                </li>
-              </ul>
+              <button className="w-full bg-gray-900 hover:bg-gray-800 text-white py-3 rounded-lg font-medium mb-8 transition-colors">
+                START WEEKLY PLAN
+              </button>
 
-              <a href="/assessment" className="block mt-auto">
-                <Button className="w-full bg-teal-600 hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600 text-white rounded-lg px-6 py-3 font-medium transition-all shadow-md hover:shadow-lg">
-                  Start weekly plan
-                </Button>
-              </a>
+              <div className="mb-6">
+                <p className="text-sm font-semibold text-gray-900 mb-4">Features :</p>
+                <ul className="space-y-3">
+                  <li className="flex items-start">
+                    <CheckCircle className="w-5 h-5 text-red-500 mr-3 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-700 text-sm">Priority coach matching</span>
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle className="w-5 h-5 text-red-500 mr-3 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-700 text-sm">Unlimited messaging support</span>
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle className="w-5 h-5 text-red-500 mr-3 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-700 text-sm">Advanced progress tracking</span>
+                  </li>
+                  <li className="flex items-start">
+                    <CheckCircle className="w-5 h-5 text-red-500 mr-3 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-700 text-sm">Priority support and booking</span>
+                  </li>
+                </ul>
+              </div>
             </motion.div>
           </div>
         </div>
       </section>
 
       {/* Everything Included Section */}
-      <section className="py-20 bg-gray-50 dark:bg-gray-800">
+      <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Header */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <p className="text-sm text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">Benefits</p>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6">
+          <div className="text-center mb-16">
+            <p className="text-sm text-gray-500 uppercase tracking-wider mb-4">BENEFITS</p>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
               Everything included in both plans
             </h2>
-            <p className="text-gray-600 dark:text-gray-400 text-lg md:text-xl max-w-3xl mx-auto mb-10">
+            <p className="text-gray-600 text-lg mb-10 max-w-3xl mx-auto">
               Our comprehensive coaching approach ensures you receive holistic support across every session.
             </p>
 
-            {/* Buttons */}
-            <div className="flex flex-wrap justify-center gap-4 mb-8">
-              <Button
-                onClick={() => setActiveTab('qualified')}
-                className={`${activeTab === 'qualified' || activeTab === 'messaging' || activeTab === 'scheduling' ? 'bg-teal-600 hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600 text-white' : 'border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'} rounded-lg px-6 py-3 font-medium transition-all shadow-md`}
-              >
+            {/* Action Buttons */}
+            <div className="flex justify-center gap-4 mb-12">
+              <button className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 rounded-lg font-medium transition-colors">
                 Learn more
-              </Button>
-              <Button
-                onClick={() => setActiveTab('explore')}
-                className="border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg px-6 py-3 font-medium transition-all shadow-sm flex items-center gap-2"
-              >
+              </button>
+              <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 px-8 py-3 rounded-lg font-medium flex items-center gap-2 transition-colors">
                 Explore
-                <ChevronRight className="w-4 h-4" />
-              </Button>
+                <ArrowRight className="w-4 h-4" />
+              </button>
             </div>
 
-            {/* Three Clickable Items */}
-            <div className="flex flex-wrap justify-center gap-10 mb-12">
+            {/* Tab Links with Underline */}
+            <div className="flex flex-wrap justify-center gap-12 mb-12">
               <button
                 onClick={() => setActiveTab('qualified')}
-                className={`text-base md:text-lg font-medium transition-colors ${activeTab === 'qualified' ? 'text-gray-900 dark:text-white border-b-2 border-gray-900 dark:border-white pb-2' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
+                className={`text-base font-medium transition-colors pb-2 ${
+                  activeTab === 'qualified'
+                    ? 'text-gray-900 border-b-2 border-gray-900'
+                    : 'text-gray-500 hover:text-gray-900'
+                }`}
               >
                 Qualified professionals
               </button>
               <button
                 onClick={() => setActiveTab('messaging')}
-                className={`text-base md:text-lg font-medium transition-colors ${activeTab === 'messaging' ? 'text-gray-900 dark:text-white border-b-2 border-gray-900 dark:border-white pb-2' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
+                className={`text-base font-medium transition-colors pb-2 ${
+                  activeTab === 'messaging'
+                    ? 'text-gray-900 border-b-2 border-gray-900'
+                    : 'text-gray-500 hover:text-gray-900'
+                }`}
               >
                 24/7 messaging
               </button>
               <button
                 onClick={() => setActiveTab('scheduling')}
-                className={`text-base md:text-lg font-medium transition-colors ${activeTab === 'scheduling' ? 'text-gray-900 dark:text-white border-b-2 border-gray-900 dark:border-white pb-2' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
+                className={`text-base font-medium transition-colors pb-2 ${
+                  activeTab === 'scheduling'
+                    ? 'text-gray-900 border-b-2 border-gray-900'
+                    : 'text-gray-500 hover:text-gray-900'
+                }`}
               >
                 Flexible scheduling
               </button>
             </div>
-          </motion.div>
+          </div>
 
-          {/* Content Box */}
-          <motion.div
-            key={activeTab}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-            className="border-2 border-gray-900 dark:border-white rounded-none overflow-hidden"
-          >
-            <div className="grid md:grid-cols-2">
-              {/* Left Content */}
-              <div className="p-12 md:p-16 lg:p-20 bg-white dark:bg-gray-800 flex items-center min-h-[400px] md:min-h-[500px]">
-                {activeTab === 'qualified' && (
-                  <div className="max-w-lg space-y-6">
-                    <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-widest font-medium">Expert coaches</p>
-                    <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white leading-tight">
-                      Vetted ACT practitioners
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm md:text-base leading-relaxed">
-                      Each coach undergoes rigorous certification and continuous professional development to ensure highest quality support.
-                    </p>
-                    <div className="flex flex-wrap gap-4 pt-2">
-                      <Button className="bg-teal-600 hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600 text-white rounded-lg px-6 py-3 font-medium transition-all shadow-md hover:shadow-lg">
-                        Details
-                      </Button>
-                      <button className="border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg px-6 py-3 font-medium transition-all shadow-sm flex items-center gap-2">
-                        Discover
-                        <ChevronRight className="w-4 h-4" />
-                      </button>
-                    </div>
+          {/* Content Grid */}
+          <div className="grid md:grid-cols-2 gap-16 items-center max-w-6xl mx-auto">
+            <div className="order-2 md:order-1">
+              {activeTab === 'qualified' && (
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <p className="text-sm text-gray-500 uppercase tracking-wider mb-4">EXPERT COACHES</p>
+                  <h3 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+                    Vetted ACT practitioners
+                  </h3>
+                  <p className="text-gray-600 text-lg mb-8 leading-relaxed">
+                    Each coach undergoes rigorous certification and continuous professional development to ensure highest quality support.
+                  </p>
+                  <div className="flex gap-4">
+                    <button className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 rounded-lg font-medium transition-colors">
+                      Details
+                    </button>
+                    <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 px-8 py-3 rounded-lg font-medium flex items-center gap-2 transition-colors">
+                      Discover
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
                   </div>
-                )}
-                {activeTab === 'messaging' && (
-                  <div className="max-w-lg space-y-6">
-                    <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-widest font-medium">Always available</p>
-                    <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white leading-tight">
-                      24/7 messaging support
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm md:text-base leading-relaxed">
-                      Connect with your coach anytime through our secure messaging platform for continuous support between sessions.
-                    </p>
-                    <div className="flex flex-wrap gap-4 pt-2">
-                      <Button className="bg-teal-600 hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600 text-white rounded-lg px-6 py-3 font-medium transition-all shadow-md hover:shadow-lg">
-                        Details
-                      </Button>
-                      <button className="border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg px-6 py-3 font-medium transition-all shadow-sm flex items-center gap-2">
-                        Discover
-                        <ChevronRight className="w-4 h-4" />
-                      </button>
-                    </div>
+                </motion.div>
+              )}
+              {activeTab === 'messaging' && (
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <p className="text-sm text-gray-500 uppercase tracking-wider mb-4">ALWAYS AVAILABLE</p>
+                  <h3 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+                    24/7 messaging support
+                  </h3>
+                  <p className="text-gray-600 text-lg mb-8 leading-relaxed">
+                    Connect with your coach anytime through our secure messaging platform for continuous support between sessions.
+                  </p>
+                  <div className="flex gap-4">
+                    <button className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 rounded-lg font-medium transition-colors">
+                      Details
+                    </button>
+                    <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 px-8 py-3 rounded-lg font-medium flex items-center gap-2 transition-colors">
+                      Discover
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
                   </div>
-                )}
-                {activeTab === 'scheduling' && (
-                  <div className="max-w-lg space-y-6">
-                    <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-widest font-medium">Your schedule</p>
-                    <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white leading-tight">
-                      Flexible scheduling
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm md:text-base leading-relaxed">
-                      Book and reschedule sessions at times that work for you with our easy-to-use scheduling system.
-                    </p>
-                    <div className="flex flex-wrap gap-4 pt-2">
-                      <Button className="bg-teal-600 hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600 text-white rounded-lg px-6 py-3 font-medium transition-all shadow-md hover:shadow-lg">
-                        Details
-                      </Button>
-                      <button className="border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg px-6 py-3 font-medium transition-all shadow-sm flex items-center gap-2">
-                        Discover
-                        <ChevronRight className="w-4 h-4" />
-                      </button>
-                    </div>
+                </motion.div>
+              )}
+              {activeTab === 'scheduling' && (
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <p className="text-sm text-gray-500 uppercase tracking-wider mb-4">YOUR SCHEDULE</p>
+                  <h3 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+                    Flexible scheduling
+                  </h3>
+                  <p className="text-gray-600 text-lg mb-8 leading-relaxed">
+                    Book and reschedule sessions at times that work for you with our easy-to-use scheduling system.
+                  </p>
+                  <div className="flex gap-4">
+                    <button className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 rounded-lg font-medium transition-colors">
+                      Details
+                    </button>
+                    <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 px-8 py-3 rounded-lg font-medium flex items-center gap-2 transition-colors">
+                      Discover
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
                   </div>
-                )}
-              </div>
-
-              {/* Right Image */}
-              <div className="relative min-h-[400px] md:min-h-[500px] overflow-hidden">
-                {activeTab === 'qualified' && (
-                  <img
-                    src="/images/pricing-vetted.png"
-                    alt="Vetted ACT practitioners"
-                    className="w-full h-full object-cover"
-                  />
-                )}
-                {activeTab === 'messaging' && (
-                  <img
-                    src="/images/pricing-247.png"
-                    alt="24/7 messaging support"
-                    className="w-full h-full object-cover"
-                  />
-                )}
-                {activeTab === 'scheduling' && (
-                  <img
-                    src="/images/pricing-flex.png"
-                    alt="Flexible scheduling"
-                    className="w-full h-full object-cover"
-                  />
-                )}
-              </div>
+                </motion.div>
+              )}
             </div>
-          </motion.div>
+
+            <div className="order-1 md:order-2">
+              <img
+                src={activeTab === 'qualified' ? '/images/pricing-vetted.png' : activeTab === 'messaging' ? '/images/pricing-247.png' : '/images/pricing-flex.png'}
+                alt="Coaching benefit"
+                className="w-full h-[500px] object-cover rounded-lg"
+              />
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* CTA Section - Ready to transform */}
-      <section className="py-20 bg-white dark:bg-gray-900">
+      {/* CTA Section */}
+      <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            {/* Left Content */}
-            <div className="text-center md:text-left">
+          <div className="grid md:grid-cols-2 gap-16 items-center">
+            <div>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
               >
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
+                <h2 className="text-4xl md:text-5xl font-bold text-gray-400 mb-8 leading-tight">
                   Ready to transform your team's potential
                 </h2>
-                <p className="text-gray-600 dark:text-gray-400 text-lg md:text-xl mb-8 leading-relaxed">
+                <p className="text-gray-500 text-lg mb-10 leading-relaxed">
                   Discover personalized group coaching solutions designed to unlock collective growth and performance.
                 </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                  <Button className="bg-gray-900 dark:bg-white text-white dark:text-gray-900 hover:bg-gray-800 dark:hover:bg-gray-100 px-8 py-3 text-base font-medium">
+                <div className="flex gap-4">
+                  <button className="bg-gray-900 hover:bg-gray-800 text-white px-10 py-3 rounded-lg font-medium transition-colors">
                     Start now
-                  </Button>
-                  <Button className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-2 border-gray-900 dark:border-white hover:bg-gray-50 dark:hover:bg-gray-700 px-8 py-3 text-base font-medium">
+                  </button>
+                  <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 px-10 py-3 rounded-lg font-medium transition-colors">
                     Learn more
-                  </Button>
+                  </button>
                 </div>
               </motion.div>
             </div>
 
-            {/* Right Image */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="relative rounded-lg overflow-hidden aspect-[4/3]"
-            >
+            <div>
               <img
                 src="/images/pricing-potential.png"
-                alt="Ready to transform your team's potential"
-                className="w-full h-full object-cover"
+                alt="Team transformation"
+                className="w-full h-[400px] object-cover rounded-lg"
               />
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Client Stories Section */}
-      <section className="py-16 bg-gray-50 dark:bg-gray-900">
+      <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-ink-dark dark:text-white mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Client stories
             </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-300">
+            <p className="text-gray-600">
               Real people, real transformations through ACT coaching
             </p>
           </motion.div>
 
           <div className="grid lg:grid-cols-3 gap-8">
-            {/* Testimonial 1 - Sarah Martinez */}
+            {/* Testimonial 1 */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: true }}
-              className="bg-white dark:bg-gray-800 p-6 shadow-md border border-gray-200 dark:border-gray-700"
+              className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm"
             >
-              {/* Star Rating */}
               <div className="flex gap-1 mb-4">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
                 ))}
               </div>
-
-              {/* Review Text */}
-              <p className="text-gray-700 dark:text-gray-300 mb-6">
+              <p className="text-gray-700 mb-6 text-sm leading-relaxed">
                 My coach helped me work through anxiety that was holding me back for years. The ACT approach really clicked with me, and I finally feel like I'm living authentically. Highly recommend!
               </p>
-
-              {/* Reviewer Info */}
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center">
-                  <span className="text-white font-semibold text-lg">SM</span>
+                <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+                  <span className="text-white font-semibold text-sm">SM</span>
                 </div>
                 <div>
-                  <div className="font-semibold text-ink-dark dark:text-white">Sarah Martinez</div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">
-                    Local Guide • 47 reviews
-                  </div>
-                  <div className="text-xs text-gray-400 dark:text-gray-500">
-                    Google • 3 months ago
-                  </div>
+                  <div className="font-semibold text-gray-900 text-sm">Sarah Martinez</div>
+                  <div className="text-xs text-gray-500">Google • 3 months ago</div>
                 </div>
               </div>
             </motion.div>
 
-            {/* Testimonial 2 - Michael Rodriguez */}
+            {/* Testimonial 2 */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="bg-white dark:bg-gray-800 p-6 shadow-md border border-gray-200 dark:border-gray-700"
+              className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm"
             >
-              {/* Star Rating */}
               <div className="flex gap-1 mb-4">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
                 ))}
               </div>
-
-              {/* Review Text */}
-              <p className="text-gray-700 dark:text-gray-300 mb-6">
+              <p className="text-gray-700 mb-6 text-sm leading-relaxed">
                 The matching process was incredible - they found me a coach who understood my specific challenges. Three months later, I feel more confident and focused than ever. Worth every penny.
               </p>
-
-              {/* Reviewer Info */}
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center">
-                  <span className="text-white font-semibold text-lg">MR</span>
+                <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
+                  <span className="text-white font-semibold text-sm">MR</span>
                 </div>
                 <div>
-                  <div className="font-semibold text-ink-dark dark:text-white">Michael Rodriguez</div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">
-                    Local Guide • 29 reviews
-                  </div>
-                  <div className="text-xs text-gray-400 dark:text-gray-500">
-                    Google • 2 months ago
-                  </div>
+                  <div className="font-semibold text-gray-900 text-sm">Michael Rodriguez</div>
+                  <div className="text-xs text-gray-500">Google • 2 months ago</div>
                 </div>
               </div>
             </motion.div>
 
-            {/* Testimonial 3 - Jennifer Lee */}
+            {/* Testimonial 3 */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              viewport={{ once: true }}
-              className="bg-white dark:bg-gray-800 p-6 shadow-md border border-gray-200 dark:border-gray-700"
+              className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm"
             >
-              {/* Star Rating */}
               <div className="flex gap-1 mb-4">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
                 ))}
               </div>
-
-              {/* Review Text */}
-              <p className="text-gray-700 dark:text-gray-300 mb-6">
-                I was skeptical about online coaching, but the platform made it so easy to connect with my coach. The flexibility to message between sessions has been a game-changer. Amazing service!
+              <p className="text-gray-700 mb-6 text-sm leading-relaxed">
+                I was skeptical about online coaching, but the platform made it so easy to connect. The flexibility to message between sessions has been a game-changer. Amazing service!
               </p>
-
-              {/* Reviewer Info */}
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center">
-                  <span className="text-white font-semibold text-lg">JL</span>
+                <div className="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center">
+                  <span className="text-white font-semibold text-sm">JL</span>
                 </div>
                 <div>
-                  <div className="font-semibold text-ink-dark dark:text-white">Jennifer Lee</div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">
-                    Local Guide • 63 reviews
-                  </div>
-                  <div className="text-xs text-gray-400 dark:text-gray-500">
-                    Google • 1 month ago
-                  </div>
+                  <div className="font-semibold text-gray-900 text-sm">Jennifer Lee</div>
+                  <div className="text-xs text-gray-500">Google • 1 month ago</div>
                 </div>
               </div>
             </motion.div>
@@ -590,59 +448,9 @@ export default function PricingPage() {
         </div>
       </section>
 
-      {/* Contact Us Section */}
-      <section className="bg-gray-50 dark:bg-gray-900 min-h-screen flex flex-col items-center justify-center px-4 py-16">
-        <div className="max-w-7xl mx-auto px-6 py-12">
-          <div className="flex flex-col md:flex-row justify-between gap-4">
-            {/* Header Section */}
-            <div className="mb-12">
-              <p className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-2">Connect</p>
-              <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-3">Contact us</h1>
-              <p className="text-gray-600 dark:text-gray-300">
-                We're here to support your journey towards personal and professional growth
-              </p>
-            </div>
+      {/* Contact Section */}
+      <Contact />
 
-            {/* Contact Info Section */}
-            <div className="mb-16">
-              <div className="space-y-6">
-                <div className="flex items-start gap-3">
-                  <Mail className="text-gray-700 dark:text-gray-300 mt-1" />
-                  <div>
-                    <h2 className="font-semibold text-gray-900 dark:text-white">Email</h2>
-                    <p className="text-gray-600 dark:text-gray-300">support@actcoaching.com</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Phone className="text-gray-700 dark:text-gray-300 mt-1" />
-                  <div>
-                    <h2 className="font-semibold text-gray-900 dark:text-white">Phone</h2>
-                    <p className="text-gray-600 dark:text-gray-300">+1 (888) 234-5678</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <MapPin className="text-gray-700 dark:text-gray-300 mt-1" />
-                  <div>
-                    <h2 className="font-semibold text-gray-900 dark:text-white">Office</h2>
-                    <p className="text-gray-600 dark:text-gray-300">
-                      Level 5, 123 Business Street, Sydney NSW 2000
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Image Section */}
-          <div className="overflow-hidden shadow-sm">
-            <img
-              src={contactUsPhoto.src}
-              alt="Sydney Opera House"
-              className="w-full h-auto object-cover"
-            />
-          </div>
-        </div>
-      </section>
       <Footer />
     </div>
   )

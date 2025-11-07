@@ -1,7 +1,6 @@
 "use client";
 
 import NavbarLandingPage from "@/components/NavbarLandingPage";
-import Testimonial from "../component/testimonial";
 import Contact from "../component/contactUs";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
@@ -431,7 +430,6 @@ export default function AboutPage() {
           </div>
         </div>{" "}
       </section>
-      <Testimonial />
       <Contact />
       <Footer />
     </div>
