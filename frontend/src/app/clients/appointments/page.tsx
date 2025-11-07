@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
@@ -726,3 +726,6 @@ export default function AppointmentsPage() {
     </ProtectedRoute>
   );
 }
+
+// Force dynamic rendering - disable static optimization for this page
+export const dynamic = 'force-dynamic';
