@@ -659,3 +659,6 @@ export default function Analytics() {
     </div>
   );
 }
+
+// Force dynamic rendering - disable static optimization for this page
+export const dynamic = 'force-dynamic';

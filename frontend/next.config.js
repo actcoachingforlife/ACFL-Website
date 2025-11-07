@@ -4,10 +4,6 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  // Skip static generation for specific dynamic routes
-  experimental: {
-    skipTrailingSlashRedirect: true,
-  },
   webpack: (config, { isServer, webpack }) => {
     // Add global polyfills for browser-only globals used by socket.io
     if (isServer) {
