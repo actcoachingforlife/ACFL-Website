@@ -20,54 +20,7 @@ export default function AboutPage() {
       <nav>
         <NavbarLandingPage />
       </nav>
-      <section className="py-12 md:py-16 lg:py-20 bg-[url('/images/AboutHeaderImg.jpg')] bg-cover bg-center bg-no-repeat">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-12">
-          {/* Label */}
-          <motion.p
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-sm text-gray-300 uppercase tracking-wider mb-6"
-          >
-            Transform
-          </motion.p>
-
-          {/* Main Heading */}
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-8 leading-tight"
-          >
-            Your path to meaningful change
-          </motion.h1>
-
-          {/* Subheading */}
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-lg md:text-xl text-gray-200 mb-10 max-w-3xl mx-auto"
-          >
-            Discover personalized coaching that helps you navigate life's
-            challenges with purpose and clarity.
-          </motion.p>
-
-          {/* CTA Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-          >
-            <button className="bg-white hover:bg-gray-100 text-gray-800 font-semibold px-8 py-3 rounded-lg transition-colors w-full sm:w-auto">
-              Start assessment
-            </button>
-            <button className="bg-transparent hover:bg-white/10 text-white font-semibold px-8 py-3 rounded-lg border border-white/30 hover:border-white/50 transition-all w-full sm:w-auto">
-              Learn more
-            </button>
-          </motion.div>
-        </div>
+      <section className="h-[500px] md:h-[600px] lg:h-[700px] bg-[url('/images/AboutHeaderImg.jpg')] bg-cover bg-center bg-no-repeat">
       </section>
 
       <section className="py-12 md:py-16 lg:py-20 bg-white">
