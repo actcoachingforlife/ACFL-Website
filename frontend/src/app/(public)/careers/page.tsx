@@ -11,6 +11,7 @@ import Footer from "@/components/Footer"
 import NavbarLandingPage from "@/components/NavbarLandingPage"
 import Contact from "../component/contactUs"
 import { getApiUrl } from "@/lib/api"
+import { useScrollRestoration } from "@/hooks/useScrollRestoration"
 
 interface ContentData {
   id: string
@@ -44,6 +45,7 @@ interface Position {
 }
 
 export default function CareersPage() {
+  useScrollRestoration('careersScrollPosition');
   const [careersContent, setCareersContent] = useState<ContentData | null>(null)
   const [loading, setLoading] = useState(true)
   const [selectedJob, setSelectedJob] = useState<Position | null>(null)
@@ -660,9 +662,11 @@ export default function CareersPage() {
                     </div>
                   )}
 
-                  <Button className="w-full bg-red-500 hover:bg-red-600 text-white">
-                    Apply Now
-                  </Button>
+                  <a href="/contact">
+                    <Button className="w-full bg-red-500 hover:bg-red-600 text-white">
+                      Apply Now
+                    </Button>
+                  </a>
                 </div>
               )}
             </div>

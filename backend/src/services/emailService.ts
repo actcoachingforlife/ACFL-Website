@@ -1840,6 +1840,187 @@ class EmailService {
       html: coachHtml
     });
   }
+
+  async sendNewsletterWelcome(email: string, isReactivation: boolean = false) {
+    const subject = isReactivation
+      ? 'Welcome Back to Our Newsletter!'
+      : 'Thank You for Subscribing!';
+
+    const html = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Newsletter Subscription Confirmed</title>
+        <style>
+          body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+          }
+          .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+          }
+          .header {
+            background: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+          }
+          .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+          }
+          .content {
+            padding: 40px 30px;
+          }
+          .welcome-box {
+            background: #f0fdfa;
+            border: 2px solid #14b8a6;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 25px 0;
+            text-align: center;
+          }
+          .welcome-box h3 {
+            margin-top: 0;
+            color: #0f766e;
+            font-size: 20px;
+          }
+          .benefits {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+          }
+          .benefits h4 {
+            margin-top: 0;
+            color: #495057;
+          }
+          .benefits ul {
+            margin: 15px 0;
+            padding-left: 20px;
+          }
+          .benefits li {
+            margin: 10px 0;
+            color: #212529;
+          }
+          .footer {
+            background: #f8f9fa;
+            padding: 30px;
+            text-align: center;
+            color: #6c757d;
+            font-size: 14px;
+            border-top: 1px solid #e9ecef;
+          }
+          .unsubscribe {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #999;
+          }
+          .unsubscribe a {
+            color: #0d9488;
+            text-decoration: none;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1>${isReactivation ? '🎉 Welcome Back!' : '🎉 Subscription Confirmed!'}</h1>
+          </div>
+          <div class="content">
+            <h2>Hello!</h2>
+            <p>${isReactivation
+              ? 'We\'re excited to have you back on our newsletter! Your subscription has been reactivated.'
+              : 'Thank you for subscribing to the ACT Coaching For Life newsletter!'
+            }</p>
+
+            <div class="welcome-box">
+              <h3>✅ You're all set!</h3>
+              <p>You'll now receive updates on coaching strategies, mental wellness tips, and exclusive insights directly to your inbox.</p>
+            </div>
+
+            <div class="benefits">
+              <h4>📬 What to Expect:</h4>
+              <ul>
+                <li><strong>Expert Insights:</strong> Evidence-based coaching strategies and ACT techniques</li>
+                <li><strong>Wellness Tips:</strong> Practical advice for mental and emotional well-being</li>
+                <li><strong>Success Stories:</strong> Inspiring client transformations and coach spotlights</li>
+                <li><strong>Exclusive Content:</strong> Early access to resources, workshops, and special offers</li>
+                <li><strong>Community Updates:</strong> News about our growing coaching community</li>
+              </ul>
+            </div>
+
+            <p>We respect your inbox and promise to send only valuable content. Our newsletters typically go out 1-2 times per month.</p>
+
+            <p>Have questions or feedback? We'd love to hear from you at <a href="mailto:support@actcoachingforlife.com">support@actcoachingforlife.com</a></p>
+
+            <p>Thank you for being part of our community!</p>
+            <p><strong>The ACT Coaching For Life Team</strong></p>
+          </div>
+          <div class="footer">
+            <p><strong>ACT Coaching For Life</strong></p>
+            <p>© ${new Date().getFullYear()} All rights reserved.</p>
+            <p>This email was sent to ${email}</p>
+            <div class="unsubscribe">
+              <p>No longer want to receive these emails? You can unsubscribe at any time.</p>
+            </div>
+          </div>
+        </div>
+      </body>
+      </html>
+    `;
+
+    const text = `
+      ${isReactivation ? 'Welcome Back!' : 'Subscription Confirmed!'} - ACT Coaching For Life
+
+      Hello!
+
+      ${isReactivation
+        ? 'We\'re excited to have you back on our newsletter! Your subscription has been reactivated.'
+        : 'Thank you for subscribing to the ACT Coaching For Life newsletter!'
+      }
+
+      You're all set! You'll now receive updates on coaching strategies, mental wellness tips, and exclusive insights directly to your inbox.
+
+      What to Expect:
+      - Expert Insights: Evidence-based coaching strategies and ACT techniques
+      - Wellness Tips: Practical advice for mental and emotional well-being
+      - Success Stories: Inspiring client transformations and coach spotlights
+      - Exclusive Content: Early access to resources, workshops, and special offers
+      - Community Updates: News about our growing coaching community
+
+      We respect your inbox and promise to send only valuable content. Our newsletters typically go out 1-2 times per month.
+
+      Have questions or feedback? Contact us at support@actcoachingforlife.com
+
+      Thank you for being part of our community!
+      The ACT Coaching For Life Team
+
+      ---
+      This email was sent to ${email}
+      You can unsubscribe at any time.
+    `;
+
+    return this.sendEmail({
+      to: email,
+      subject,
+      text,
+      html
+    });
+  }
 }
 
 const emailService = new EmailService();

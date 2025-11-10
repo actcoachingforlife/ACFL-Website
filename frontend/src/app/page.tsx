@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Poppins } from "next/font/google";
 import { Button } from "@/components/ui/button";
@@ -32,6 +32,53 @@ const poppins = Poppins({
 
 export default function HomePage() {
   const [showAssessmentModal, setShowAssessmentModal] = useState(false);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
+
+  // Scroll restoration - save scroll position before navigation
+  useEffect(() => {
+    const saveScrollPosition = () => {
+      sessionStorage.setItem('homeScrollPosition', window.scrollY.toString());
+    };
+
+    // Save scroll position before navigating away
+    const handleBeforeUnload = () => {
+      saveScrollPosition();
+    };
+
+    // Listen for navigation events
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    // Save scroll position periodically (every 500ms while scrolling)
+    let scrollTimeout: NodeJS.Timeout;
+    const handleScroll = () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(saveScrollPosition, 500);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      saveScrollPosition(); // Save on unmount
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(scrollTimeout);
+    };
+  }, []);
+
+  // Restore scroll position on mount
+  useEffect(() => {
+    setIsInitialLoad(false);
+    const savedPosition = sessionStorage.getItem('homeScrollPosition');
+    if (savedPosition) {
+      // Use setTimeout to ensure the page is fully rendered before scrolling
+      setTimeout(() => {
+        window.scrollTo({
+          top: parseInt(savedPosition, 10),
+          behavior: 'smooth'
+        });
+      }, 100);
+    }
+  }, []);
 
   return (
     <div className={`flex flex-col min-h-screen bg-white ${poppins.className}`}>
@@ -213,7 +260,7 @@ export default function HomePage() {
                       <ArrowRight className="ml-2 w-5 h-5" />
                     </button>
                   </a>
-                  <a href="/assessment">
+                  <a href="/individual-coaching">
                     <button className="flex items-center rounded-md text-black px-6 py-3 w-full sm:w-auto">
                       Explore Benefits
                       <ArrowRight className="ml-2 w-5 h-5" />

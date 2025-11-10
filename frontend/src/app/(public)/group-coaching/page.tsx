@@ -10,6 +10,7 @@ import imgfour from "../images/HomeImg4.png";
 import imgfive from "../images/HomeImg3.png";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { useScrollRestoration } from "@/hooks/useScrollRestoration";
 
 import React from "react";
 import {
@@ -23,6 +24,7 @@ import {
 } from "lucide-react";
 
 export default function BlogPage() {
+  useScrollRestoration('groupCoachingScrollPosition');
   return (
     <div className="flex flex-col min-h-screen bg-white">
       <nav>
@@ -85,25 +87,29 @@ export default function BlogPage() {
 
                 {/* CTA Buttons */}
                 <div className="flex gap-4">
-                  <button className="bg-teal-600 hover:bg-teal-700 text-white rounded-lg px-6 py-3 font-medium transition-all shadow-md hover:shadow-lg">
-                    Enroll now
-                  </button>
-                  <button className="border-2 border-gray-300 bg-white hover:bg-gray-50 text-gray-700 rounded-lg px-6 py-3 font-medium transition-all shadow-sm flex items-center gap-2">
-                    Learn more
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </button>
+                  <a href="/assessment">
+                    <button className="bg-teal-600 hover:bg-teal-700 text-white rounded-lg px-6 py-3 font-medium transition-all shadow-md hover:shadow-lg">
+                      Enroll now
+                    </button>
+                  </a>
+                  <a href="/individual-coaching">
+                    <button className="border-2 border-gray-300 bg-white hover:bg-gray-50 text-gray-700 rounded-lg px-6 py-3 font-medium transition-all shadow-sm flex items-center gap-2">
+                      Learn more
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </button>
+                  </a>
                 </div>
               </div>
 
@@ -147,25 +153,29 @@ export default function BlogPage() {
 
                 {/* CTA Buttons */}
                 <div className="flex gap-4">
-                  <button className="px-6 py-3 bg-gray-900 text-white font-medium rounded-md hover:bg-gray-800 transition-colors">
-                    Enroll
-                  </button>
-                  <button className="px-6 py-3 text-gray-900 font-medium rounded-md hover:bg-gray-50 transition-colors flex items-center gap-2">
-                    Learn more
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </button>
+                  <a href="/assessment">
+                    <button className="px-6 py-3 bg-gray-900 text-white font-medium rounded-md hover:bg-gray-800 transition-colors">
+                      Enroll
+                    </button>
+                  </a>
+                  <a href="/individual-coaching">
+                    <button className="px-6 py-3 text-gray-900 font-medium rounded-md hover:bg-gray-50 transition-colors flex items-center gap-2">
+                      Learn more
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </button>
+                  </a>
                 </div>
               </div>
 
@@ -239,25 +249,29 @@ export default function BlogPage() {
 
                 {/* CTA Buttons */}
                 <div className="flex gap-4">
-                  <button className="bg-teal-600 hover:bg-teal-700 text-white rounded-lg px-6 py-3 font-medium transition-all shadow-md hover:shadow-lg">
-                    Enroll
-                  </button>
-                  <button className="border-2 border-gray-300 bg-white hover:bg-gray-50 text-gray-700 rounded-lg px-6 py-3 font-medium transition-all shadow-sm flex items-center gap-2">
-                    Learn
-                    <svg
-                      className="w-3 h-3"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </button>
+                  <a href="/assessment">
+                    <button className="bg-teal-600 hover:bg-teal-700 text-white rounded-lg px-6 py-3 font-medium transition-all shadow-md hover:shadow-lg">
+                      Enroll
+                    </button>
+                  </a>
+                  <a href="/press">
+                    <button className="border-2 border-gray-300 bg-white hover:bg-gray-50 text-gray-700 rounded-lg px-6 py-3 font-medium transition-all shadow-sm flex items-center gap-2">
+                      Learn
+                      <svg
+                        className="w-3 h-3"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </button>
+                  </a>
                 </div>
               </div>
             </div>
@@ -309,25 +323,29 @@ export default function BlogPage() {
 
                 {/* CTA Buttons */}
                 <div className="flex gap-4">
-                  <button className="bg-teal-600 hover:bg-teal-700 text-white rounded-lg px-6 py-3 font-medium transition-all shadow-md hover:shadow-lg">
-                    Enroll now
-                  </button>
-                  <button className="border-2 border-gray-300 bg-white hover:bg-gray-50 text-gray-700 rounded-lg px-6 py-3 font-medium transition-all shadow-sm flex items-center gap-2">
-                    Learn more
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </button>
+                  <a href="/assessment">
+                    <button className="bg-teal-600 hover:bg-teal-700 text-white rounded-lg px-6 py-3 font-medium transition-all shadow-md hover:shadow-lg">
+                      Enroll now
+                    </button>
+                  </a>
+                  <a href="/individual-coaching">
+                    <button className="border-2 border-gray-300 bg-white hover:bg-gray-50 text-gray-700 rounded-lg px-6 py-3 font-medium transition-all shadow-sm flex items-center gap-2">
+                      Learn more
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </button>
+                  </a>
                 </div>
               </div>
 
@@ -382,25 +400,29 @@ export default function BlogPage() {
 
                 {/* CTA Buttons */}
                 <div className="flex gap-4">
-                  <button className="px-6 py-2 bg-white text-gray-900 text-sm font-medium rounded border border-gray-300 hover:bg-gray-50 transition-colors">
-                    Join
-                  </button>
-                  <button className="px-6 py-2 text-gray-900 text-sm font-medium rounded hover:bg-gray-50 transition-colors flex items-center gap-2">
-                    Learn
-                    <svg
-                      className="w-3 h-3"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </button>
+                  <a href="/register/client">
+                    <button className="px-6 py-2 bg-white text-gray-900 text-sm font-medium rounded border border-gray-300 hover:bg-gray-50 transition-colors">
+                      Join
+                    </button>
+                  </a>
+                  <a href="/blog">
+                    <button className="px-6 py-2 text-gray-900 text-sm font-medium rounded hover:bg-gray-50 transition-colors flex items-center gap-2">
+                      Learn
+                      <svg
+                        className="w-3 h-3"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </button>
+                  </a>
                 </div>
               </div>
 
@@ -451,25 +473,29 @@ export default function BlogPage() {
 
                 {/* CTA Buttons */}
                 <div className="flex gap-4">
-                  <button className="px-6 py-2 bg-white text-gray-900 text-sm font-medium rounded border border-gray-300 hover:bg-gray-50 transition-colors">
-                    Explore
-                  </button>
-                  <button className="px-6 py-2 text-gray-900 text-sm font-medium rounded hover:bg-gray-50 transition-colors flex items-center gap-2">
-                    Discover
-                    <svg
-                      className="w-3 h-3"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </button>
+                  <a href="/pricing">
+                    <button className="px-6 py-2 bg-white text-gray-900 text-sm font-medium rounded border border-gray-300 hover:bg-gray-50 transition-colors">
+                      Explore
+                    </button>
+                  </a>
+                  <a href="/blog">
+                    <button className="px-6 py-2 text-gray-900 text-sm font-medium rounded hover:bg-gray-50 transition-colors flex items-center gap-2">
+                      Discover
+                      <svg
+                        className="w-3 h-3"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </button>
+                  </a>
                 </div>
               </div>
 
@@ -520,25 +546,29 @@ export default function BlogPage() {
 
                 {/* CTA Buttons */}
                 <div className="flex gap-4">
-                  <button className="px-6 py-2 bg-white text-gray-900 text-sm font-medium rounded border border-gray-300 hover:bg-gray-50 transition-colors">
-                    Start
-                  </button>
-                  <button className="px-6 py-2 text-gray-900 text-sm font-medium rounded hover:bg-gray-50 transition-colors flex items-center gap-2">
-                    Learn
-                    <svg
-                      className="w-3 h-3"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </button>
+                  <a href="/assessment">
+                    <button className="px-6 py-2 bg-white text-gray-900 text-sm font-medium rounded border border-gray-300 hover:bg-gray-50 transition-colors">
+                      Start
+                    </button>
+                  </a>
+                  <a href="/individual-coaching">
+                    <button className="px-6 py-2 text-gray-900 text-sm font-medium rounded hover:bg-gray-50 transition-colors flex items-center gap-2">
+                      Learn
+                      <svg
+                        className="w-3 h-3"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </button>
+                  </a>
                 </div>
               </div>
 
@@ -572,12 +602,16 @@ export default function BlogPage() {
                 resources
               </p>
               <div className="flex justify-center gap-2">
-                <button className="bg-[#25a7b8] text-white rounded-md p-2">
-                  Subscribe{" "}
-                </button>
-                <button className="border border-gray-400 rounded-md p-2">
-                  Explore{" "}
-                </button>
+                <a href="#footer-subscribe">
+                  <button className="bg-[#25a7b8] text-white rounded-md p-2">
+                    Subscribe{" "}
+                  </button>
+                </a>
+                <a href="/blog">
+                  <button className="border border-gray-400 rounded-md p-2">
+                    Explore{" "}
+                  </button>
+                </a>
               </div>
             </div>
           </motion.div>

@@ -10,8 +10,10 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { MapPin, Mail, Phone } from 'lucide-react'
 import { Facebook, Instagram, Linkedin } from 'lucide-react'
+import { useScrollRestoration } from '@/hooks/useScrollRestoration'
 
 export default function ContactPage() {
+  useScrollRestoration('contactScrollPosition');
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

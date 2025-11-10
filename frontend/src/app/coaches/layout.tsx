@@ -16,7 +16,7 @@ import DeactivatedAccountBanner from '@/components/DeactivatedAccountBanner';
 import BankAccountSetupBanner from '@/components/coach/BankAccountSetupBanner';
 import ThemeConsentModal from '@/components/ThemeConsentModal';
 import {
-  Bell, CircleUserRound, LogOut, Sun, Moon, Menu, X, Home, Calendar,
+  Bell, CircleUserRound, LogOut, Sun, Moon, Menu, X, Activity, Calendar,
   MessageSquare, Users, User, MoreHorizontal, TrendingUp, CreditCard,
   CalendarDays, ChevronDown, ChevronRight, Search, PanelLeft, Settings,
   BarChart3, Clock, UserCog
@@ -301,9 +301,9 @@ export default function CoachLayout({
     {
       id: 'dashboard',
       name: 'Dashboard',
-      icon: Home,
+      icon: Activity,
       items: [
-        { name: 'Overview', href: '/coaches', icon: Home },
+        { name: 'Overview', href: '/coaches', icon: Activity },
       ]
     },
     {

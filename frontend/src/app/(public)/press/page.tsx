@@ -11,6 +11,7 @@ import Footer from "@/components/Footer"
 import NavbarLandingPage from "@/components/NavbarLandingPage"
 import { getApiUrl } from "@/lib/api"
 import Image from "next/image"
+import { useScrollRestoration } from "@/hooks/useScrollRestoration"
 
 interface ContentData {
   id: string
@@ -44,8 +45,12 @@ interface Award {
 }
 
 export default function PressPage() {
+  useScrollRestoration('pressScrollPosition');
   const [pressContent, setPressContent] = useState<ContentData | null>(null)
   const [loading, setLoading] = useState(true)
+  const [email, setEmail] = useState('')
+  const [subscribeStatus, setSubscribeStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+  const [subscribeMessage, setSubscribeMessage] = useState('')
 
   // Default press releases with featured article
   const defaultPressReleases: PressRelease[] = [
@@ -147,6 +152,43 @@ export default function PressPage() {
   const featuredArticle = pressReleases.find((article: PressRelease) => article.featured) || pressReleases[0]
   const regularArticles = pressReleases.filter((article: PressRelease) => !article.featured || article !== featuredArticle)
 
+  const handleNewsletterSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    // Validate email
+    if (!email || !/\S+@\S+\.\S+/.test(email)) {
+      setSubscribeStatus('error')
+      setSubscribeMessage('Please enter a valid email address')
+      return
+    }
+
+    setSubscribeStatus('loading')
+    setSubscribeMessage('')
+
+    try {
+      const response = await fetch(`${getApiUrl()}/api/newsletter/subscribe`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      })
+
+      if (response.ok) {
+        setSubscribeStatus('success')
+        setSubscribeMessage('Successfully subscribed to our newsletter!')
+        setEmail('')
+      } else {
+        const data = await response.json()
+        setSubscribeStatus('error')
+        setSubscribeMessage(data.error || 'Failed to subscribe. Please try again.')
+      }
+    } catch (error) {
+      setSubscribeStatus('error')
+      setSubscribeMessage('An error occurred. Please try again later.')
+    }
+  }
+
   return (
     <div className="flex flex-col min-h-screen bg-white">
       {/* Navigation */}
@@ -172,19 +214,23 @@ export default function PressPage() {
               </p>
             </div>
             <div className="flex flex-wrap gap-4 lg:flex-shrink-0">
-              <Button
-                className="bg-[#FF6B6B] hover:bg-[#FF5252] text-white px-8"
-                size="lg"
-              >
-                Subscribe
-              </Button>
-              <Button
-                variant="outline"
-                className="border-gray-300 hover:bg-gray-50 px-8"
-                size="lg"
-              >
-                Browse All Article
-              </Button>
+              <a href="#newsletter-section">
+                <Button
+                  className="bg-[#FF6B6B] hover:bg-[#FF5252] text-white px-8"
+                  size="lg"
+                >
+                  Subscribe
+                </Button>
+              </a>
+              <a href="/blog">
+                <Button
+                  variant="outline"
+                  className="border-gray-300 hover:bg-gray-50 px-8"
+                  size="lg"
+                >
+                  Browse All Article
+                </Button>
+              </a>
             </div>
           </motion.div>
         </div>
@@ -338,12 +384,14 @@ export default function PressPage() {
               {/* Header */}
               <div className="flex items-center justify-between mb-8">
                 <h2 className="text-3xl font-bold text-gray-900">Latest News</h2>
-                <Button
-                  variant="outline"
-                  className="border-gray-300 hover:bg-gray-50 px-6"
-                >
-                  Browse All Article
-                </Button>
+                <a href="/blog">
+                  <Button
+                    variant="outline"
+                    className="border-gray-300 hover:bg-gray-50 px-6"
+                  >
+                    Browse All Article
+                  </Button>
+                </a>
               </div>
 
               {/* News Cards Grid */}
@@ -386,9 +434,11 @@ export default function PressPage() {
 
               {/* Next Button */}
               <div className="flex justify-center">
-                <Button className="bg-[#FF6B6B] hover:bg-[#FF5252] text-white px-16 py-2.5">
-                  Next
-                </Button>
+                <a href="/blog">
+                  <Button className="bg-[#FF6B6B] hover:bg-[#FF5252] text-white px-16 py-2.5">
+                    Next
+                  </Button>
+                </a>
               </div>
             </div>
           </div>
@@ -396,7 +446,7 @@ export default function PressPage() {
       </section>
 
       {/* Newsletter Subscription */}
-      <section className="py-20 bg-gray-50">
+      <section id="newsletter-section" className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="relative rounded-lg overflow-hidden shadow-sm h-[350px] md:h-[400px]">
             {/* Background Image */}
@@ -418,16 +468,30 @@ export default function PressPage() {
                 <p className="text-gray-600 mb-6 text-sm">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit porttitor iaculis placerat arcu imperdiet morbi commodo enim sed.
                 </p>
-                <div className="flex gap-3">
-                  <input
-                    type="email"
-                    placeholder="Enter your email"
-                    className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent bg-white"
-                  />
-                  <Button className="bg-[#FF6B6B] hover:bg-[#FF5252] text-white px-8">
-                    Subscribe
-                  </Button>
-                </div>
+                <form onSubmit={handleNewsletterSubscribe} className="space-y-3">
+                  <div className="flex gap-3">
+                    <input
+                      type="email"
+                      placeholder="Enter your email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent bg-white"
+                      disabled={subscribeStatus === 'loading'}
+                    />
+                    <Button
+                      type="submit"
+                      className="bg-[#FF6B6B] hover:bg-[#FF5252] text-white px-8"
+                      disabled={subscribeStatus === 'loading'}
+                    >
+                      {subscribeStatus === 'loading' ? 'Subscribing...' : 'Subscribe'}
+                    </Button>
+                  </div>
+                  {subscribeMessage && (
+                    <p className={`text-sm ${subscribeStatus === 'success' ? 'text-green-600' : 'text-red-600'}`}>
+                      {subscribeMessage}
+                    </p>
+                  )}
+                </form>
               </div>
             </div>
           </div>

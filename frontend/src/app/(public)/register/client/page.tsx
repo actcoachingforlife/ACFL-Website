@@ -167,8 +167,8 @@ function ClientRegisterForm() {
 
   return (
     <div className="flex-1 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="w-full max-w-7xl mx-auto">
-        <div className="grid lg:grid-cols-2 gap-12 items-start">
+      <div className="w-full max-w-6xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-8 items-center">
 
           {/* Left Column - Motivational Section (Hidden on mobile) */}
           <div className="hidden lg:flex flex-col space-y-8 animate-in fade-in slide-in-from-left-8 duration-700">
@@ -247,7 +247,7 @@ function ClientRegisterForm() {
           {/* Right Column - Registration Form */}
           <div className="w-full animate-in fade-in slide-in-from-right-8 duration-700">
             {/* Welcome Title */}
-            <div className="text-center mb-8">
+            <div className="text-center mb-8 mt-12">
               <h1 className="text-4xl font-bold text-gray-800 mb-2">Start Your Journey</h1>
               <p className="text-gray-500 text-sm">
                 {fromAssessment && hasAssessmentData
@@ -258,7 +258,7 @@ function ClientRegisterForm() {
             </div>
 
             {/* Card Container */}
-            <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-6 md:p-8 lg:p-10 pb-24 md:pb-8 transition-all duration-300 hover:shadow-2xl">
+            <div className="bg-white rounded-2xl shadow-xl border border-gray-200 p-8 lg:p-10 transition-all duration-300 hover:shadow-2xl">
               {/* Registration Form */}
               <form onSubmit={handleSubmit} className="space-y-4 md:space-y-5">
                 {errors.submit && (

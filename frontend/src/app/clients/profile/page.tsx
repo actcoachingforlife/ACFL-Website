@@ -515,6 +515,53 @@ function ProfileContent() {
     fetchDeletionStatus()
   }, [])
 
+  // Scroll restoration - save scroll position before navigation
+  useEffect(() => {
+    const saveScrollPosition = () => {
+      sessionStorage.setItem('profileScrollPosition', window.scrollY.toString())
+    }
+
+    // Save scroll position before navigating away
+    const handleBeforeUnload = () => {
+      saveScrollPosition()
+    }
+
+    // Listen for navigation events
+    window.addEventListener('beforeunload', handleBeforeUnload)
+
+    // Save scroll position periodically (every 500ms while scrolling)
+    let scrollTimeout: NodeJS.Timeout
+    const handleScroll = () => {
+      clearTimeout(scrollTimeout)
+      scrollTimeout = setTimeout(saveScrollPosition, 500)
+    }
+
+    window.addEventListener('scroll', handleScroll)
+
+    return () => {
+      saveScrollPosition() // Save on unmount
+      window.removeEventListener('beforeunload', handleBeforeUnload)
+      window.removeEventListener('scroll', handleScroll)
+      clearTimeout(scrollTimeout)
+    }
+  }, [])
+
+  // Restore scroll position on mount
+  useEffect(() => {
+    if (!initialLoad) {
+      const savedPosition = sessionStorage.getItem('profileScrollPosition')
+      if (savedPosition) {
+        // Use setTimeout to ensure the page is fully rendered before scrolling
+        setTimeout(() => {
+          window.scrollTo({
+            top: parseInt(savedPosition, 10),
+            behavior: 'smooth'
+          })
+        }, 100)
+      }
+    }
+  }, [initialLoad])
+
   // Remove full page loading - we now use skeleton loading
 
   return (
