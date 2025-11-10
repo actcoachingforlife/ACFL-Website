@@ -64,16 +64,16 @@ export default function CorporateProgramsPage() {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [currentOrgSlide, setCurrentOrgSlide] = useState(0)
   const slides = [
-    '/images/corporate-group1.png',
-    '/images/corporate-group2.png',
-    '/images/corporate-group3.png',
-    '/images/corporate-group4.png'
+    '/images/Corporate_img6.png',
+    '/images/Corporate_img6.png',
+    '/images/Corporate_img6.png',
+    '/images/Corporate_img6.png'
   ]
   const orgSlides = [
-    '/images/corp-org1.png',
-    '/images/corp-org2.png',
-    '/images/corp-org3.png',
-    '/images/corp-org4.png'
+    '/images/Corporate_img7.png',
+    '/images/Corporate_img7.png',
+    '/images/Corporate_img7.png',
+    '/images/Corporate_img7.png'
   ]
 
   // Auto-slide effect for group coaching
@@ -104,7 +104,7 @@ export default function CorporateProgramsPage() {
       {/* Hero Section - Image Only */}
       <section className="relative h-[400px]">
         <img
-          src="/images/corporate-hero.png"
+          src="/images/Corporate_img1.png"
           alt="Corporate Coaching"
           className="w-full h-full object-cover"
         />
@@ -138,7 +138,7 @@ export default function CorporateProgramsPage() {
             >
               <div className="bg-gray-200 h-56 flex items-center justify-center">
                 <img
-                  src="/images/one-on-one.png"
+                  src="/images/Corporate_img2.png"
                   alt="One-on-one coaching"
                   className="w-full h-full object-cover"
                 />
@@ -167,7 +167,7 @@ export default function CorporateProgramsPage() {
             >
               <div className="bg-gray-200 h-56 flex items-center justify-center">
                 <img
-                  src="/images/collab-session.png"
+                  src="/images/Corporate_img3.png"
                   alt="Collaborative learning"
                   className="w-full h-full object-cover"
                 />
@@ -196,7 +196,7 @@ export default function CorporateProgramsPage() {
             >
               <div className="bg-gray-200 h-56 flex items-center justify-center">
                 <img
-                  src="/images/organizational.png"
+                  src="/images/Corporate_img4.png"
                   alt="Organizational wellness"
                   className="w-full h-full object-cover"
                 />
@@ -257,7 +257,7 @@ export default function CorporateProgramsPage() {
             >
               <div className="bg-gray-200 rounded-lg overflow-hidden">
                 <img
-                  src="/images/corporate-section3.png"
+                  src="/images/Corporate_img5.png"
                   alt="Individual coaching session"
                   className="w-full h-auto object-cover"
                 />
@@ -485,7 +485,7 @@ export default function CorporateProgramsPage() {
             >
               <div className="bg-gray-200 h-56 flex items-center justify-center">
                 <img
-                  src="/images/corp-indiv.png"
+                  src="/images/Corporate_img8.png"
                   alt="Individual growth"
                   className="w-full h-full object-cover"
                 />
@@ -514,7 +514,7 @@ export default function CorporateProgramsPage() {
             >
               <div className="bg-gray-200 h-56 flex items-center justify-center">
                 <img
-                  src="/images/career-dev.png"
+                  src="/images/Corporate_img9.png"
                   alt="Career development"
                   className="w-full h-full object-cover"
                 />
@@ -543,7 +543,7 @@ export default function CorporateProgramsPage() {
             >
               <div className="bg-gray-200 h-56 flex items-center justify-center">
                 <img
-                  src="/images/comp-wellness.png"
+                  src="/images/Corporate_img10.png"
                   alt="Comprehensive wellness"
                   className="w-full h-full object-cover"
                 />
@@ -681,7 +681,7 @@ export default function CorporateProgramsPage() {
             className="relative bg-gray-100 rounded-lg overflow-hidden max-w-5xl mx-auto"
           >
             <img
-              src="/images/corp-journey1.png"
+              src="/images/Corporate_img11.png"
               alt="Your journey starts here"
               className="w-full h-auto object-cover"
             />

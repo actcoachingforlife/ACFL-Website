@@ -342,7 +342,7 @@ export default function HelpCenterPage() {
       <section
         className="py-20 bg-cover bg-center relative"
         style={{
-          backgroundImage: "url('/images/contact-hero.png')",
+          backgroundImage: "url('/images/help.png')",
         }}
       >
         <div className="absolute inset-0 bg-black/70"></div>

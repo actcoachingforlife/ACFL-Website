@@ -66,7 +66,7 @@ export default function PressPage() {
       link: "#",
       category: "Personal Growth",
       readTime: "5 min read",
-      image: "/images/coaching-hero.png"
+      image: "/images/Press_img2.png"
     },
     {
       date: "October 20, 2023",
@@ -75,7 +75,24 @@ export default function PressPage() {
       link: "#",
       category: "Personal Growth",
       readTime: "5 min read",
-      image: "/images/comp-wellness.png"
+      image: "/images/Press_img3.png"},
+    {
+      date: "December 1, 2023",
+      title: "New Study Shows 87% Improvement in Client Outcomes Using ACT Methodology",
+      excerpt: "Independent research validates the effectiveness of our personalized coaching approach.",
+      link: "#",
+      category: "Personal Growth",
+      readTime: "5 min read",
+      image: "/images/Press_img4.png"
+    },
+    {
+      date: "October 20, 2023",
+      title: "ACT Coaching For Life Partners with Major Corporations for Employee Wellness Programs",
+      excerpt: "Fortune 500 companies adopt our platform to support employee mental health and wellbeing.",
+      link: "#",
+      category: "Personal Growth",
+      readTime: "5 min read",
+      image: "/images/Press_img5.png"
     }
   ]
 
@@ -206,10 +223,17 @@ export default function PressPage() {
               <p className="text-white/90 mb-6 leading-relaxed max-w-2xl">
                 {featuredArticle.excerpt}
               </p>
-              <div className="flex items-center">
-                <div className="w-10 h-10 bg-gray-300 rounded-full mr-3"></div>
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-gray-200 rounded-full overflow-hidden flex-shrink-0">
+                  <img
+                    src="/images/author-placeholder.png"
+                    alt="Camila Doe"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
                 <div>
                   <p className="font-semibold text-white">Camila Doe</p>
+                  <p className="text-sm text-white/80">Senior Content Writer, ACT Coaching for Life</p>
                 </div>
               </div>
             </div>
@@ -324,7 +348,7 @@ export default function PressPage() {
 
               {/* News Cards Grid */}
               <div className="grid md:grid-cols-2 gap-8 mb-8">
-                {regularArticles.slice(0, 2).map((article: PressRelease, index: number) => (
+                {regularArticles.slice(2, 4).map((article: PressRelease, index: number) => (
                   <motion.div
                     key={index}
                     initial={{ opacity: 0, y: 20 }}
@@ -335,7 +359,7 @@ export default function PressPage() {
                     {/* Image */}
                     <div className="relative h-[220px] rounded-lg overflow-hidden mb-4">
                       <img
-                        src={article.image || "/images/coaching-hero.png"}
+                        src={article.image || "/images/Press_img5.png"}
                         alt={article.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
@@ -378,7 +402,7 @@ export default function PressPage() {
             {/* Background Image */}
             <div className="absolute inset-0">
               <img
-                src="/images/coaching-hero.png"
+                src="/images/Press_img6.png"
                 alt="Newsletter"
                 className="w-full h-full object-cover"
               />

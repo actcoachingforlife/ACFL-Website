@@ -27,7 +27,7 @@ export default function BlogPage() {
                 {/* Featured Image */}
                 <div className="mb-6 rounded-lg overflow-hidden">
                   <img
-                    src="/images/coaching-hero.png"
+                    src="/images/Blog_img1.png"
                     alt="Understanding your values in challenging times"
                     className="w-full h-[350px] object-cover"
                   />
@@ -74,7 +74,7 @@ export default function BlogPage() {
                   {/* Trending Article 1 */}
                   <div className="flex gap-4 p-4 border-b border-gray-200">
                     <img
-                      src="/images/why-coaching-1.png"
+                      src="/images/Blog_img2.png"
                       alt="Emotional intelligence in the workplace"
                       className="w-32 h-24 object-cover rounded flex-shrink-0"
                     />
@@ -92,7 +92,7 @@ export default function BlogPage() {
                   {/* Trending Article 2 */}
                   <div className="flex gap-4 p-4 border-b border-gray-200">
                     <img
-                      src="/images/why-coaching-2.png"
+                      src="/images/Blog_img3.png"
                       alt="Emotional intelligence in the workplace"
                       className="w-32 h-24 object-cover rounded flex-shrink-0"
                     />
@@ -110,7 +110,7 @@ export default function BlogPage() {
                   {/* Trending Article 3 */}
                   <div className="flex gap-4 p-4">
                     <img
-                      src="/images/why-coaching-3.png"
+                      src="/images/Blog_img4.png"
                       alt="Emotional intelligence in the workplace"
                       className="w-32 h-24 object-cover rounded flex-shrink-0"
                     />
@@ -159,7 +159,7 @@ export default function BlogPage() {
             <div className="grid lg:grid-cols-2 gap-8 items-center">
               <div className="rounded-lg overflow-hidden">
                 <img
-                  src="/images/coaching-hero.png"
+                  src="/images/Blog_img5.png"
                   alt="Understanding your values in challenging times"
                   className="w-full h-[350px] object-cover"
                 />
@@ -196,7 +196,7 @@ export default function BlogPage() {
             >
               <div className="overflow-hidden">
                 <img
-                  src="/images/why-coaching-1.png"
+                  src="/images/Blog_img6.png"
                   alt="Understanding your values in challenging times"
                   className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
@@ -230,7 +230,7 @@ export default function BlogPage() {
             >
               <div className="overflow-hidden">
                 <img
-                  src="/images/why-coaching-2.png"
+                  src="/images/Blog_img7.png"
                   alt="Breaking through mental barriers"
                   className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
@@ -264,7 +264,7 @@ export default function BlogPage() {
             >
               <div className="overflow-hidden">
                 <img
-                  src="/images/why-coaching-3.png"
+                  src="/images/Blog_img8.png"
                   alt="Emotional intelligence in the workplace"
                   className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
@@ -301,7 +301,7 @@ export default function BlogPage() {
             >
               <div className="overflow-hidden">
                 <img
-                  src="/images/why-coaching-4.png"
+                  src="/images/Blog_img9.png"
                   alt="Setting meaningful life goals"
                   className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
@@ -335,7 +335,7 @@ export default function BlogPage() {
             >
               <div className="overflow-hidden">
                 <img
-                  src="/images/why-coaching-5.png"
+                  src="/images/Blog_img10.png"
                   alt="Breaking through mental barriers"
                   className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
@@ -369,7 +369,7 @@ export default function BlogPage() {
             >
               <div className="overflow-hidden">
                 <img
-                  src="/images/coaching-hero.png"
+                  src="/images/Blog_img11.png"
                   alt="Understanding your values in challenging times"
                   className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
@@ -419,7 +419,7 @@ export default function BlogPage() {
             <div className="grid lg:grid-cols-2 gap-0 items-stretch">
               <div className="overflow-hidden">
                 <img
-                  src="/images/coaching-hero.png"
+                  src="/images/Blog_img12.png"
                   alt="Understanding your values in challenging times"
                   className="w-full h-full object-cover"
                 />
@@ -468,7 +468,7 @@ export default function BlogPage() {
               className="overflow-hidden rounded"
             >
               <img
-                src="/images/why-coaching-1.png"
+                src="/images/Blog_img13.png"
                 alt="Understanding your values in challenging times"
                 className="w-full h-[180px] object-cover"
               />
@@ -602,7 +602,7 @@ export default function BlogPage() {
             >
               <div className="overflow-hidden">
                 <img
-                  src="/images/why-coaching-4.png"
+                  src="/images/Blog_img14.png"
                   alt="Setting meaningful life goals"
                   className="w-full h-[220px] object-cover"
                 />
@@ -636,7 +636,7 @@ export default function BlogPage() {
             >
               <div className="overflow-hidden">
                 <img
-                  src="/images/why-coaching-5.png"
+                  src="/images/Blog_img15.png"
                   alt="Breaking through mental barriers"
                   className="w-full h-[220px] object-cover"
                 />
@@ -670,7 +670,7 @@ export default function BlogPage() {
             >
               <div className="overflow-hidden">
                 <img
-                  src="/images/coaching-hero.png"
+                  src="/images/Blog_img16.png"
                   alt="Understanding your values in challenging times"
                   className="w-full h-[220px] object-cover"
                 />
@@ -747,7 +747,7 @@ export default function BlogPage() {
             <div className="grid md:grid-cols-2 gap-0 items-stretch">
               <div className="overflow-hidden h-[220px]">
                 <img
-                  src="/images/why-coaching-1.png"
+                  src="/images/Blog_img17.png"
                   alt="Understanding your values in challenging times"
                   className="w-full h-full object-cover"
                 />
@@ -784,7 +784,7 @@ export default function BlogPage() {
             >
               <div className="overflow-hidden">
                 <img
-                  src="/images/why-coaching-2.png"
+                  src="/images/Blog_img18.png"
                   alt="Understanding your values in challenging times"
                   className="w-full h-[220px] object-cover"
                 />
@@ -818,7 +818,7 @@ export default function BlogPage() {
             >
               <div className="overflow-hidden">
                 <img
-                  src="/images/why-coaching-5.png"
+                  src="/images/Blog_img15.png"
                   alt="Breaking through mental barriers"
                   className="w-full h-[220px] object-cover"
                 />
@@ -852,7 +852,7 @@ export default function BlogPage() {
             >
               <div className="overflow-hidden">
                 <img
-                  src="/images/why-coaching-3.png"
+                  src="/images/Blog_img20.png"
                   alt="Emotional intelligence in the workplace"
                   className="w-full h-[220px] object-cover"
                 />
@@ -1041,7 +1041,7 @@ export default function BlogPage() {
             className="rounded-lg overflow-hidden"
           >
             <img
-              src="/images/coaching-hero.png"
+              src="/images/Blog_img21.png"
               alt="Get insights that transform"
               className="w-full h-[400px] object-cover"
             />

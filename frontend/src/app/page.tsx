@@ -84,7 +84,7 @@ export default function HomePage() {
             >
               <div className="relative overflow-hidden shadow-2xl">
                 <img
-                  src={imgone.src}
+                  src="/images/Home_heroImg.png"
                   alt="Professional ACT coaching session"
                   className="w-full h-full object-cover"
                   loading="lazy"
@@ -114,7 +114,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="rounded-xl overflow-hidden h-64 md:h-72">
               <img
-                src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80"
+                src="/images/Home_img1.png"
                 alt="Group coaching"
                 className="w-full h-full object-cover"
                 loading="lazy"
@@ -122,7 +122,7 @@ export default function HomePage() {
             </div>
             <div className="rounded-xl overflow-hidden h-64 md:h-72">
               <img
-                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&q=80"
+                src="/images/Home_img2.png"
                 alt="One-on-one coaching"
                 className="w-full h-full object-cover"
                 loading="lazy"
@@ -130,7 +130,7 @@ export default function HomePage() {
             </div>
             <div className="rounded-xl overflow-hidden h-64 md:h-72">
               <img
-                src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=80"
+                src="/images/Home_img3.png"
                 alt="Online coaching"
                 className="w-full h-full object-cover"
                 loading="lazy"
@@ -231,7 +231,7 @@ export default function HomePage() {
               >
                 <div className="relative overflow-hidden shadow-2xl aspect-[4/3] lg:aspect-auto lg:h-full">
                   <img
-                    src={imgtwo.src}
+                    src="/images/Home_img4.png"
                     alt="Person working on laptop with cozy workspace setup"
                     className="w-full h-full object-cover"
                     loading="lazy"
@@ -269,7 +269,7 @@ export default function HomePage() {
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       <div className="rounded-xl overflow-hidden h-64 md:h-72">
         <img
-          src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80"
+          src="/images/Home_img5.png"
           alt="Individual coaching"
           className="w-full h-full object-cover"
           loading="lazy"
@@ -277,7 +277,7 @@ export default function HomePage() {
       </div>
       <div className="rounded-xl overflow-hidden h-64 md:h-72">
         <img
-          src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&q=80"
+          src="/images/Home_img6.png"
           alt="Group coaching"
           className="w-full h-full object-cover"
           loading="lazy"
@@ -285,7 +285,7 @@ export default function HomePage() {
       </div>
       <div className="rounded-xl overflow-hidden h-64 md:h-72">
         <img
-          src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=80"
+          src="/images/Home_img7.png"
           alt="Corporate wellness"
           className="w-full h-full object-cover"
           loading="lazy"
@@ -361,7 +361,7 @@ export default function HomePage() {
               className="md:col-span-4 shadow-lg"
             >
               <img
-                src={imgthree.src}
+                src="/images/Home_img8.png"
                 alt="Professional coaching session"
                 className="w-full h-full object-cover"
                 loading="lazy"
@@ -408,7 +408,7 @@ export default function HomePage() {
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            src={imgfour.src}
+            src="/images/Home_img9.png"
             alt=""
             className="w-full h-auto object-cover"
             loading="lazy"
