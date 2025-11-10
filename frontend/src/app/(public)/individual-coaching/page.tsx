@@ -34,7 +34,7 @@ export default function IndividualCoachingPage() {
       {/* Hero Section - Image Only */}
       <section className="relative h-[400px]">
         <img
-          src="/images/indiv-hero.png"
+          src="/images/Individual_img1.png"
           alt="Individual Coaching"
           className="w-full h-full object-cover"
         />
@@ -156,7 +156,7 @@ export default function IndividualCoachingPage() {
             {/* Right Image */}
             <div className="order-1 md:order-2">
               <img
-                src={activeTab === 'video' ? '/images/indiv-f2f.png' : activeTab === 'phone' ? '/images/indiv-audio.png' : '/images/indiv-chat.png'}
+                src={activeTab === 'video' ? '/images/Individual_img2.png' : activeTab === 'phone' ? '/images/indiv-audio.png' : '/images/indiv-chat.png'}
                 alt="Coaching session"
                 className="w-full h-[500px] object-cover rounded-lg"
               />
@@ -197,7 +197,7 @@ export default function IndividualCoachingPage() {
                 {/* Top Image */}
                 <div className="h-64 overflow-hidden">
                   <img
-                    src="/images/indiv-monthly.png"
+                    src="/images/Individual_img3.png"
                     alt="Deep dive into personal transformation"
                     className="w-full h-full object-cover"
                   />
@@ -237,7 +237,7 @@ export default function IndividualCoachingPage() {
                 {/* Top Image */}
                 <div className="h-64 overflow-hidden">
                   <img
-                    src="/images/indiv-weekly.png"
+                    src="/images/Individual_img4.png"
                     alt="Consistent support for ongoing growth"
                     className="w-full h-full object-cover"
                   />
@@ -391,7 +391,7 @@ export default function IndividualCoachingPage() {
                 {/* Top Image */}
                 <div className="h-64 overflow-hidden">
                   <img
-                    src="/images/indiv-research.png"
+                    src="/images/Individual_img5.png"
                     alt="Acceptance and commitment therapy fundamentals"
                     className="w-full h-full object-cover"
                   />
@@ -431,7 +431,7 @@ export default function IndividualCoachingPage() {
                 {/* Top Image */}
                 <div className="h-64 overflow-hidden">
                   <img
-                    src="/images/indiv-support.png"
+                    src="/images/Individual_img6.png"
                     alt="Continuous guidance between sessions"
                     className="w-full h-full object-cover"
                   />
@@ -501,7 +501,7 @@ export default function IndividualCoachingPage() {
             className="rounded-lg aspect-[16/9] max-w-5xl mx-auto overflow-hidden"
           >
             <img
-              src="/images/indiv-journey.png"
+              src="/images/Individual_img7.png"
               alt="Your journey starts now"
               className="w-full h-full object-cover"
             />

@@ -20,7 +20,7 @@ export default function AboutPage() {
       <nav>
         <NavbarLandingPage />
       </nav>
-      <section className="h-[500px] md:h-[600px] lg:h-[700px] bg-[url('/images/AboutHeaderImg.jpg')] bg-cover bg-center bg-no-repeat">
+      <section className="h-[500px] md:h-[600px] lg:h-[700px] bg-[url('/images/About_img1.png')] bg-cover bg-center bg-no-repeat">
       </section>
 
       <section className="py-12 md:py-16 lg:py-20 bg-white">
@@ -62,7 +62,7 @@ export default function AboutPage() {
               className="lg:pl-12"
             >
               <img
-                src="/images/coaching-hero.png"
+                src="/images/About_img2.png"
                 alt="Our Story"
                 className="w-full h-96 object-cover shadow-lg rounded-lg"
                 loading="lazy"
@@ -131,7 +131,7 @@ export default function AboutPage() {
               className="lg:pl-12"
             >
               <img
-                src="/images/why-coaching-1.png"
+                src="/images/About_img3.png"
                 alt="Evidence-based Coaching"
                 className="w-full h-96 object-cover shadow-lg rounded-lg"
                 loading="lazy"
@@ -193,7 +193,7 @@ export default function AboutPage() {
               {/* Image */}
               <div className="mt-4">
                 <img
-                  src="/images/why-coaching-2.png"
+                  src="/images/About_img4.png"
                   alt="Intelligent Matching"
                   className="w-full h-48 object-cover"
                   loading="lazy"
@@ -229,7 +229,7 @@ export default function AboutPage() {
               {/* Image */}
               <div className="mt-4">
                 <img
-                  src="/images/why-coaching-3.png"
+                  src="/images/About_img5.png"
                   alt="Multiple Session Formats"
                   className="w-full h-48 object-cover"
                   loading="lazy"
@@ -265,7 +265,7 @@ export default function AboutPage() {
               {/* Image */}
               <div className="mt-4">
                 <img
-                  src="/images/why-coaching-4.png"
+                  src="/images/About_img6.png"
                   alt="Continuous Guidance"
                   className="w-full h-48 object-cover"
                   loading="lazy"
@@ -318,7 +318,7 @@ export default function AboutPage() {
               {/* Lives Changed Image */}
               <div className="bg-white border border-gray-200 hover:shadow-lg transition-shadow overflow-hidden">
                 <img
-                  src="/images/lives-changed.png"
+                  src="/images/About_img7.png"
                   alt="Lives Changed Impact"
                   className="w-full h-full object-cover"
                   loading="lazy"
@@ -335,7 +335,7 @@ export default function AboutPage() {
               {/* Image Card */}
               <div className="bg-gray-100 flex items-center justify-center overflow-hidden">
                 <img
-                  src="/images/coaching-numbers.png"
+                  src="/images/About_img8.png"
                   alt="Growth Statistics"
                   className="w-full h-full object-cover"
                   loading="lazy"
@@ -373,7 +373,7 @@ export default function AboutPage() {
               {/* Image Card */}
               <div className="bg-gray-100 flex items-center justify-center overflow-hidden">
                 <img
-                  src="/images/why-coaching-5.png"
+                  src="/images/About_img9.png"
                   alt="Global Reach"
                   className="w-full h-full object-cover"
                   loading="lazy"

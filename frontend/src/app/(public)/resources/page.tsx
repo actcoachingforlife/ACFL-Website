@@ -86,7 +86,7 @@ export default function ResourcesPage() {
             >
               <div className="rounded-lg overflow-hidden h-full">
                 <img
-                  src="/images/coaching-hero.png"
+                  src="/images/Resource_img1.png"
                   alt="Understanding your values in challenging times"
                   className="w-full h-full object-cover"
                 />
@@ -177,12 +177,8 @@ export default function ResourcesPage() {
 
             {/* Author Card */}
             <div className="mt-8 flex items-center gap-4">
-              <div className="w-12 h-12 bg-gray-200 rounded-full overflow-hidden flex-shrink-0">
-                <img
-                  src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=128&h=128&fit=crop"
-                  alt="Sarah Thompson"
-                  className="w-full h-full object-cover"
-                />
+              <div className="w-12 h-12 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-md">
+                <span className="text-white font-bold text-lg">ST</span>
               </div>
               <div>
                 <p className="font-semibold text-gray-900">Sarah Thompson</p>
@@ -215,7 +211,7 @@ export default function ResourcesPage() {
             >
               <div className="overflow-hidden">
                 <img
-                  src="/images/coaching-hero.png"
+                  src="/images/Resource_img2.png"
                   alt="Setting meaningful life goals"
                   className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
@@ -251,7 +247,7 @@ export default function ResourcesPage() {
             >
               <div className="overflow-hidden">
                 <img
-                  src="/images/why-coaching-1.png"
+                  src="/images/Resource_img3.png"
                   alt="Breaking through mental barriers"
                   className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
@@ -287,7 +283,7 @@ export default function ResourcesPage() {
             >
               <div className="overflow-hidden">
                 <img
-                  src="/images/why-coaching-2.png"
+                  src="/images/Resource_img4.png"
                   alt="Understanding your values in challenging times"
                   className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
@@ -457,7 +453,7 @@ export default function ResourcesPage() {
             className="rounded-lg overflow-hidden"
           >
             <img
-              src="/images/coaching-hero.png"
+              src="/images/Resource_img5.png"
               alt="Ready to start your journey"
               className="w-full h-auto object-cover max-h-[500px]"
             />

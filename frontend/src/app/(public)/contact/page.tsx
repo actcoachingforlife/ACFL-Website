@@ -47,10 +47,10 @@ export default function ContactPage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative py-20 bg-[url('/images/contact-hero.png')] bg-cover bg-center bg-no-repeat">
+      <section className="relative bg-[url('/images/Contact_img1.png')] h-[640px] bg-cover bg-center bg-no-repeat">
         <div className="absolute inset-0 bg-black/60"></div>
-        
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+
+        <div className="relative z-10 h-full flex items-center justify-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

@@ -24,7 +24,7 @@ export default function PricingPage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative h-[400px] bg-[url('/images/pricing-hero.png')] bg-cover bg-center bg-no-repeat">
+      <section className="relative h-[400px] bg-[url('/images/Pricing_img1.png')] bg-cover bg-center bg-no-repeat">
         <div className="absolute inset-0 bg-black/20"></div>
       </section>
 
@@ -302,7 +302,7 @@ export default function PricingPage() {
 
             <div className="order-1 md:order-2">
               <img
-                src={activeTab === 'qualified' ? '/images/pricing-vetted.png' : activeTab === 'messaging' ? '/images/pricing-247.png' : '/images/pricing-flex.png'}
+                src={activeTab === 'qualified' ? '/images/Pricing_img2.png' : activeTab === 'messaging' ? '/images/pricing-247.png' : '/images/pricing-flex.png'}
                 alt="Coaching benefit"
                 className="w-full h-[500px] object-cover rounded-lg"
               />
@@ -340,7 +340,7 @@ export default function PricingPage() {
 
             <div>
               <img
-                src="/images/pricing-potential.png"
+                src="/images/Pricing_img3.png"
                 alt="Team transformation"
                 className="w-full h-[400px] object-cover rounded-lg"
               />

@@ -29,9 +29,9 @@ export default function BlogPage() {
         <NavbarLandingPage />
       </nav>
       {/* Hero Section - Image Only */}
-      <section className="relative h-[400px]">
+      <section className="relative h-fit">
         <img
-          src="/images/pricing-hero.png"
+          src="/images/Group_img1.png"
           alt="Group Coaching"
           className="w-full h-full object-cover"
         />
@@ -110,7 +110,7 @@ export default function BlogPage() {
               {/* Right Column - Image */}
               <div className="min-h-[400px] overflow-hidden">
                 <img
-                  src={imgtwo.src}
+                  src="/images/Group_img2.png"
                   alt="Mental wellness coaching"
                   className="w-full h-full object-cover"
                   loading="lazy"
@@ -172,7 +172,7 @@ export default function BlogPage() {
               {/* Right Column - Image */}
               <div className="min-h-[400px] overflow-hidden">
                 <img
-                  src={imgthree.src}
+                  src="/images/Group_img3.png"
                   alt="Values-based living coaching"
                   className="w-full h-full object-cover"
                   loading="lazy"
@@ -196,7 +196,7 @@ export default function BlogPage() {
               {/* Left Column - Image */}
               <div className="md:col-span-2 min-h-[300px] overflow-hidden">
                 <img
-                  src={imgfive.src}
+                  src="/images/Group_img4.png"
                   alt="Workplace wellness coaching"
                   className="w-full h-full object-cover"
                   loading="lazy"
@@ -334,7 +334,7 @@ export default function BlogPage() {
               {/* Right Column - Image */}
               <div className="min-h-[400px] overflow-hidden">
                 <img
-                  src={imgone.src}
+                  src="/images/Group_img5.png"
                   alt="Relationship skills coaching"
                   className="w-full h-full object-cover"
                   loading="lazy"
@@ -407,7 +407,7 @@ export default function BlogPage() {
               {/* Right Column - Image */}
               <div className="min-h-[280px] overflow-hidden">
                 <img
-                  src={imgtwo.src}
+                  src="/images/Group_img6.png"
                   alt="Community support"
                   className="w-full h-full object-cover"
                   loading="lazy"
@@ -476,7 +476,7 @@ export default function BlogPage() {
               {/* Right Column - Image */}
               <div className="min-h-[280px] overflow-hidden">
                 <img
-                  src={imgthree.src}
+                  src="/images/Group_img7.png"
                   alt="Cost effective coaching"
                   className="w-full h-full object-cover"
                   loading="lazy"
@@ -545,7 +545,7 @@ export default function BlogPage() {
               {/* Right Column - Image */}
               <div className="min-h-[280px] overflow-hidden">
                 <img
-                  src={imgfive.src}
+                  src="/images/Group_img8.png"
                   alt="Accelerated progress"
                   className="w-full h-full object-cover"
                   loading="lazy"
@@ -585,7 +585,7 @@ export default function BlogPage() {
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            src={imgfour.src}
+            src="/images/Group_img9.png"
             alt=""
             className="w-full h-auto object-cover"
             loading="lazy"
