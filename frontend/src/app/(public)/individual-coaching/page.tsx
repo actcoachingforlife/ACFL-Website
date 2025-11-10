@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import NavbarLandingPage from "@/components/NavbarLandingPage"
 import Footer from "@/components/Footer"
 import contactUsPhoto from "@/app/(public)/images/contactUs.png"
+import { useScrollRestoration } from "@/hooks/useScrollRestoration"
 import {
   FileText,
   Users,
@@ -22,6 +23,7 @@ import {
 } from "lucide-react"
 
 export default function IndividualCoachingPage() {
+  useScrollRestoration('individualCoachingScrollPosition');
   const [activeTab, setActiveTab] = useState('video')
 
   return (
@@ -101,13 +103,17 @@ export default function IndividualCoachingPage() {
                     Engage with your coach through high-quality video platforms that feel personal and effective.
                   </p>
                   <div className="flex gap-4 pt-4">
-                    <button className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 rounded-lg font-medium transition-colors">
-                      Explore video
-                    </button>
-                    <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 px-8 py-3 rounded-lg font-medium flex items-center gap-2 transition-colors">
-                      Learn more
-                      <ArrowRight className="w-4 h-4" />
-                    </button>
+                    <a href="/pricing">
+                      <button className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 rounded-lg font-medium transition-colors">
+                        Explore video
+                      </button>
+                    </a>
+                    <a href="/about">
+                      <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 px-8 py-3 rounded-lg font-medium flex items-center gap-2 transition-colors">
+                        Learn more
+                        <ArrowRight className="w-4 h-4" />
+                      </button>
+                    </a>
                   </div>
                 </div>
               )}
@@ -121,13 +127,17 @@ export default function IndividualCoachingPage() {
                     Connect with your coach via phone for flexible, on-the-go coaching that fits your busy lifestyle.
                   </p>
                   <div className="flex gap-4 pt-4">
-                    <button className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 rounded-lg font-medium transition-colors">
-                      Explore phone
-                    </button>
-                    <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 px-8 py-3 rounded-lg font-medium flex items-center gap-2 transition-colors">
-                      Learn more
-                      <ArrowRight className="w-4 h-4" />
-                    </button>
+                    <a href="/pricing">
+                      <button className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 rounded-lg font-medium transition-colors">
+                        Explore phone
+                      </button>
+                    </a>
+                    <a href="/about">
+                      <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 px-8 py-3 rounded-lg font-medium flex items-center gap-2 transition-colors">
+                        Learn more
+                        <ArrowRight className="w-4 h-4" />
+                      </button>
+                    </a>
                   </div>
                 </div>
               )}
@@ -141,13 +151,17 @@ export default function IndividualCoachingPage() {
                     Stay connected with your coach between sessions through secure messaging for continuous guidance.
                   </p>
                   <div className="flex gap-4 pt-4">
-                    <button className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 rounded-lg font-medium transition-colors">
-                      Explore text
-                    </button>
-                    <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 px-8 py-3 rounded-lg font-medium flex items-center gap-2 transition-colors">
-                      Learn more
-                      <ArrowRight className="w-4 h-4" />
-                    </button>
+                    <a href="/pricing">
+                      <button className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 rounded-lg font-medium transition-colors">
+                        Explore text
+                      </button>
+                    </a>
+                    <a href="/about">
+                      <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 px-8 py-3 rounded-lg font-medium flex items-center gap-2 transition-colors">
+                        Learn more
+                        <ArrowRight className="w-4 h-4" />
+                      </button>
+                    </a>
                   </div>
                 </div>
               )}
@@ -213,13 +227,17 @@ export default function IndividualCoachingPage() {
                     Four intensive sessions to unlock complex challenges and create meaningful change.
                   </p>
                   <div className="flex gap-4">
-                    <button className="bg-teal-600 hover:bg-teal-700 text-white rounded-lg px-8 py-3 font-medium transition-colors">
-                      Select
-                    </button>
-                    <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg px-8 py-3 font-medium flex items-center gap-2 transition-colors">
-                      Details
-                      <ArrowRight className="w-4 h-4" />
-                    </button>
+                    <a href="/pricing">
+                      <button className="bg-teal-600 hover:bg-teal-700 text-white rounded-lg px-8 py-3 font-medium transition-colors">
+                        Select
+                      </button>
+                    </a>
+                    <a href="/pricing">
+                      <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg px-8 py-3 font-medium flex items-center gap-2 transition-colors">
+                        Details
+                        <ArrowRight className="w-4 h-4" />
+                      </button>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -253,13 +271,17 @@ export default function IndividualCoachingPage() {
                     Regular check-ins for sustained momentum and address emerging challenges in real time.
                   </p>
                   <div className="flex gap-4">
-                    <button className="bg-teal-600 hover:bg-teal-700 text-white rounded-lg px-8 py-3 font-medium transition-colors">
-                      Choose
-                    </button>
-                    <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg px-8 py-3 font-medium flex items-center gap-2 transition-colors">
-                      Learn
-                      <ArrowRight className="w-4 h-4" />
-                    </button>
+                    <a href="/pricing">
+                      <button className="bg-teal-600 hover:bg-teal-700 text-white rounded-lg px-8 py-3 font-medium transition-colors">
+                        Choose
+                      </button>
+                    </a>
+                    <a href="/about">
+                      <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg px-8 py-3 font-medium flex items-center gap-2 transition-colors">
+                        Learn
+                        <ArrowRight className="w-4 h-4" />
+                      </button>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -348,13 +370,17 @@ export default function IndividualCoachingPage() {
 
           {/* CTA Buttons */}
           <div className="flex justify-center gap-4">
-            <button className="bg-teal-600 hover:bg-teal-700 text-white rounded-lg px-8 py-3 font-medium transition-colors">
-              Start
-            </button>
-            <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg px-8 py-3 font-medium flex items-center gap-2 transition-colors">
-              Learn
-              <ArrowRight className="w-4 h-4" />
-            </button>
+            <a href="/assessment">
+              <button className="bg-teal-600 hover:bg-teal-700 text-white rounded-lg px-8 py-3 font-medium transition-colors">
+                Start
+              </button>
+            </a>
+            <a href="/about">
+              <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg px-8 py-3 font-medium flex items-center gap-2 transition-colors">
+                Learn
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </a>
           </div>
         </div>
       </section>
@@ -407,13 +433,17 @@ export default function IndividualCoachingPage() {
                     Psychological techniques validated by decades of clinical research and practice
                   </p>
                   <div className="flex gap-4">
-                    <button className="bg-teal-600 hover:bg-teal-700 text-white rounded-lg px-8 py-3 font-medium transition-colors">
-                      Explore
-                    </button>
-                    <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg px-8 py-3 font-medium flex items-center gap-2 transition-colors">
-                      Learn
-                      <ArrowRight className="w-4 h-4" />
-                    </button>
+                    <a href="/resources">
+                      <button className="bg-teal-600 hover:bg-teal-700 text-white rounded-lg px-8 py-3 font-medium transition-colors">
+                        Explore
+                      </button>
+                    </a>
+                    <a href="/blog">
+                      <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg px-8 py-3 font-medium flex items-center gap-2 transition-colors">
+                        Learn
+                        <ArrowRight className="w-4 h-4" />
+                      </button>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -447,13 +477,17 @@ export default function IndividualCoachingPage() {
                     Secure messaging platform provides support and quick check-ins
                   </p>
                   <div className="flex gap-4">
-                    <button className="bg-teal-600 hover:bg-teal-700 text-white rounded-lg px-8 py-3 font-medium transition-colors">
-                      Connect
-                    </button>
-                    <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg px-8 py-3 font-medium flex items-center gap-2 transition-colors">
-                      Discover
-                      <ArrowRight className="w-4 h-4" />
-                    </button>
+                    <a href="/resources">
+                      <button className="bg-teal-600 hover:bg-teal-700 text-white rounded-lg px-8 py-3 font-medium transition-colors">
+                        Connect
+                      </button>
+                    </a>
+                    <a href="/blog">
+                      <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg px-8 py-3 font-medium flex items-center gap-2 transition-colors">
+                        Discover
+                        <ArrowRight className="w-4 h-4" />
+                      </button>
+                    </a>
                   </div>
                 </div>
               </div>

@@ -6,8 +6,10 @@ import Contact from "../component/contactUs";
 import { motion } from "framer-motion";
 import { Facebook, Linkedin, Twitter, Link2 } from "lucide-react";
 import Image from "next/image";
+import { useScrollRestoration } from "@/hooks/useScrollRestoration";
 
 export default function ResourcesPage() {
+  useScrollRestoration('resourcesScrollPosition');
   return (
     <div className="flex flex-col min-h-screen bg-white">
       <nav>
@@ -229,12 +231,14 @@ export default function ResourcesPage() {
                 <p className="text-gray-600 text-sm mb-4 leading-relaxed">
                   Strategies for creating purpose-driven personal and professional objectives
                 </p>
-                <button className="inline-flex items-center text-sm font-medium text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 transition-colors">
-                  Read more
-                  <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </button>
+                <a href="/blog/life-goals">
+                  <button className="inline-flex items-center text-sm font-medium text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 transition-colors">
+                    Read more
+                    <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                </a>
               </div>
             </motion.div>
 
@@ -265,12 +269,14 @@ export default function ResourcesPage() {
                 <p className="text-gray-600 text-sm mb-4 leading-relaxed">
                   Explore strategies to overcome limiting beliefs and create meaningful change
                 </p>
-                <button className="inline-flex items-center text-sm font-medium text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 transition-colors">
-                  Read more
-                  <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </button>
+                <a href="/blog/mental-barriers">
+                  <button className="inline-flex items-center text-sm font-medium text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 transition-colors">
+                    Read more
+                    <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                </a>
               </div>
             </motion.div>
 
@@ -301,12 +307,14 @@ export default function ResourcesPage() {
                 <p className="text-gray-600 text-sm mb-4 leading-relaxed">
                   Practical techniques to align actions with core personal values
                 </p>
-                <button className="inline-flex items-center text-sm font-medium text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 transition-colors">
-                  Read more
-                  <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </button>
+                <a href="/blog/understanding-values">
+                  <button className="inline-flex items-center text-sm font-medium text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 transition-colors">
+                    Read more
+                    <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                </a>
               </div>
             </motion.div>
           </div>
@@ -437,12 +445,16 @@ export default function ResourcesPage() {
               Discover personalized coaching that helps you live with purpose and clarity
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4 mb-12">
-              <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium px-8 py-3 rounded-lg transition-colors shadow-sm">
-                Start assessment
-              </button>
-              <button className="bg-white hover:bg-gray-50 text-gray-700 font-medium px-8 py-3 rounded-lg border border-gray-300 transition-colors">
-                Browse resources
-              </button>
+              <a href="/assessment">
+                <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium px-8 py-3 rounded-lg transition-colors shadow-sm">
+                  Start assessment
+                </button>
+              </a>
+              <a href="/blog">
+                <button className="bg-white hover:bg-gray-50 text-gray-700 font-medium px-8 py-3 rounded-lg border border-gray-300 transition-colors">
+                  Browse resources
+                </button>
+              </a>
             </div>
           </motion.div>
 

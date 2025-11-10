@@ -4,6 +4,7 @@ import NavbarLandingPage from "@/components/NavbarLandingPage";
 import Contact from "../component/contactUs";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
+import { useScrollRestoration } from "@/hooks/useScrollRestoration";
 import {
   Users,
   TrendingUp,
@@ -15,6 +16,7 @@ import {
 } from "lucide-react";
 
 export default function AboutPage() {
+  useScrollRestoration('aboutScrollPosition');
   return (
     <div className="flex flex-col min-h-screen bg-white">
       <nav>
@@ -44,13 +46,17 @@ export default function AboutPage() {
 
               {/* CTA Buttons */}
               <div className="flex flex-wrap gap-4">
-                <button className="bg-white hover:bg-gray-50 text-gray-800 font-medium px-6 py-3 rounded-lg border border-gray-300 transition-colors">
-                  Our approach
-                </button>
-                <button className="bg-transparent hover:bg-white/50 text-gray-800 font-medium px-6 py-3 rounded-lg border border-transparent hover:border-gray-300 transition-all inline-flex items-center">
-                  Learn more
-                  <ArrowRight size={18} className="ml-2" />
-                </button>
+                <a href="/individual-coaching">
+                  <button className="bg-white hover:bg-gray-50 text-gray-800 font-medium px-6 py-3 rounded-lg border border-gray-300 transition-colors">
+                    Our approach
+                  </button>
+                </a>
+                <a href="/resources">
+                  <button className="bg-transparent hover:bg-white/50 text-gray-800 font-medium px-6 py-3 rounded-lg border border-transparent hover:border-gray-300 transition-all inline-flex items-center">
+                    Learn more
+                    <ArrowRight size={18} className="ml-2" />
+                  </button>
+                </a>
               </div>
             </motion.div>
 
@@ -113,13 +119,17 @@ export default function AboutPage() {
 
               {/* CTA Buttons */}
               <div className="flex flex-wrap gap-4">
-                <button className="bg-white hover:bg-gray-50 text-gray-800 font-medium px-6 py-3 rounded-lg border border-gray-300 transition-colors">
-                  Learn more
-                </button>
-                <button className="bg-transparent hover:bg-white/50 text-gray-800 font-medium px-6 py-3 rounded-lg border border-transparent hover:border-gray-300 transition-all inline-flex items-center">
-                  Get started
-                  <ArrowRight size={18} className="ml-2" />
-                </button>
+                <a href="/resources">
+                  <button className="bg-white hover:bg-gray-50 text-gray-800 font-medium px-6 py-3 rounded-lg border border-gray-300 transition-colors">
+                    Learn more
+                  </button>
+                </a>
+                <a href="/assessment">
+                  <button className="bg-transparent hover:bg-white/50 text-gray-800 font-medium px-6 py-3 rounded-lg border border-transparent hover:border-gray-300 transition-all inline-flex items-center">
+                    Get started
+                    <ArrowRight size={18} className="ml-2" />
+                  </button>
+                </a>
               </div>
             </motion.div>
 
@@ -182,7 +192,7 @@ export default function AboutPage() {
                   Find your perfect coaching match quickly and easily.
                 </p>
                 <a
-                  href="#"
+                  href="/individual-coaching"
                   className="inline-flex items-center text-sm text-gray-700 hover:text-gray-900 font-medium"
                 >
                   Explore matching
@@ -219,7 +229,7 @@ export default function AboutPage() {
                   Video, phone, and text coaching to fit your lifestyle.{" "}
                 </p>
                 <a
-                  href="#"
+                  href="/individual-coaching"
                   className="inline-flex items-center text-sm text-gray-700 hover:text-gray-900 font-medium"
                 >
                   View options <ArrowRight size={16} className="ml-2" />
@@ -255,7 +265,7 @@ export default function AboutPage() {
                   Stay connected with your coach between sessions.{" "}
                 </p>
                 <a
-                  href="#"
+                  href="/resources"
                   className="inline-flex items-center text-sm text-gray-700 hover:text-gray-900 font-medium"
                 >
                   Learn more <ArrowRight size={16} className="ml-2" />

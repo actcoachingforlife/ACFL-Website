@@ -8,6 +8,7 @@ import NavbarLandingPage from "@/components/NavbarLandingPage"
 import Footer from "@/components/Footer"
 import Testimonial from "../component/testimonial"
 import Contact from "../component/contactUs"
+import { useScrollRestoration } from "@/hooks/useScrollRestoration"
 
 // Static benefits data
 const defaultBenefits = [
@@ -61,6 +62,7 @@ const defaultPrograms = [
 ]
 
 export default function CorporateProgramsPage() {
+  useScrollRestoration('corporateScrollPosition');
   const [currentSlide, setCurrentSlide] = useState(0)
   const [currentOrgSlide, setCurrentOrgSlide] = useState(0)
   const slides = [
@@ -151,10 +153,10 @@ export default function CorporateProgramsPage() {
                 <p className="text-gray-600 text-sm mb-6 leading-relaxed">
                   Focused support for personal growth and targeted skill development
                 </p>
-                <button className="text-gray-900 font-medium text-sm flex items-center group">
+                <a href="/individual-coaching" className="text-gray-900 font-medium text-sm flex items-center group hover:underline">
                   Explore
                   <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-                </button>
+                </a>
               </div>
             </motion.div>
 
@@ -180,10 +182,10 @@ export default function CorporateProgramsPage() {
                 <p className="text-gray-600 text-sm mb-6 leading-relaxed">
                   Shared insights and collective growth in specialized workshop settings
                 </p>
-                <button className="text-gray-900 font-medium text-sm flex items-center group">
+                <a href="/group-coaching" className="text-gray-900 font-medium text-sm flex items-center group hover:underline">
                   Explore
                   <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-                </button>
+                </a>
               </div>
             </motion.div>
 
@@ -209,10 +211,10 @@ export default function CorporateProgramsPage() {
                 <p className="text-gray-600 text-sm mb-6 leading-relaxed">
                   Enhance team performance and workplace culture
                 </p>
-                <button className="text-gray-900 font-medium text-sm flex items-center group">
+                <a href="#elevate-section" className="text-gray-900 font-medium text-sm flex items-center group hover:underline">
                   Explore
                   <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-                </button>
+                </a>
               </div>
             </motion.div>
           </div>
@@ -241,10 +243,10 @@ export default function CorporateProgramsPage() {
                     Book session
                   </Button>
                 </a>
-                <button className="text-gray-900 font-medium text-sm flex items-center group">
+                <a href="/individual-coaching" className="text-gray-900 font-medium text-sm flex items-center group hover:underline">
                   Learn more
                   <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-                </button>
+                </a>
               </div>
             </motion.div>
 
@@ -376,7 +378,7 @@ export default function CorporateProgramsPage() {
             >
               <p className="text-xs text-gray-500 uppercase tracking-wider mb-4">Corporate</p>
 
-              <div className="mb-8">
+              <div className="mb-8" id="elevate-section">
                 <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                   Elevate your organization's potential
                 </h2>
@@ -384,13 +386,15 @@ export default function CorporateProgramsPage() {
                   Comprehensive coaching solutions designed to transform workplace dynamics and drive meaningful organizational growth.
                 </p>
                 <div className="flex flex-wrap gap-4">
-                  <Button className="bg-gray-900 text-white hover:bg-gray-800 px-6 py-3">
-                    Engage
-                  </Button>
-                  <button className="text-gray-900 font-medium text-sm flex items-center group">
+                  <a href="/contact">
+                    <Button className="bg-gray-900 text-white hover:bg-gray-800 px-6 py-3">
+                      Engage
+                    </Button>
+                  </a>
+                  <a href="/pricing" className="text-gray-900 font-medium text-sm flex items-center group hover:underline">
                     Explore
                     <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-                  </button>
+                  </a>
                 </div>
               </div>
 
@@ -498,10 +502,10 @@ export default function CorporateProgramsPage() {
                 <p className="text-gray-600 text-sm mb-6 leading-relaxed">
                   Unlock your unique potential through targeted psychological strategies.
                 </p>
-                <button className="text-gray-900 font-medium text-sm flex items-center group">
+                <a href="/individual-coaching" className="text-gray-900 font-medium text-sm flex items-center group hover:underline">
                   Discover
                   <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-                </button>
+                </a>
               </div>
             </motion.div>
 
@@ -527,10 +531,10 @@ export default function CorporateProgramsPage() {
                 <p className="text-gray-600 text-sm mb-6 leading-relaxed">
                   Accelerate professional advancement with strategic skill enhancement.
                 </p>
-                <button className="text-gray-900 font-medium text-sm flex items-center group">
+                <a href="/individual-coaching" className="text-gray-900 font-medium text-sm flex items-center group hover:underline">
                   Advance
                   <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-                </button>
+                </a>
               </div>
             </motion.div>
 
@@ -556,10 +560,10 @@ export default function CorporateProgramsPage() {
                 <p className="text-gray-600 text-sm mb-6 leading-relaxed">
                   Strategic solutions that integrate individual growth with organizational objectives.
                 </p>
-                <button className="text-gray-900 font-medium text-sm flex items-center group">
+                <a href="/corporate" className="text-gray-900 font-medium text-sm flex items-center group hover:underline">
                   Transform
                   <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-                </button>
+                </a>
               </div>
             </motion.div>
           </div>
@@ -635,13 +639,15 @@ export default function CorporateProgramsPage() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="flex flex-wrap gap-4 justify-center"
           >
-            <Button className="bg-white text-gray-900 border border-gray-300 hover:bg-gray-50 px-6 py-3">
-              Explore
-            </Button>
-            <button className="text-gray-900 font-medium text-sm flex items-center group">
+            <a href="/press">
+              <Button className="bg-white text-gray-900 border border-gray-300 hover:bg-gray-50 px-6 py-3">
+                Explore
+              </Button>
+            </a>
+            <a href="/about" className="text-gray-900 font-medium text-sm flex items-center group hover:underline">
               Learn more
               <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-            </button>
+            </a>
           </motion.div>
         </div>
       </section>
@@ -665,12 +671,16 @@ export default function CorporateProgramsPage() {
               Complete our quick two-minute assessment to find your perfect coaching match
             </p>
             <div className="flex flex-wrap gap-4 justify-center mb-12">
-              <Button className="bg-[#25a7b8] text-white hover:bg-[#1e8a98] px-6 py-3">
-                Start assessment
-              </Button>
-              <Button className="bg-white text-gray-900 border border-gray-300 hover:bg-gray-50 px-6 py-3">
-                Learn more
-              </Button>
+              <a href="/assessment">
+                <Button className="bg-[#25a7b8] text-white hover:bg-[#1e8a98] px-6 py-3">
+                  Start assessment
+                </Button>
+              </a>
+              <a href="/about">
+                <Button className="bg-white text-gray-900 border border-gray-300 hover:bg-gray-50 px-6 py-3">
+                  Learn more
+                </Button>
+              </a>
             </div>
           </motion.div>
 

@@ -1,12 +1,238 @@
 "use client";
 
+import { useState } from "react";
 import Footer from "@/components/Footer";
 import NavbarLandingPage from "@/components/NavbarLandingPage";
 import Contact from "../component/contactUs";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import { useScrollRestoration } from "@/hooks/useScrollRestoration";
+
+// Blog article type
+type BlogArticle = {
+  id: number;
+  title: string;
+  description: string;
+  category: string;
+  readTime: string;
+  image: string;
+};
+
+// Sample blog articles data
+const allBlogArticles: BlogArticle[] = [
+  {
+    id: 1,
+    title: "Setting meaningful life goals",
+    description: "Strategies for creating purpose-driven personal and professional objectives",
+    category: "Personal Growth",
+    readTime: "5 min read",
+    image: "/images/why-coaching-4.png"
+  },
+  {
+    id: 2,
+    title: "Breaking through mental barriers",
+    description: "Explore strategies to overcome limiting beliefs and create meaningful change",
+    category: "Mindfulness",
+    readTime: "5 min read",
+    image: "/images/why-coaching-5.png"
+  },
+  {
+    id: 3,
+    title: "Understanding your values in challenging times",
+    description: "Practical techniques to align actions with core personal values",
+    category: "Wellness",
+    readTime: "5 min read",
+    image: "/images/coaching-hero.png"
+  },
+  {
+    id: 4,
+    title: "Emotional intelligence in the workplace",
+    description: "Develop critical skills for effective communication and team performance",
+    category: "Leadership",
+    readTime: "6 min read",
+    image: "/images/why-coaching-3.png"
+  },
+  {
+    id: 5,
+    title: "Mindful living practices",
+    description: "Daily techniques to enhance presence and awareness",
+    category: "Mindfulness",
+    readTime: "4 min read",
+    image: "/images/why-coaching-1.png"
+  },
+  {
+    id: 6,
+    title: "Building resilience in difficult times",
+    description: "Strengthen your ability to bounce back from challenges",
+    category: "Wellness",
+    readTime: "7 min read",
+    image: "/images/why-coaching-2.png"
+  },
+  {
+    id: 7,
+    title: "Leadership through acceptance",
+    description: "Lead with authenticity and psychological flexibility",
+    category: "Leadership",
+    readTime: "6 min read",
+    image: "/images/why-coaching-4.png"
+  },
+  {
+    id: 8,
+    title: "Personal transformation journey",
+    description: "Navigate your path to meaningful personal growth",
+    category: "Personal Growth",
+    readTime: "8 min read",
+    image: "/images/why-coaching-5.png"
+  },
+  {
+    id: 9,
+    title: "Stress management techniques",
+    description: "Effective strategies for managing everyday stress",
+    category: "Wellness",
+    readTime: "5 min read",
+    image: "/images/coaching-hero.png"
+  },
+  {
+    id: 10,
+    title: "Communication mastery",
+    description: "Enhance your interpersonal communication skills",
+    category: "Leadership",
+    readTime: "6 min read",
+    image: "/images/why-coaching-3.png"
+  },
+  {
+    id: 11,
+    title: "Meditation for beginners",
+    description: "Start your mindfulness practice with simple techniques",
+    category: "Mindfulness",
+    readTime: "4 min read",
+    image: "/images/why-coaching-1.png"
+  },
+  {
+    id: 12,
+    title: "Goal setting strategies",
+    description: "Create actionable plans for your personal development",
+    category: "Personal Growth",
+    readTime: "7 min read",
+    image: "/images/why-coaching-2.png"
+  },
+  {
+    id: 13,
+    title: "Work-life balance essentials",
+    description: "Find harmony between professional and personal life",
+    category: "Wellness",
+    readTime: "5 min read",
+    image: "/images/why-coaching-4.png"
+  },
+  {
+    id: 14,
+    title: "Mindful breathing exercises",
+    description: "Simple breathing techniques for daily practice",
+    category: "Mindfulness",
+    readTime: "3 min read",
+    image: "/images/why-coaching-5.png"
+  },
+  {
+    id: 15,
+    title: "Effective team leadership",
+    description: "Build and lead high-performing teams",
+    category: "Leadership",
+    readTime: "8 min read",
+    image: "/images/coaching-hero.png"
+  }
+];
 
 export default function BlogPage() {
+  useScrollRestoration('blogScrollPosition');
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [message, setMessage] = useState('');
+  const [activeFilter, setActiveFilter] = useState<string>('all');
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  const articlesPerPage = 3;
+  const categories = ['all', 'Wellness', 'Mindfulness', 'Leadership', 'Personal Growth'];
+
+  // Filter articles based on active category
+  const filteredArticles = activeFilter === 'all'
+    ? allBlogArticles
+    : allBlogArticles.filter(article => article.category === activeFilter);
+
+  // Calculate pagination
+  const totalPages = Math.ceil(filteredArticles.length / articlesPerPage);
+  const indexOfLastArticle = currentPage * articlesPerPage;
+  const indexOfFirstArticle = indexOfLastArticle - articlesPerPage;
+  const currentArticles = filteredArticles.slice(indexOfFirstArticle, indexOfLastArticle);
+
+  // Handle filter change
+  const handleFilterChange = (category: string) => {
+    setActiveFilter(category);
+    setCurrentPage(1); // Reset to first page when filter changes
+  };
+
+  // Handle page change
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+    // Scroll to the section
+    document.getElementById('insights-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Validate email
+    if (!email || !/\S+@\S+\.\S+/.test(email)) {
+      setStatus('error');
+      setMessage('Please enter a valid email address');
+      return;
+    }
+
+    setStatus('loading');
+
+    try {
+      const { getApiUrl } = await import('@/lib/api');
+      const apiUrl = getApiUrl();
+
+      const response = await fetch(`${apiUrl}/api/newsletter/subscribe`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setStatus('success');
+        setMessage(data.message || 'Successfully subscribed! Check your email for confirmation.');
+        setEmail('');
+
+        // Reset success message after 5 seconds
+        setTimeout(() => {
+          setStatus('idle');
+          setMessage('');
+        }, 5000);
+      } else {
+        setStatus('error');
+        setMessage(data.message || 'Subscription failed. Please try again.');
+
+        // Reset error message after 5 seconds
+        setTimeout(() => {
+          setStatus('idle');
+          setMessage('');
+        }, 5000);
+      }
+    } catch (error) {
+      console.error('Newsletter subscription error:', error);
+      setStatus('error');
+      setMessage('Something went wrong. Please try again later.');
+
+      // Reset error message after 5 seconds
+      setTimeout(() => {
+        setStatus('idle');
+        setMessage('');
+      }, 5000);
+    }
+  };
   return (
     <div className="flex flex-col min-h-screen bg-white">
       <nav>
@@ -27,7 +253,7 @@ export default function BlogPage() {
                 {/* Featured Image */}
                 <div className="mb-6 rounded-lg overflow-hidden">
                   <img
-                    src="/images/Blog_img1.png"
+                    src="/images/coaching-hero.png"
                     alt="Understanding your values in challenging times"
                     className="w-full h-[350px] object-cover"
                   />
@@ -74,7 +300,7 @@ export default function BlogPage() {
                   {/* Trending Article 1 */}
                   <div className="flex gap-4 p-4 border-b border-gray-200">
                     <img
-                      src="/images/Blog_img2.png"
+                      src="/images/why-coaching-1.png"
                       alt="Emotional intelligence in the workplace"
                       className="w-32 h-24 object-cover rounded flex-shrink-0"
                     />
@@ -92,7 +318,7 @@ export default function BlogPage() {
                   {/* Trending Article 2 */}
                   <div className="flex gap-4 p-4 border-b border-gray-200">
                     <img
-                      src="/images/Blog_img3.png"
+                      src="/images/why-coaching-2.png"
                       alt="Emotional intelligence in the workplace"
                       className="w-32 h-24 object-cover rounded flex-shrink-0"
                     />
@@ -110,7 +336,7 @@ export default function BlogPage() {
                   {/* Trending Article 3 */}
                   <div className="flex gap-4 p-4">
                     <img
-                      src="/images/Blog_img4.png"
+                      src="/images/why-coaching-3.png"
                       alt="Emotional intelligence in the workplace"
                       className="w-32 h-24 object-cover rounded flex-shrink-0"
                     />
@@ -159,7 +385,7 @@ export default function BlogPage() {
             <div className="grid lg:grid-cols-2 gap-8 items-center">
               <div className="rounded-lg overflow-hidden">
                 <img
-                  src="/images/Blog_img5.png"
+                  src="/images/coaching-hero.png"
                   alt="Understanding your values in challenging times"
                   className="w-full h-[350px] object-cover"
                 />
@@ -177,10 +403,12 @@ export default function BlogPage() {
                 <p className="text-gray-600 mb-6">
                   Learn practical techniques to align your actions with core personal values
                 </p>
-                <button className="inline-flex items-center text-sm font-medium text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 transition-colors">
-                  Read more
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </button>
+                <a href="/blog/understanding-values">
+                  <button className="inline-flex items-center text-sm font-medium text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 transition-colors">
+                    Read more
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </button>
+                </a>
               </div>
             </div>
           </motion.div>
@@ -196,7 +424,7 @@ export default function BlogPage() {
             >
               <div className="overflow-hidden">
                 <img
-                  src="/images/Blog_img6.png"
+                  src="/images/why-coaching-1.png"
                   alt="Understanding your values in challenging times"
                   className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
@@ -214,10 +442,12 @@ export default function BlogPage() {
                 <p className="text-gray-600 text-sm mb-4">
                   Practical techniques to align actions with core personal values
                 </p>
-                <button className="inline-flex items-center text-sm font-medium text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 transition-colors">
-                  Read more
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </button>
+                <a href="/blog/understanding-values">
+                  <button className="inline-flex items-center text-sm font-medium text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 transition-colors">
+                    Read more
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </button>
+                </a>
               </div>
             </motion.div>
 
@@ -230,7 +460,7 @@ export default function BlogPage() {
             >
               <div className="overflow-hidden">
                 <img
-                  src="/images/Blog_img7.png"
+                  src="/images/why-coaching-2.png"
                   alt="Breaking through mental barriers"
                   className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
@@ -248,10 +478,12 @@ export default function BlogPage() {
                 <p className="text-gray-600 text-sm mb-4">
                   Explore strategies to overcome limiting beliefs and create meaningful change
                 </p>
-                <button className="inline-flex items-center text-sm font-medium text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 transition-colors">
-                  Read more
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </button>
+                <a href="/blog/mental-barriers">
+                  <button className="inline-flex items-center text-sm font-medium text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 transition-colors">
+                    Read more
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </button>
+                </a>
               </div>
             </motion.div>
 
@@ -264,7 +496,7 @@ export default function BlogPage() {
             >
               <div className="overflow-hidden">
                 <img
-                  src="/images/Blog_img8.png"
+                  src="/images/why-coaching-3.png"
                   alt="Emotional intelligence in the workplace"
                   className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
@@ -282,10 +514,12 @@ export default function BlogPage() {
                 <p className="text-gray-600 text-sm mb-4">
                   Develop critical skills for effective communication and team performance
                 </p>
-                <button className="inline-flex items-center text-sm font-medium text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 transition-colors">
-                  Read more
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </button>
+                <a href="/blog/emotional-intelligence">
+                  <button className="inline-flex items-center text-sm font-medium text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 transition-colors">
+                    Read more
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </button>
+                </a>
               </div>
             </motion.div>
           </div>
@@ -301,7 +535,7 @@ export default function BlogPage() {
             >
               <div className="overflow-hidden">
                 <img
-                  src="/images/Blog_img9.png"
+                  src="/images/why-coaching-4.png"
                   alt="Setting meaningful life goals"
                   className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
@@ -319,10 +553,12 @@ export default function BlogPage() {
                 <p className="text-gray-600 text-sm mb-4">
                   Strategies for creating purpose-driven personal and professional objectives
                 </p>
-                <button className="inline-flex items-center text-sm font-medium text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 transition-colors">
-                  Read more
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </button>
+                <a href="/blog/life-goals">
+                  <button className="inline-flex items-center text-sm font-medium text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 transition-colors">
+                    Read more
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </button>
+                </a>
               </div>
             </motion.div>
 
@@ -335,7 +571,7 @@ export default function BlogPage() {
             >
               <div className="overflow-hidden">
                 <img
-                  src="/images/Blog_img10.png"
+                  src="/images/why-coaching-5.png"
                   alt="Breaking through mental barriers"
                   className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
@@ -353,10 +589,12 @@ export default function BlogPage() {
                 <p className="text-gray-600 text-sm mb-4">
                   Explore strategies to overcome limiting beliefs and create meaningful change
                 </p>
-                <button className="inline-flex items-center text-sm font-medium text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 transition-colors">
-                  Read more
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </button>
+                <a href="/blog/mental-barriers">
+                  <button className="inline-flex items-center text-sm font-medium text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 transition-colors">
+                    Read more
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </button>
+                </a>
               </div>
             </motion.div>
 
@@ -369,7 +607,7 @@ export default function BlogPage() {
             >
               <div className="overflow-hidden">
                 <img
-                  src="/images/Blog_img11.png"
+                  src="/images/coaching-hero.png"
                   alt="Understanding your values in challenging times"
                   className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                 />
@@ -387,10 +625,12 @@ export default function BlogPage() {
                 <p className="text-gray-600 text-sm mb-4">
                   Practical techniques to align actions with core personal values
                 </p>
-                <button className="inline-flex items-center text-sm font-medium text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 transition-colors">
-                  Read more
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </button>
+                <a href="/blog/understanding-values">
+                  <button className="inline-flex items-center text-sm font-medium text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 transition-colors">
+                    Read more
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </button>
+                </a>
               </div>
             </motion.div>
           </div>
@@ -419,7 +659,7 @@ export default function BlogPage() {
             <div className="grid lg:grid-cols-2 gap-0 items-stretch">
               <div className="overflow-hidden">
                 <img
-                  src="/images/Blog_img12.png"
+                  src="/images/coaching-hero.png"
                   alt="Understanding your values in challenging times"
                   className="w-full h-full object-cover"
                 />
@@ -437,10 +677,12 @@ export default function BlogPage() {
                 <p className="text-gray-600 mb-4 text-sm">
                   Learn practical techniques to align your actions with core personal values
                 </p>
-                <button className="inline-flex items-center text-sm font-medium text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 transition-colors w-fit">
-                  Read more
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </button>
+                <a href="/blog/understanding-values">
+                  <button className="inline-flex items-center text-sm font-medium text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 transition-colors w-fit">
+                    Read more
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </button>
+                </a>
               </div>
             </div>
           </motion.div>
@@ -468,7 +710,7 @@ export default function BlogPage() {
               className="overflow-hidden rounded"
             >
               <img
-                src="/images/Blog_img13.png"
+                src="/images/why-coaching-1.png"
                 alt="Understanding your values in challenging times"
                 className="w-full h-[180px] object-cover"
               />
@@ -493,10 +735,12 @@ export default function BlogPage() {
               <p className="text-gray-600 mb-4 text-sm">
                 Learn practical techniques to align your actions with core personal values
               </p>
-              <button className="inline-flex items-center text-sm font-medium text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 transition-colors">
-                Read more
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </button>
+              <a href="/blog/understanding-values">
+                <button className="inline-flex items-center text-sm font-medium text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 transition-colors">
+                  Read more
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </button>
+              </a>
             </motion.div>
 
             {/* Three Small Cards - Column 3 */}
@@ -559,7 +803,7 @@ export default function BlogPage() {
       </section>
 
       {/* ACT Insights & Strategies Section */}
-      <section className="py-16 bg-gray-50">
+      <section id="insights-section" className="py-16 bg-gray-50 scroll-mt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="text-center mb-8">
@@ -574,152 +818,103 @@ export default function BlogPage() {
 
           {/* Filter Buttons */}
           <div className="flex flex-wrap justify-center gap-3 mb-12">
-            <button className="px-4 py-2 bg-red-500 text-white text-sm font-medium rounded hover:bg-red-600 transition-colors">
-              View all
-            </button>
-            <button className="px-4 py-2 bg-white text-gray-700 text-sm font-medium rounded border border-gray-300 hover:bg-gray-50 transition-colors">
-              Wellness
-            </button>
-            <button className="px-4 py-2 bg-white text-gray-700 text-sm font-medium rounded border border-gray-300 hover:bg-gray-50 transition-colors">
-              Mindfulness
-            </button>
-            <button className="px-4 py-2 bg-white text-gray-700 text-sm font-medium rounded border border-gray-300 hover:bg-gray-50 transition-colors">
-              Leadership
-            </button>
-            <button className="px-4 py-2 bg-white text-gray-700 text-sm font-medium rounded border border-gray-300 hover:bg-gray-50 transition-colors">
-              Personal Growth
-            </button>
+            {categories.map((category) => (
+              <button
+                key={category}
+                onClick={() => handleFilterChange(category)}
+                className={`px-4 py-2 text-sm font-medium rounded transition-colors ${
+                  activeFilter === category
+                    ? 'bg-red-500 text-white hover:bg-red-600'
+                    : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
+                }`}
+              >
+                {category === 'all' ? 'View all' : category}
+              </button>
+            ))}
           </div>
 
           {/* Blog Cards Grid */}
           <div className="grid md:grid-cols-3 gap-8 mb-12">
-            {/* Card 1 */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
-            >
-              <div className="overflow-hidden">
-                <img
-                  src="/images/Blog_img14.png"
-                  alt="Setting meaningful life goals"
-                  className="w-full h-[220px] object-cover"
-                />
+            {currentArticles.length > 0 ? (
+              currentArticles.map((article, index) => (
+                <motion.div
+                  key={article.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+                >
+                  <div className="overflow-hidden">
+                    <img
+                      src={article.image}
+                      alt={article.title}
+                      className="w-full h-[220px] object-cover"
+                    />
+                  </div>
+                  <div className="p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <span className="inline-block bg-cyan-100 text-cyan-600 px-3 py-1 rounded text-xs font-medium">
+                        {article.category}
+                      </span>
+                      <span className="text-sm text-gray-600">{article.readTime}</span>
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-3 leading-tight">
+                      {article.title}
+                    </h3>
+                    <p className="text-gray-600 text-sm mb-4">
+                      {article.description}
+                    </p>
+                    <button className="inline-flex items-center text-sm font-medium text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 transition-colors">
+                      Read more
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </button>
+                  </div>
+                </motion.div>
+              ))
+            ) : (
+              <div className="col-span-3 text-center py-12">
+                <p className="text-gray-600">No articles found for this category.</p>
               </div>
-              <div className="p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="inline-block bg-cyan-100 text-cyan-600 px-3 py-1 rounded text-xs font-medium">
-                    Personal Growth
-                  </span>
-                  <span className="text-sm text-gray-600">5 min read</span>
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3 leading-tight">
-                  Setting meaningful life goals
-                </h3>
-                <p className="text-gray-600 text-sm mb-4">
-                  Strategies for creating purpose-driven personal and professional objectives
-                </p>
-                <button className="inline-flex items-center text-sm font-medium text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 transition-colors">
-                  Read more
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </button>
-              </div>
-            </motion.div>
-
-            {/* Card 2 */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
-            >
-              <div className="overflow-hidden">
-                <img
-                  src="/images/Blog_img15.png"
-                  alt="Breaking through mental barriers"
-                  className="w-full h-[220px] object-cover"
-                />
-              </div>
-              <div className="p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="inline-block bg-cyan-100 text-cyan-600 px-3 py-1 rounded text-xs font-medium">
-                    Mindfulness
-                  </span>
-                  <span className="text-sm text-gray-600">5 min read</span>
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3 leading-tight">
-                  Breaking through mental barriers
-                </h3>
-                <p className="text-gray-600 text-sm mb-4">
-                  Explore strategies to overcome limiting beliefs and create meaningful change
-                </p>
-                <button className="inline-flex items-center text-sm font-medium text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 transition-colors">
-                  Read more
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </button>
-              </div>
-            </motion.div>
-
-            {/* Card 3 */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
-            >
-              <div className="overflow-hidden">
-                <img
-                  src="/images/Blog_img16.png"
-                  alt="Understanding your values in challenging times"
-                  className="w-full h-[220px] object-cover"
-                />
-              </div>
-              <div className="p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="inline-block bg-cyan-100 text-cyan-600 px-3 py-1 rounded text-xs font-medium">
-                    Wellness
-                  </span>
-                  <span className="text-sm text-gray-600">5 min read</span>
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3 leading-tight">
-                  Understanding your values in challenging times
-                </h3>
-                <p className="text-gray-600 text-sm mb-4">
-                  Practical techniques to align actions with core personal values
-                </p>
-                <button className="inline-flex items-center text-sm font-medium text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 transition-colors">
-                  Read more
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </button>
-              </div>
-            </motion.div>
+            )}
           </div>
 
           {/* Pagination */}
-          <div className="flex items-center justify-center gap-2">
-            <button className="p-2 text-gray-600 hover:text-gray-900 transition-colors">
-              <ArrowRight className="w-5 h-5 rotate-180" />
-            </button>
-            <button className="px-4 py-2 bg-cyan-400 text-white text-sm font-medium rounded">
-              1
-            </button>
-            <button className="px-4 py-2 bg-white text-gray-700 text-sm font-medium rounded border border-gray-300 hover:bg-gray-50 transition-colors">
-              2
-            </button>
-            <button className="px-4 py-2 bg-white text-gray-700 text-sm font-medium rounded border border-gray-300 hover:bg-gray-50 transition-colors">
-              3
-            </button>
-            <button className="px-4 py-2 bg-white text-gray-700 text-sm font-medium rounded border border-gray-300 hover:bg-gray-50 transition-colors">
-              4
-            </button>
-            <button className="px-4 py-2 bg-white text-gray-700 text-sm font-medium rounded border border-gray-300 hover:bg-gray-50 transition-colors">
-              5
-            </button>
-            <button className="p-2 text-gray-600 hover:text-gray-900 transition-colors">
-              <ArrowRight className="w-5 h-5" />
-            </button>
-          </div>
+          {totalPages > 1 && (
+            <div className="flex items-center justify-center gap-2">
+              {/* Previous Button */}
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="p-2 text-gray-600 hover:text-gray-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <ArrowRight className="w-5 h-5 rotate-180" />
+              </button>
+
+              {/* Page Numbers */}
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNumber) => (
+                <button
+                  key={pageNumber}
+                  onClick={() => handlePageChange(pageNumber)}
+                  className={`px-4 py-2 text-sm font-medium rounded transition-colors ${
+                    currentPage === pageNumber
+                      ? 'bg-cyan-400 text-white'
+                      : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
+                  }`}
+                >
+                  {pageNumber}
+                </button>
+              ))}
+
+              {/* Next Button */}
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className="p-2 text-gray-600 hover:text-gray-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <ArrowRight className="w-5 h-5" />
+              </button>
+            </div>
+          )}
         </div>
       </section>
 
@@ -747,7 +942,7 @@ export default function BlogPage() {
             <div className="grid md:grid-cols-2 gap-0 items-stretch">
               <div className="overflow-hidden h-[220px]">
                 <img
-                  src="/images/Blog_img17.png"
+                  src="/images/why-coaching-1.png"
                   alt="Understanding your values in challenging times"
                   className="w-full h-full object-cover"
                 />
@@ -765,10 +960,12 @@ export default function BlogPage() {
                 <p className="text-gray-600 mb-4 text-sm">
                   Learn practical techniques to align your actions with core personal values
                 </p>
-                <button className="inline-flex items-center text-sm font-medium text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 transition-colors w-fit">
-                  Read more
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </button>
+                <a href="/blog/understanding-values">
+                  <button className="inline-flex items-center text-sm font-medium text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 transition-colors w-fit">
+                    Read more
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </button>
+                </a>
               </div>
             </div>
           </motion.div>
@@ -784,7 +981,7 @@ export default function BlogPage() {
             >
               <div className="overflow-hidden">
                 <img
-                  src="/images/Blog_img18.png"
+                  src="/images/why-coaching-2.png"
                   alt="Understanding your values in challenging times"
                   className="w-full h-[220px] object-cover"
                 />
@@ -802,10 +999,12 @@ export default function BlogPage() {
                 <p className="text-gray-600 text-sm mb-4">
                   Practical techniques to align actions with core personal values
                 </p>
-                <button className="inline-flex items-center text-sm font-medium text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 transition-colors">
-                  Read more
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </button>
+                <a href="/blog/understanding-values">
+                  <button className="inline-flex items-center text-sm font-medium text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 transition-colors">
+                    Read more
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </button>
+                </a>
               </div>
             </motion.div>
 
@@ -818,7 +1017,7 @@ export default function BlogPage() {
             >
               <div className="overflow-hidden">
                 <img
-                  src="/images/Blog_img15.png"
+                  src="/images/why-coaching-5.png"
                   alt="Breaking through mental barriers"
                   className="w-full h-[220px] object-cover"
                 />
@@ -836,10 +1035,12 @@ export default function BlogPage() {
                 <p className="text-gray-600 text-sm mb-4">
                   Explore strategies to overcome limiting beliefs and create meaningful change
                 </p>
-                <button className="inline-flex items-center text-sm font-medium text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 transition-colors">
-                  Read more
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </button>
+                <a href="/blog/mental-barriers">
+                  <button className="inline-flex items-center text-sm font-medium text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 transition-colors">
+                    Read more
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </button>
+                </a>
               </div>
             </motion.div>
 
@@ -852,7 +1053,7 @@ export default function BlogPage() {
             >
               <div className="overflow-hidden">
                 <img
-                  src="/images/Blog_img20.png"
+                  src="/images/why-coaching-3.png"
                   alt="Emotional intelligence in the workplace"
                   className="w-full h-[220px] object-cover"
                 />
@@ -870,10 +1071,12 @@ export default function BlogPage() {
                 <p className="text-gray-600 text-sm mb-4">
                   Develop critical skills for effective communication and team performance
                 </p>
-                <button className="inline-flex items-center text-sm font-medium text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 transition-colors">
-                  Read more
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </button>
+                <a href="/blog/emotional-intelligence">
+                  <button className="inline-flex items-center text-sm font-medium text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 transition-colors">
+                    Read more
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </button>
+                </a>
               </div>
             </motion.div>
           </div>
@@ -893,7 +1096,7 @@ export default function BlogPage() {
               </p>
             </div>
             <div className="w-full md:w-auto">
-              <div className="flex flex-col sm:flex-row gap-3">
+              <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Sign up to our newsletter ↓
@@ -901,13 +1104,25 @@ export default function BlogPage() {
                   <input
                     type="email"
                     placeholder="Enter your email"
-                    className="px-4 py-2 border border-gray-300 rounded w-full sm:w-64 focus:outline-none focus:ring-2 focus:ring-red-500"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    disabled={status === 'loading'}
+                    className="px-4 py-2 border border-gray-300 rounded w-full sm:w-64 focus:outline-none focus:ring-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed"
                   />
                 </div>
-                <button className="px-6 py-2 bg-red-500 text-white font-medium rounded hover:bg-red-600 transition-colors self-end">
-                  Subscribe
+                <button
+                  type="submit"
+                  disabled={status === 'loading'}
+                  className="px-6 py-2 bg-red-500 text-white font-medium rounded hover:bg-red-600 transition-colors self-end disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {status === 'loading' ? 'Subscribing...' : 'Subscribe'}
                 </button>
-              </div>
+              </form>
+              {message && (
+                <p className={`mt-3 text-sm ${status === 'success' ? 'text-green-600' : 'text-red-600'}`}>
+                  {message}
+                </p>
+              )}
             </div>
           </div>
         </div>
@@ -1024,12 +1239,16 @@ export default function BlogPage() {
               Stay updated with the latest ACT strategies and personal growth resources
             </p>
             <div className="flex justify-center gap-4">
-              <button className="px-6 py-3 bg-teal-500 text-white font-medium rounded hover:bg-teal-600 transition-colors">
-                Subscribe
-              </button>
-              <button className="px-6 py-3 bg-white text-gray-700 font-medium rounded border border-gray-300 hover:bg-gray-50 transition-colors">
-                Explore
-              </button>
+              <a href="#footer-subscribe">
+                <button className="px-6 py-3 bg-teal-500 text-white font-medium rounded hover:bg-teal-600 transition-colors">
+                  Subscribe
+                </button>
+              </a>
+              <a href="/resources">
+                <button className="px-6 py-3 bg-white text-gray-700 font-medium rounded border border-gray-300 hover:bg-gray-50 transition-colors">
+                  Explore
+                </button>
+              </a>
             </div>
           </div>
 
@@ -1041,7 +1260,7 @@ export default function BlogPage() {
             className="rounded-lg overflow-hidden"
           >
             <img
-              src="/images/Blog_img21.png"
+              src="/images/coaching-hero.png"
               alt="Get insights that transform"
               className="w-full h-[400px] object-cover"
             />

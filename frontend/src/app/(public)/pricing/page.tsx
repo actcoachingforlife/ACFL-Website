@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import NavbarLandingPage from "@/components/NavbarLandingPage"
 import Footer from "@/components/Footer"
 import Contact from "../component/contactUs"
+import { useScrollRestoration } from "@/hooks/useScrollRestoration"
 import {
   CheckCircle,
   Star,
@@ -13,6 +14,7 @@ import {
 } from "lucide-react"
 
 export default function PricingPage() {
+  useScrollRestoration('pricingScrollPosition');
   const [isYearly, setIsYearly] = useState(false)
   const [activeTab, setActiveTab] = useState('qualified')
 
@@ -87,9 +89,11 @@ export default function PricingPage() {
                 </p>
               </div>
 
-              <button className="w-full bg-gray-900 hover:bg-gray-800 text-white py-3 rounded-lg font-medium mb-8 transition-colors">
-                START MONTHLY PLAN
-              </button>
+              <a href="/contact">
+                <button className="w-full bg-gray-900 hover:bg-gray-800 text-white py-3 rounded-lg font-medium mb-8 transition-colors">
+                  START MONTHLY PLAN
+                </button>
+              </a>
 
               <div className="mb-6">
                 <p className="text-sm font-semibold text-gray-900 mb-4">Features :</p>
@@ -135,9 +139,11 @@ export default function PricingPage() {
                 </p>
               </div>
 
-              <button className="w-full bg-gray-900 hover:bg-gray-800 text-white py-3 rounded-lg font-medium mb-8 transition-colors">
-                START WEEKLY PLAN
-              </button>
+              <a href="/contact">
+                <button className="w-full bg-gray-900 hover:bg-gray-800 text-white py-3 rounded-lg font-medium mb-8 transition-colors">
+                  START WEEKLY PLAN
+                </button>
+              </a>
 
               <div className="mb-6">
                 <p className="text-sm font-semibold text-gray-900 mb-4">Features :</p>
@@ -179,13 +185,17 @@ export default function PricingPage() {
 
             {/* Action Buttons */}
             <div className="flex justify-center gap-4 mb-12">
-              <button className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 rounded-lg font-medium transition-colors">
-                Learn more
-              </button>
-              <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 px-8 py-3 rounded-lg font-medium flex items-center gap-2 transition-colors">
-                Explore
-                <ArrowRight className="w-4 h-4" />
-              </button>
+              <a href="/about">
+                <button className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 rounded-lg font-medium transition-colors">
+                  Learn more
+                </button>
+              </a>
+              <a href="/individual-coaching">
+                <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 px-8 py-3 rounded-lg font-medium flex items-center gap-2 transition-colors">
+                  Explore
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </a>
             </div>
 
             {/* Tab Links with Underline */}
@@ -240,13 +250,17 @@ export default function PricingPage() {
                     Each coach undergoes rigorous certification and continuous professional development to ensure highest quality support.
                   </p>
                   <div className="flex gap-4">
-                    <button className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 rounded-lg font-medium transition-colors">
-                      Details
-                    </button>
-                    <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 px-8 py-3 rounded-lg font-medium flex items-center gap-2 transition-colors">
-                      Discover
-                      <ArrowRight className="w-4 h-4" />
-                    </button>
+                    <a href="/about">
+                      <button className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 rounded-lg font-medium transition-colors">
+                        Details
+                      </button>
+                    </a>
+                    <a href="/blog">
+                      <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 px-8 py-3 rounded-lg font-medium flex items-center gap-2 transition-colors">
+                        Discover
+                        <ArrowRight className="w-4 h-4" />
+                      </button>
+                    </a>
                   </div>
                 </motion.div>
               )}
@@ -264,13 +278,17 @@ export default function PricingPage() {
                     Connect with your coach anytime through our secure messaging platform for continuous support between sessions.
                   </p>
                   <div className="flex gap-4">
-                    <button className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 rounded-lg font-medium transition-colors">
-                      Details
-                    </button>
-                    <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 px-8 py-3 rounded-lg font-medium flex items-center gap-2 transition-colors">
-                      Discover
-                      <ArrowRight className="w-4 h-4" />
-                    </button>
+                    <a href="/about">
+                      <button className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 rounded-lg font-medium transition-colors">
+                        Details
+                      </button>
+                    </a>
+                    <a href="/blog">
+                      <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 px-8 py-3 rounded-lg font-medium flex items-center gap-2 transition-colors">
+                        Discover
+                        <ArrowRight className="w-4 h-4" />
+                      </button>
+                    </a>
                   </div>
                 </motion.div>
               )}
@@ -288,13 +306,17 @@ export default function PricingPage() {
                     Book and reschedule sessions at times that work for you with our easy-to-use scheduling system.
                   </p>
                   <div className="flex gap-4">
-                    <button className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 rounded-lg font-medium transition-colors">
-                      Details
-                    </button>
-                    <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 px-8 py-3 rounded-lg font-medium flex items-center gap-2 transition-colors">
-                      Discover
-                      <ArrowRight className="w-4 h-4" />
-                    </button>
+                    <a href="/about">
+                      <button className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 rounded-lg font-medium transition-colors">
+                        Details
+                      </button>
+                    </a>
+                    <a href="/blog">
+                      <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 px-8 py-3 rounded-lg font-medium flex items-center gap-2 transition-colors">
+                        Discover
+                        <ArrowRight className="w-4 h-4" />
+                      </button>
+                    </a>
                   </div>
                 </motion.div>
               )}
@@ -328,12 +350,16 @@ export default function PricingPage() {
                   Discover personalized group coaching solutions designed to unlock collective growth and performance.
                 </p>
                 <div className="flex gap-4">
-                  <button className="bg-gray-900 hover:bg-gray-800 text-white px-10 py-3 rounded-lg font-medium transition-colors">
-                    Start now
-                  </button>
-                  <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 px-10 py-3 rounded-lg font-medium transition-colors">
-                    Learn more
-                  </button>
+                  <a href="/assessment">
+                    <button className="bg-gray-900 hover:bg-gray-800 text-white px-10 py-3 rounded-lg font-medium transition-colors">
+                      Start now
+                    </button>
+                  </a>
+                  <a href="/group-coaching">
+                    <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 px-10 py-3 rounded-lg font-medium transition-colors">
+                      Learn more
+                    </button>
+                  </a>
                 </div>
               </motion.div>
             </div>

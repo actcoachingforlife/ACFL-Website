@@ -7,6 +7,7 @@ import { Search, Users, CreditCard, MessageCircle, Shield, FileText, HelpCircle,
 import { Input } from "@/components/ui/input"
 import Footer from "@/components/Footer"
 import NavbarLandingPage from "@/components/NavbarLandingPage"
+import { useScrollRestoration } from "@/hooks/useScrollRestoration"
 
 interface FAQItem {
   question: string
@@ -15,6 +16,7 @@ interface FAQItem {
 }
 
 export default function HelpCenterPage() {
+  useScrollRestoration('helpScrollPosition');
   const [searchQuery, setSearchQuery] = useState("")
   const [generalFAQs, setGeneralFAQs] = useState<FAQItem[]>([
     {
