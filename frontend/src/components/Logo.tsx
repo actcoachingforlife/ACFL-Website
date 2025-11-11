@@ -10,18 +10,18 @@ interface LogoProps {
 export default function Logo({ size = 32, className = "" }: LogoProps) {
   // Build className to avoid hydration issues
   const finalClassName = ['inline-block', className].filter(Boolean).join(' ');
-  
+
   return (
     <motion.div
       className={finalClassName}
-      initial={{ rotate: 0 }}
-      whileHover={{ rotate: 360 }}
-      transition={{ duration: 1.6, ease: "easeInOut" }}
+      initial={{ scale: 1 }}
+      whileHover={{ scale: 1.05 }}
+      transition={{ duration: 0.3, ease: "easeInOut" }}
     >
       <Image
-        src="https://storage.googleapis.com/msgsndr/12p9V9PdtvnTPGSU0BBw/media/672420528abc730356eeaad5.png"
+        src="/images/logo.png"
         alt="ACT Coaching for Life logo"
-        width={size}
+        width={size * 6}
         height={size}
         className="select-none"
       />
