@@ -51,7 +51,7 @@ export default function AboutPage() {
                     Our approach
                   </button>
                 </a>
-                <a href="/resources">
+                <a href="/blog">
                   <button className="bg-transparent hover:bg-white/50 text-gray-800 font-medium px-6 py-3 rounded-lg border border-transparent hover:border-gray-300 transition-all inline-flex items-center">
                     Learn more
                     <ArrowRight size={18} className="ml-2" />
@@ -119,7 +119,7 @@ export default function AboutPage() {
 
               {/* CTA Buttons */}
               <div className="flex flex-wrap gap-4">
-                <a href="/resources">
+                <a href="/blog">
                   <button className="bg-white hover:bg-gray-50 text-gray-800 font-medium px-6 py-3 rounded-lg border border-gray-300 transition-colors">
                     Learn more
                   </button>
@@ -265,7 +265,7 @@ export default function AboutPage() {
                   Stay connected with your coach between sessions.{" "}
                 </p>
                 <a
-                  href="/resources"
+                  href="/blog"
                   className="inline-flex items-center text-sm text-gray-700 hover:text-gray-900 font-medium"
                 >
                   Learn more <ArrowRight size={16} className="ml-2" />

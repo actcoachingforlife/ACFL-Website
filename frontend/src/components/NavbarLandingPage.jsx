@@ -102,12 +102,6 @@ const NavbarLandingPage = () => {
                       Blog
                     </Link>
                     <Link
-                      href="/resources"
-                      className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-brand-teal dark:hover:text-brand-teal"
-                    >
-                      Resources Library
-                    </Link>
-                    <Link
                       href="/press"
                       className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-brand-teal dark:hover:text-brand-teal"
                     >
@@ -220,7 +214,6 @@ const NavbarLandingPage = () => {
                 {openDropdown === 'mobile-resources' && (
                   <div className="ml-4 mt-2">
                     <Link href="/blog" className="block py-1 text-sm text-gray-600 dark:text-gray-300 hover:text-brand-teal dark:hover:text-brand-teal">Blog</Link>
-                    <Link href="/resources" className="block py-1 text-sm text-gray-600 dark:text-gray-300 hover:text-brand-teal dark:hover:text-brand-teal">Resources Library</Link>
                     <Link href="/press" className="block py-1 text-sm text-gray-600 dark:text-gray-300 hover:text-brand-teal dark:hover:text-brand-teal">Press</Link>
                   </div>
                 )}

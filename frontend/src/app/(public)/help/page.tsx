@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Search, Users, CreditCard, MessageCircle, Shield, FileText, HelpCircle, ChevronDown, MessageSquare, Mail, Phone, ArrowRight } from "lucide-react"
@@ -15,9 +15,21 @@ interface FAQItem {
   isOpen?: boolean
 }
 
+interface SearchResult {
+  type: 'faq' | 'category'
+  category?: string
+  question?: string
+  answer?: string
+  title?: string
+  description?: string
+}
+
 export default function HelpCenterPage() {
   useScrollRestoration('helpScrollPosition');
   const [searchQuery, setSearchQuery] = useState("")
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([])
+  const [showSuggestions, setShowSuggestions] = useState(false)
+  const searchRef = useRef<HTMLDivElement>(null)
   const [generalFAQs, setGeneralFAQs] = useState<FAQItem[]>([
     {
       question: "What is ACT Coaching for Life?",
@@ -84,7 +96,8 @@ export default function HelpCenterPage() {
         "Finding the right coach",
         "Your first session",
         "Platform overview"
-      ]
+      ],
+      link: "/individual-coaching"
     },
     {
       icon: CreditCard,
@@ -95,7 +108,8 @@ export default function HelpCenterPage() {
         "Payment methods",
         "Cancel subscription",
         "Refund policy"
-      ]
+      ],
+      link: "/pricing"
     },
     {
       icon: MessageCircle,
@@ -106,7 +120,8 @@ export default function HelpCenterPage() {
         "Preparing for coaching",
         "Session guidelines",
         "Changing coaches"
-      ]
+      ],
+      link: "/individual-coaching"
     },
     {
       icon: Shield,
@@ -117,7 +132,8 @@ export default function HelpCenterPage() {
         "Confidentiality",
         "Account security",
         "Privacy settings"
-      ]
+      ],
+      link: "/privacy"
     },
     {
       icon: FileText,
@@ -128,7 +144,8 @@ export default function HelpCenterPage() {
         "Core principles",
         "Exercises & techniques",
         "Recommended reading"
-      ]
+      ],
+      link: "/resources"
     },
     {
       icon: HelpCircle,
@@ -139,7 +156,8 @@ export default function HelpCenterPage() {
         "Technical issues",
         "Video call quality",
         "Mobile app help"
-      ]
+      ],
+      link: "/contact"
     }
   ]
 
@@ -157,6 +175,115 @@ export default function HelpCenterPage() {
         )
       )
     }
+  }
+
+  // Search functionality
+  useEffect(() => {
+    if (searchQuery.trim().length < 2) {
+      setSearchResults([])
+      setShowSuggestions(false)
+      return
+    }
+
+    const query = searchQuery.toLowerCase()
+    const results: SearchResult[] = []
+
+    // Search in general FAQs
+    generalFAQs.forEach(faq => {
+      if (faq.question.toLowerCase().includes(query) || faq.answer.toLowerCase().includes(query)) {
+        results.push({
+          type: 'faq',
+          category: 'General',
+          question: faq.question,
+          answer: faq.answer
+        })
+      }
+    })
+
+    // Search in billing FAQs
+    billingFAQs.forEach(faq => {
+      if (faq.question.toLowerCase().includes(query) || faq.answer.toLowerCase().includes(query)) {
+        results.push({
+          type: 'faq',
+          category: 'Billing',
+          question: faq.question,
+          answer: faq.answer
+        })
+      }
+    })
+
+    // Search in categories
+    categories.forEach(category => {
+      const matchesTitle = category.title.toLowerCase().includes(query)
+      const matchesDescription = category.description.toLowerCase().includes(query)
+      const matchesItems = category.items.some(item => item.toLowerCase().includes(query))
+
+      if (matchesTitle || matchesDescription || matchesItems) {
+        results.push({
+          type: 'category',
+          title: category.title,
+          description: category.description
+        })
+      }
+    })
+
+    setSearchResults(results.slice(0, 5)) // Limit to 5 results
+    setShowSuggestions(results.length > 0)
+  }, [searchQuery, generalFAQs, billingFAQs])
+
+  // Click outside to close suggestions
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setShowSuggestions(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value)
+  }
+
+  const handleResultClick = (result: SearchResult) => {
+    if (result.type === 'faq') {
+      // Open the relevant FAQ
+      if (result.category === 'General') {
+        const index = generalFAQs.findIndex(faq => faq.question === result.question)
+        if (index !== -1) {
+          setGeneralFAQs(prevFAQs =>
+            prevFAQs.map((faq, i) => ({
+              ...faq,
+              isOpen: i === index
+            }))
+          )
+          // Scroll to General FAQs section
+          setTimeout(() => {
+            const element = document.querySelector('.general-faqs-section')
+            element?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          }, 100)
+        }
+      } else if (result.category === 'Billing') {
+        const index = billingFAQs.findIndex(faq => faq.question === result.question)
+        if (index !== -1) {
+          setBillingFAQs(prevFAQs =>
+            prevFAQs.map((faq, i) => ({
+              ...faq,
+              isOpen: i === index
+            }))
+          )
+          // Scroll to Billing FAQs section
+          setTimeout(() => {
+            const element = document.querySelector('.billing-faqs-section')
+            element?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          }, 100)
+        }
+      }
+    }
+    setShowSuggestions(false)
+    setSearchQuery('')
   }
 
   return (
@@ -179,39 +306,71 @@ export default function HelpCenterPage() {
                 Find answers to your questions and get the support you need for your coaching journey.
               </p>
             </div>
-            <div className="flex-1 w-full max-w-md">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <div className="flex-1 w-full max-w-md flex flex-col gap-4">
+              <div ref={searchRef} className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 z-10" />
                 <Input
                   type="text"
-                  placeholder="Search"
+                  placeholder="Search for help topics..."
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={handleSearchChange}
+                  onFocus={() => searchQuery.length >= 2 && setShowSuggestions(true)}
                   className="pl-10 pr-4 py-6 w-full text-lg bg-white border-gray-300 rounded-lg shadow-sm"
                 />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Action Buttons */}
-      <section className="py-8 bg-white ">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button
-              variant="outline"
-              className="w-full sm:w-auto px-8 py-6 text-lg border-2 border-cyan-500 text-cyan-500 hover:bg-cyan-50 rounded-lg"
-            >
-              I've Got a Question
-              <ArrowRight className="ml-2 w-5 h-5" />
-            </Button>
-            <Button
-              className="w-full sm:w-auto px-8 py-6 text-lg bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg"
-            >
-              CHAT TO OUR TEAM
-              <ArrowRight className="ml-2 w-5 h-5" />
-            </Button>
+                {/* Search Suggestions Dropdown */}
+                {showSuggestions && searchResults.length > 0 && (
+                  <div className="absolute top-full mt-2 w-full bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-80 overflow-y-auto">
+                    {searchResults.map((result, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handleResultClick(result)}
+                        className="w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-b-0"
+                      >
+                        {result.type === 'faq' ? (
+                          <div>
+                            <div className="flex items-start gap-2">
+                              <HelpCircle className="w-4 h-4 text-cyan-500 mt-1 flex-shrink-0" />
+                              <div className="flex-1">
+                                <p className="font-medium text-gray-900 text-sm mb-1">
+                                  {result.question}
+                                </p>
+                                <p className="text-xs text-gray-500">
+                                  {result.category} FAQ
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        ) : (
+                          <div>
+                            <div className="flex items-start gap-2">
+                              <FileText className="w-4 h-4 text-cyan-500 mt-1 flex-shrink-0" />
+                              <div className="flex-1">
+                                <p className="font-medium text-gray-900 text-sm mb-1">
+                                  {result.title}
+                                </p>
+                                <p className="text-xs text-gray-500">
+                                  {result.description}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <a href="/contact" className="self-center">
+                <Button
+                  variant="outline"
+                  className="px-8 py-6 text-lg border-2 border-cyan-500 text-cyan-500 hover:bg-cyan-50 rounded-lg whitespace-nowrap"
+                >
+                  I've Got a Question
+                  <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+              </a>
+            </div>
           </div>
         </div>
       </section>
@@ -248,9 +407,9 @@ export default function HelpCenterPage() {
                       </li>
                     ))}
                   </ul>
-                  <button className="mt-4 text-cyan-600 hover:text-cyan-700 font-medium text-sm flex items-center">
+                  <a href={category.link} className="mt-4 text-cyan-600 hover:text-cyan-700 font-medium text-sm flex items-center">
                     View All <ArrowRight className="ml-1 w-4 h-4" />
-                  </button>
+                  </a>
                 </motion.div>
               )
             })}
@@ -259,7 +418,7 @@ export default function HelpCenterPage() {
       </section>
 
       {/* General FAQs */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-gray-50 general-faqs-section">
         <div className="container mx-auto px-4 max-w-4xl">
           <div className="bg-cyan-500 rounded-2xl p-8 md:p-12 shadow-lg">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
@@ -300,7 +459,7 @@ export default function HelpCenterPage() {
       </section>
 
       {/* Billing FAQs */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-gray-50 billing-faqs-section">
         <div className="container mx-auto px-4 max-w-4xl">
           <div className="bg-cyan-500 rounded-2xl p-8 md:p-12 shadow-lg">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">

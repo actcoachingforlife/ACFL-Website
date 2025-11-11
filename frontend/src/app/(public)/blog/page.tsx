@@ -18,6 +18,20 @@ type BlogArticle = {
   image: string;
 };
 
+// Helper function to convert article title to URL slug
+const getArticleSlug = (title: string): string => {
+  const slugMap: { [key: string]: string } = {
+    "Setting meaningful life goals": "/blog/life-goals",
+    "Breaking through mental barriers": "/blog/mental-barriers",
+    "Understanding your values in challenging times": "/blog/understanding-values",
+    "Emotional intelligence in the workplace": "/blog/emotional-intelligence",
+    "Building psychological flexibility through ACT": "/blog/psychological-flexibility",
+    "Mastering cognitive defusion": "/blog/defusion-techniques",
+    "Taking committed action": "/blog/committed-action"
+  };
+  return slugMap[title] || "#";
+};
+
 // Sample blog articles data
 const allBlogArticles: BlogArticle[] = [
   {
@@ -301,14 +315,14 @@ export default function BlogPage() {
                   <div className="flex gap-4 p-4 border-b border-gray-200">
                     <img
                       src="/images/why-coaching-1.png"
-                      alt="Emotional intelligence in the workplace"
+                      alt="Mastering cognitive defusion"
                       className="w-32 h-24 object-cover rounded flex-shrink-0"
                     />
                     <div className="flex-1">
                       <h3 className="font-bold text-gray-900 mb-2 text-base leading-tight">
-                        Emotional intelligence in the workplace
+                        Mastering cognitive defusion
                       </h3>
-                      <p className="text-gray-600 text-sm mb-2">November 3, 2025</p>
+                      <p className="text-gray-600 text-sm mb-2">November 6, 2025</p>
                       <span className="inline-block bg-cyan-100 text-cyan-600 px-3 py-1 rounded text-xs font-medium">
                         Latest Blog
                       </span>
@@ -318,15 +332,15 @@ export default function BlogPage() {
                   {/* Trending Article 2 */}
                   <div className="flex gap-4 p-4 border-b border-gray-200">
                     <img
-                      src="/images/why-coaching-2.png"
-                      alt="Emotional intelligence in the workplace"
+                      src="/images/why-coaching-5.png"
+                      alt="Building psychological flexibility"
                       className="w-32 h-24 object-cover rounded flex-shrink-0"
                     />
                     <div className="flex-1">
                       <h3 className="font-bold text-gray-900 mb-2 text-base leading-tight">
-                        Emotional intelligence in the workplace
+                        Building psychological flexibility
                       </h3>
-                      <p className="text-gray-600 text-sm mb-2">November 3, 2025</p>
+                      <p className="text-gray-600 text-sm mb-2">November 7, 2025</p>
                       <span className="inline-block bg-cyan-100 text-cyan-600 px-3 py-1 rounded text-xs font-medium">
                         Latest Blog
                       </span>
@@ -336,15 +350,15 @@ export default function BlogPage() {
                   {/* Trending Article 3 */}
                   <div className="flex gap-4 p-4">
                     <img
-                      src="/images/why-coaching-3.png"
-                      alt="Emotional intelligence in the workplace"
+                      src="/images/why-coaching-4.png"
+                      alt="Taking committed action"
                       className="w-32 h-24 object-cover rounded flex-shrink-0"
                     />
                     <div className="flex-1">
                       <h3 className="font-bold text-gray-900 mb-2 text-base leading-tight">
-                        Emotional intelligence in the workplace
+                        Taking committed action
                       </h3>
-                      <p className="text-gray-600 text-sm mb-2">November 3, 2025</p>
+                      <p className="text-gray-600 text-sm mb-2">November 5, 2025</p>
                       <span className="inline-block bg-cyan-100 text-cyan-600 px-3 py-1 rounded text-xs font-medium">
                         Latest Blog
                       </span>
@@ -753,10 +767,10 @@ export default function BlogPage() {
                 className="border-b border-gray-200 pb-6"
               >
                 <h4 className="text-lg font-bold text-gray-900 mb-3 leading-tight">
-                  Emotional intelligence in the workplace
+                  Building psychological flexibility
                 </h4>
                 <div className="flex items-center gap-3">
-                  <span className="text-sm text-gray-600">November 3, 2025</span>
+                  <span className="text-sm text-gray-600">November 7, 2025</span>
                   <span className="inline-block bg-cyan-100 text-cyan-600 px-3 py-1 rounded text-xs font-medium">
                     Latest Blog
                   </span>
@@ -771,10 +785,10 @@ export default function BlogPage() {
                 className="border-b border-gray-200 pb-6"
               >
                 <h4 className="text-lg font-bold text-gray-900 mb-3 leading-tight">
-                  Emotional intelligence in the workplace
+                  Mastering cognitive defusion
                 </h4>
                 <div className="flex items-center gap-3">
-                  <span className="text-sm text-gray-600">November 3, 2025</span>
+                  <span className="text-sm text-gray-600">November 6, 2025</span>
                   <span className="inline-block bg-cyan-100 text-cyan-600 px-3 py-1 rounded text-xs font-medium">
                     Latest Blog
                   </span>
@@ -788,10 +802,10 @@ export default function BlogPage() {
                 transition={{ duration: 0.6, delay: 0.4 }}
               >
                 <h4 className="text-lg font-bold text-gray-900 mb-3 leading-tight">
-                  Emotional intelligence in the workplace
+                  Taking committed action
                 </h4>
                 <div className="flex items-center gap-3">
-                  <span className="text-sm text-gray-600">November 3, 2025</span>
+                  <span className="text-sm text-gray-600">November 5, 2025</span>
                   <span className="inline-block bg-cyan-100 text-cyan-600 px-3 py-1 rounded text-xs font-medium">
                     Latest Blog
                   </span>
@@ -864,10 +878,13 @@ export default function BlogPage() {
                     <p className="text-gray-600 text-sm mb-4">
                       {article.description}
                     </p>
-                    <button className="inline-flex items-center text-sm font-medium text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 transition-colors">
+                    <a
+                      href={getArticleSlug(article.title)}
+                      className="inline-flex items-center text-sm font-medium text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 transition-colors"
+                    >
                       Read more
                       <ArrowRight className="w-4 h-4 ml-2" />
-                    </button>
+                    </a>
                   </div>
                 </motion.div>
               ))
