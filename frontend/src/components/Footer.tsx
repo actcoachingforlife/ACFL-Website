@@ -88,9 +88,8 @@ const Footer = () => {
             <h3 className="font-semibold text-gray-900 dark:text-white mb-4">Company</h3>
             <ul className="space-y-2 text-gray-600 dark:text-gray-400">
               <li><a href="/" className="hover:text-gray-900 dark:hover:text-white">Home</a></li>
-              <li><span className="text-gray-400 dark:text-gray-500 cursor-not-allowed">Services</span></li>
-              <li><span className="text-gray-400 dark:text-gray-500 cursor-not-allowed">Coaches</span></li>
-              <li><a href="/resources" className="hover:text-gray-900 dark:hover:text-white">Resources</a></li>
+              <li><a href="/individual-coaching" className="hover:text-gray-900 dark:hover:text-white">Services</a></li>
+              <li><a href="/blog" className="hover:text-gray-900 dark:hover:text-white">Resources</a></li>
             </ul>
           </div>
 
@@ -101,7 +100,6 @@ const Footer = () => {
               <li><a href="/faq" className="hover:text-gray-900 dark:hover:text-white">FAQ</a></li>
               <li><a href="/contact" className="hover:text-gray-900 dark:hover:text-white">Contact</a></li>
               <li><a href="/help" className="hover:text-gray-900 dark:hover:text-white">Help</a></li>
-              <li><span className="text-gray-400 dark:text-gray-500 cursor-not-allowed">Chat</span></li>
             </ul>
           </div>
 
@@ -111,8 +109,8 @@ const Footer = () => {
             <ul className="space-y-2 text-gray-600 dark:text-gray-400">
               <li><a href="/privacy" className="hover:text-gray-900 dark:hover:text-white">Privacy</a></li>
               <li><a href="/terms" className="hover:text-gray-900 dark:hover:text-white">Terms</a></li>
-              <li><span className="text-gray-400 dark:text-gray-500 cursor-not-allowed">Cookies</span></li>
-              <li><span className="text-gray-400 dark:text-gray-500 cursor-not-allowed">Disclaimer</span></li>
+              <li><a href="/cookies" className="hover:text-gray-900 dark:hover:text-white">Cookies</a></li>
+              <li><a href="/disclaimer" className="hover:text-gray-900 dark:hover:text-white">Disclaimer</a></li>
             </ul>
           </div>
           </div>
@@ -170,9 +168,9 @@ const Footer = () => {
               <a href="/terms" className="hover:text-black dark:hover:text-white">
                 Terms of service
               </a>
-              <span className="text-gray-400 dark:text-gray-500 cursor-not-allowed">
+              <a href="/cookie-settings" className="hover:text-black dark:hover:text-white">
                 Cookie settings
-              </span>
+              </a>
             </div>
           </div>
 

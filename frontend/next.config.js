@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  generateBuildId: () => null,
   reactStrictMode: true,
   typescript: {
     ignoreBuildErrors: true,

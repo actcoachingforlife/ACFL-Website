@@ -8,7 +8,6 @@ import { NotificationProvider } from '@/contexts/NotificationContext';
 import { AdminNotificationProvider } from '@/contexts/AdminNotificationContext';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import { MeetingProvider } from '@/contexts/MeetingContext';
-import 'react-toastify/dist/ReactToastify.css';
 
 const theme = createTheme({
   components: {

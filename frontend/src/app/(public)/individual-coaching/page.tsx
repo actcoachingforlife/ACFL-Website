@@ -433,7 +433,7 @@ export default function IndividualCoachingPage() {
                     Psychological techniques validated by decades of clinical research and practice
                   </p>
                   <div className="flex gap-4">
-                    <a href="/resources">
+                    <a href="/blog">
                       <button className="bg-teal-600 hover:bg-teal-700 text-white rounded-lg px-8 py-3 font-medium transition-colors">
                         Explore
                       </button>
@@ -477,7 +477,7 @@ export default function IndividualCoachingPage() {
                     Secure messaging platform provides support and quick check-ins
                   </p>
                   <div className="flex gap-4">
-                    <a href="/resources">
+                    <a href="/blog">
                       <button className="bg-teal-600 hover:bg-teal-700 text-white rounded-lg px-8 py-3 font-medium transition-colors">
                         Connect
                       </button>
