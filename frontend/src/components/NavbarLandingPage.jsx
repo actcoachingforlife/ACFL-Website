@@ -31,7 +31,7 @@ const NavbarLandingPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-3">
-              <Logo size={32} />
+              <Logo size={48} />
             </div>
             <div className="hidden md:flex items-center space-x-8">
               <a href="/" className="text-gray-600 dark:text-gray-300 hover:text-brand-teal dark:hover:text-brand-teal transition-colors cursor-pointer">

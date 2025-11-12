@@ -26,8 +26,44 @@ export default function PricingPage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative h-[400px] bg-[url('/images/Pricing_img1.png')] bg-cover bg-center bg-no-repeat">
-        <div className="absolute inset-0 bg-black/20"></div>
+      <section className="relative h-[400px]">
+        <img
+          src="/images/Pricing_img1.png"
+          alt="Pricing"
+          className="w-full h-full object-cover"
+        />
+        {/* Dark overlay for better text readability */}
+        <div className="absolute inset-0 bg-black/50"></div>
+
+        {/* Text Content */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="text-sm md:text-base text-white/90 uppercase tracking-wider mb-4"
+            >
+              Invest
+            </motion.p>
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight"
+            >
+              Flexible coaching plans
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-lg md:text-xl text-white/95 max-w-3xl mx-auto"
+            >
+              Affordable ACT coaching solutions designed to fit your lifestyle and support your personal growth journey
+            </motion.p>
+          </div>
+        </div>
       </section>
 
       {/* Coaching Plans Section */}

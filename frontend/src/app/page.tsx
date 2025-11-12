@@ -157,32 +157,85 @@ export default function HomePage() {
             </p>
           </div>
 
-          {/* Image Row */}
+          {/* Cards Row */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="rounded-xl overflow-hidden h-64 md:h-72">
-              <img
-                src="/images/Home_img1.png"
-                alt="Group coaching"
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
-            </div>
-            <div className="rounded-xl overflow-hidden h-64 md:h-72">
-              <img
-                src="/images/Home_img2.png"
-                alt="One-on-one coaching"
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
-            </div>
-            <div className="rounded-xl overflow-hidden h-64 md:h-72">
-              <img
-                src="/images/Home_img3.png"
-                alt="Online coaching"
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
-            </div>
+            {/* Card 1 - Personalized Matching */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true }}
+              className="relative group overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300"
+            >
+              <div className="relative h-80 md:h-96">
+                <img
+                  src="/images/Home_img1.png"
+                  alt="Personalized matching for coaching"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent group-hover:from-black/90 group-hover:via-black/50 transition-all duration-300 flex flex-col justify-end p-6 text-white">
+                  <h3 className="text-2xl font-bold mb-3 transform group-hover:-translate-y-1 transition-transform duration-300">
+                    Personalized Matching
+                  </h3>
+                  <p className="text-sm text-gray-200 transform group-hover:-translate-y-1 transition-transform duration-300">
+                    Our advanced algorithm considers your goals, personality, and preferences to match you with the perfect coach.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Card 2 - Flexible Scheduling */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="relative group overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300"
+            >
+              <div className="relative h-80 md:h-96">
+                <img
+                  src="/images/Home_img2.png"
+                  alt="Flexible coaching session scheduling"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent group-hover:from-black/90 group-hover:via-black/50 transition-all duration-300 flex flex-col justify-end p-6 text-white">
+                  <h3 className="text-2xl font-bold mb-3 transform group-hover:-translate-y-1 transition-transform duration-300">
+                    Flexible Scheduling
+                  </h3>
+                  <p className="text-sm text-gray-200 transform group-hover:-translate-y-1 transition-transform duration-300">
+                    Book sessions that fit your schedule. Morning, evening, or weekend - we have coaches available when you need them.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Card 3 - Qualified Professionals */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              viewport={{ once: true }}
+              className="relative group overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300"
+            >
+              <div className="relative h-80 md:h-96">
+                <img
+                  src="/images/Home_img3.png"
+                  alt="Qualified professional ACT coaches"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent group-hover:from-black/90 group-hover:via-black/50 transition-all duration-300 flex flex-col justify-end p-6 text-white">
+                  <h3 className="text-2xl font-bold mb-3 transform group-hover:-translate-y-1 transition-transform duration-300">
+                    Qualified Professionals
+                  </h3>
+                  <p className="text-sm text-gray-200 transform group-hover:-translate-y-1 transition-transform duration-300">
+                    Our coaches are carefully vetted, trained in ACT methodology, and committed to helping you achieve your goals.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -312,32 +365,85 @@ export default function HomePage() {
       </p>
     </motion.div>
 
-    {/* Image Row */}
+    {/* Cards Row */}
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div className="rounded-xl overflow-hidden h-64 md:h-72">
-        <img
-          src="/images/Home_img5.png"
-          alt="Individual coaching"
-          className="w-full h-full object-cover"
-          loading="lazy"
-        />
-      </div>
-      <div className="rounded-xl overflow-hidden h-64 md:h-72">
-        <img
-          src="/images/Home_img6.png"
-          alt="Group coaching"
-          className="w-full h-full object-cover"
-          loading="lazy"
-        />
-      </div>
-      <div className="rounded-xl overflow-hidden h-64 md:h-72">
-        <img
-          src="/images/Home_img7.png"
-          alt="Corporate wellness"
-          className="w-full h-full object-cover"
-          loading="lazy"
-        />
-      </div>
+      {/* Card 1 - Individual Coaching */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.1 }}
+        viewport={{ once: true }}
+        className="relative group overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300"
+      >
+        <div className="relative h-80 md:h-96">
+          <img
+            src="/images/Home_img5.png"
+            alt="Individual coaching sessions"
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            loading="lazy"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent group-hover:from-black/90 group-hover:via-black/50 transition-all duration-300 flex flex-col justify-end p-6 text-white">
+            <h3 className="text-2xl font-bold mb-3 transform group-hover:-translate-y-1 transition-transform duration-300">
+              Individual Coaching
+            </h3>
+            <p className="text-sm text-gray-200 transform group-hover:-translate-y-1 transition-transform duration-300">
+              One-on-one personalized sessions tailored to your unique goals and challenges.
+            </p>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Card 2 - Group Coaching */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        viewport={{ once: true }}
+        className="relative group overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300"
+      >
+        <div className="relative h-80 md:h-96">
+          <img
+            src="/images/Home_img6.png"
+            alt="Group coaching sessions"
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            loading="lazy"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent group-hover:from-black/90 group-hover:via-black/50 transition-all duration-300 flex flex-col justify-end p-6 text-white">
+            <h3 className="text-2xl font-bold mb-3 transform group-hover:-translate-y-1 transition-transform duration-300">
+              Group Coaching
+            </h3>
+            <p className="text-sm text-gray-200 transform group-hover:-translate-y-1 transition-transform duration-300">
+              Connect with peers in supportive group sessions that foster shared growth and learning.
+            </p>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Card 3 - Corporate Wellness */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.3 }}
+        viewport={{ once: true }}
+        className="relative group overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300"
+      >
+        <div className="relative h-80 md:h-96">
+          <img
+            src="/images/Home_img7.png"
+            alt="Corporate wellness programs"
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            loading="lazy"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent group-hover:from-black/90 group-hover:via-black/50 transition-all duration-300 flex flex-col justify-end p-6 text-white">
+            <h3 className="text-2xl font-bold mb-3 transform group-hover:-translate-y-1 transition-transform duration-300">
+              Corporate Wellness
+            </h3>
+            <p className="text-sm text-gray-200 transform group-hover:-translate-y-1 transition-transform duration-300">
+              Comprehensive workplace programs designed to enhance team performance and well-being.
+            </p>
+          </div>
+        </div>
+      </motion.div>
     </div>
   </div>
 </section>
