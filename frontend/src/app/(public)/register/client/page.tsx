@@ -236,7 +236,7 @@ function ClientRegisterForm() {
             <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-gray-200 text-center">
               <h3 className="text-gray-800 font-bold text-2xl mb-2">Are you a coach?</h3>
               <p className="text-gray-600 text-sm mb-4">Join our network of certified wellness professionals</p>
-              <Link href="/register/coach">
+              <Link href="/careers">
                 <Button className="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium text-base py-3 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg">
                   Register as a Coach
                 </Button>
