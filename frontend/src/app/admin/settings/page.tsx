@@ -11,7 +11,8 @@ import {
   DollarSign,
   Clock,
   AlertTriangle,
-  CheckCircle
+  CheckCircle,
+  BookOpen
 } from 'lucide-react';
 
 interface SystemSettings {
@@ -22,6 +23,7 @@ interface SystemSettings {
     maintenanceMode: boolean;
     registrationEnabled: boolean;
     coachApprovalRequired: boolean;
+    userGuideEnabled: boolean;
   };
   notifications: {
     emailNotifications: boolean;
@@ -84,7 +86,8 @@ export default function AdminSettings() {
           supportEmail: 'support@actcoaching.com',
           maintenanceMode: false,
           registrationEnabled: true,
-          coachApprovalRequired: true
+          coachApprovalRequired: true,
+          userGuideEnabled: true
         },
         notifications: {
           emailNotifications: true,
@@ -451,6 +454,35 @@ export default function AdminSettings() {
                         }`}>
                           <div className={`absolute top-0.5 left-0.5 bg-white w-5 h-5 rounded-full transition-all duration-200 ease-in-out shadow-md ${
                             settings.general.coachApprovalRequired ? 'transform translate-x-5' : ''
+                          }`}></div>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between space-y-3 sm:space-y-0">
+                    <div className="flex-1 pr-0 sm:pr-4">
+                      <label className="text-sm sm:text-base font-medium text-gray-700 dark:text-gray-200 flex items-center gap-2">
+                        <BookOpen className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                        User Guide
+                      </label>
+                      <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1">
+                        Show interactive user guide and tutorials for new users
+                      </p>
+                    </div>
+                    <div className="flex-shrink-0">
+                      <label className="inline-flex items-center cursor-pointer group">
+                        <input
+                          type="checkbox"
+                          checked={settings.general.userGuideEnabled}
+                          onChange={(e) => updateSetting('general', 'userGuideEnabled', e.target.checked)}
+                          className="sr-only"
+                        />
+                        <div className={`relative w-11 h-6 rounded-full transition-all duration-200 ease-in-out shadow-inner ${
+                          settings.general.userGuideEnabled ? 'bg-blue-600 shadow-blue-200 dark:shadow-blue-900' : 'bg-gray-200 dark:bg-gray-700'
+                        }`}>
+                          <div className={`absolute top-0.5 left-0.5 bg-white w-5 h-5 rounded-full transition-all duration-200 ease-in-out shadow-md ${
+                            settings.general.userGuideEnabled ? 'transform translate-x-5' : ''
                           }`}></div>
                         </div>
                       </label>

@@ -43,7 +43,8 @@ import {
   Calendar as CalendarIcon,
   TrendingUp,
   Cog,
-  MessageSquare
+  MessageSquare,
+  BookOpen
 } from 'lucide-react';
 
 const poppins = Poppins({
@@ -86,6 +87,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   const [hoveredGroup, setHoveredGroup] = useState<string | null>(null);
   const [hoverPosition, setHoverPosition] = useState<{x: number, y: number} | null>(null);
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [userGuideEnabled, setUserGuideEnabled] = useState(true);
   const { user, loading: authLoading, logout } = useAuth();
   const { hasPermission, isAdmin, isStaff } = usePermissions();
   const {
@@ -140,6 +142,12 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       setTheme(currentDOMTheme);
       setPendingTheme(currentDOMTheme);
       console.log('Admin theme initialized to:', currentDOMTheme, '(no consent yet, from DOM)');
+    }
+
+    // Initialize user guide preference from localStorage
+    const savedUserGuide = localStorage.getItem('userGuideEnabled');
+    if (savedUserGuide !== null) {
+      setUserGuideEnabled(savedUserGuide === 'true');
     }
   }, []);
 
@@ -343,6 +351,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       icon: BarChart2,
       items: [
         { name: 'Content Management', href: '/admin/content', icon: Type, permission: PERMISSIONS.CONTENT_VIEW },
+        { name: 'Blog Management', href: '/admin/blog', icon: BookOpen, permission: PERMISSIONS.CONTENT_VIEW },
         { name: 'Analytics', href: '/admin/analytics', icon: BarChart2, permission: PERMISSIONS.ANALYTICS_VIEW },
       ]
     },
@@ -801,7 +810,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
                   {/* User Dropdown */}
                   {showDropdown && (
-                    <div className="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 z-[10002] border border-gray-200 dark:border-gray-600">
+                    <div className="absolute right-0 top-full mt-2 w-56 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 z-[10002] border border-gray-200 dark:border-gray-600">
                       <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-600">
                         <p className="text-sm font-medium text-gray-900 dark:text-white">
                           {user?.first_name || 'Admin'} {user?.last_name || ''}
@@ -810,6 +819,44 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                           {user?.role === 'staff' ? 'Staff Member' : 'Administrator'}
                         </p>
                       </div>
+
+                      {/* User Guide Toggle */}
+                      <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-600">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-2">
+                            <BookOpen className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+                            <span className="text-sm text-gray-700 dark:text-gray-300">User Guide</span>
+                          </div>
+                          <label className="inline-flex items-center cursor-pointer">
+                            <input
+                              type="checkbox"
+                              checked={userGuideEnabled}
+                              onChange={(e) => {
+                                const isEnabled = e.target.checked;
+                                // Update state
+                                setUserGuideEnabled(isEnabled);
+                                // Save preference to localStorage
+                                localStorage.setItem('userGuideEnabled', isEnabled ? 'true' : 'false');
+                                // Show toast notification
+                                const toast = document.createElement('div');
+                                toast.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-4 py-3 rounded-lg shadow-lg z-[10000] animate-in fade-in slide-in-from-bottom-2';
+                                toast.textContent = isEnabled ? 'User guide enabled' : 'User guide disabled';
+                                document.body.appendChild(toast);
+                                setTimeout(() => {
+                                  if (toast.parentNode) {
+                                    toast.parentNode.removeChild(toast);
+                                  }
+                                }, 2000);
+                              }}
+                              className="sr-only peer"
+                            />
+                            <div className={`relative w-9 h-5 rounded-full transition-colors ${userGuideEnabled ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700'}`}>
+                              <div className={`absolute top-0.5 left-0.5 bg-white w-4 h-4 rounded-full transition-transform ${userGuideEnabled ? 'translate-x-4' : ''}`}></div>
+                            </div>
+                          </label>
+                        </div>
+                      </div>
+
                       <button
                         onClick={() => {
                           router.push('/admin/settings');
@@ -1009,7 +1056,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                         className="fixed inset-0 bg-black/20 z-[60]"
                         onClick={() => setShowDropdown(false)}
                       />
-                      <div className="fixed right-4 top-16 w-48 bg-white dark:bg-gray-800 rounded-md shadow-xl py-1 z-[70] border border-gray-200 dark:border-gray-600">
+                      <div className="fixed right-4 top-16 w-56 bg-white dark:bg-gray-800 rounded-md shadow-xl py-1 z-[70] border border-gray-200 dark:border-gray-600">
                         <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-600">
                           <p className="text-sm font-medium text-gray-900 dark:text-white">
                             {user?.first_name || 'Admin'} {user?.last_name || ''}
@@ -1018,6 +1065,44 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                             {user?.role === 'staff' ? 'Staff Member' : 'Administrator'}
                           </p>
                         </div>
+
+                        {/* User Guide Toggle */}
+                        <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-600">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center space-x-2">
+                              <BookOpen className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+                              <span className="text-sm text-gray-700 dark:text-gray-300">User Guide</span>
+                            </div>
+                            <label className="inline-flex items-center cursor-pointer">
+                              <input
+                                type="checkbox"
+                                checked={userGuideEnabled}
+                                onChange={(e) => {
+                                  const isEnabled = e.target.checked;
+                                  // Update state
+                                  setUserGuideEnabled(isEnabled);
+                                  // Save preference to localStorage
+                                  localStorage.setItem('userGuideEnabled', isEnabled ? 'true' : 'false');
+                                  // Show toast notification
+                                  const toast = document.createElement('div');
+                                  toast.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-4 py-3 rounded-lg shadow-lg z-[10000] animate-in fade-in slide-in-from-bottom-2';
+                                  toast.textContent = isEnabled ? 'User guide enabled' : 'User guide disabled';
+                                  document.body.appendChild(toast);
+                                  setTimeout(() => {
+                                    if (toast.parentNode) {
+                                      toast.parentNode.removeChild(toast);
+                                    }
+                                  }, 2000);
+                                }}
+                                className="sr-only peer"
+                              />
+                              <div className={`relative w-9 h-5 rounded-full transition-colors ${userGuideEnabled ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700'}`}>
+                                <div className={`absolute top-0.5 left-0.5 bg-white w-4 h-4 rounded-full transition-transform ${userGuideEnabled ? 'translate-x-4' : ''}`}></div>
+                              </div>
+                            </label>
+                          </div>
+                        </div>
+
                         <button
                           onClick={(e) => handleThemeToggle(e)}
                           type="button"

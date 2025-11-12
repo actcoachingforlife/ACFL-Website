@@ -15,11 +15,12 @@ import AdminImpersonationFloat from '@/components/AdminImpersonationFloat';
 import DeactivatedAccountBanner from '@/components/DeactivatedAccountBanner';
 import BankAccountSetupBanner from '@/components/coach/BankAccountSetupBanner';
 import ThemeConsentModal from '@/components/ThemeConsentModal';
+import UserGuide from '@/components/UserGuide';
 import {
   Bell, CircleUserRound, LogOut, Sun, Moon, Menu, X, Activity, Calendar,
   MessageSquare, Users, User, MoreHorizontal, TrendingUp, CreditCard,
   CalendarDays, ChevronDown, ChevronRight, Search, PanelLeft, Settings,
-  BarChart3, Clock, UserCog
+  BarChart3, Clock, UserCog, BookOpen
 } from 'lucide-react';
 
 const poppins = Poppins({
@@ -33,6 +34,7 @@ interface NavigationItem {
   href: string;
   icon: React.ComponentType<any>;
   notificationCount?: number;
+  dataGuide?: string;
 }
 
 interface NavigationGroup {
@@ -71,6 +73,7 @@ export default function CoachLayout({
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set(['dashboard', 'coaching']));
   const [hoveredGroup, setHoveredGroup] = useState<string | null>(null);
   const [hoverPosition, setHoverPosition] = useState<{x: number, y: number} | null>(null);
+  const [userGuideEnabled, setUserGuideEnabled] = useState(true);
 
   // Refs
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -107,6 +110,12 @@ export default function CoachLayout({
       setTheme(currentDOMTheme);
       setPendingTheme(currentDOMTheme);
       console.log('Coach theme initialized to:', currentDOMTheme, '(no consent yet, from DOM)');
+    }
+
+    // Initialize user guide preference from localStorage
+    const savedUserGuide = localStorage.getItem('userGuideEnabled');
+    if (savedUserGuide !== null) {
+      setUserGuideEnabled(savedUserGuide === 'true');
     }
   }, []);
 
@@ -312,7 +321,7 @@ export default function CoachLayout({
       icon: UserCog,
       items: [
         { name: 'Availability', href: '/coaches/availability', icon: Clock },
-        { name: 'Calendar & Appointments', href: '/coaches/calendar', icon: CalendarDays, notificationCount: appointmentNotificationCount },
+        { name: 'Calendar & Appointments', href: '/coaches/calendar', icon: CalendarDays, notificationCount: appointmentNotificationCount, dataGuide: 'calendar' },
         { name: 'Messages', href: '/coaches/messages', icon: MessageSquare, notificationCount: unreadMessageCount },
         { name: 'Clients', href: '/coaches/clients', icon: Users },
       ]
@@ -322,7 +331,7 @@ export default function CoachLayout({
       name: 'Business',
       icon: BarChart3,
       items: [
-        { name: 'Billing & Earnings', href: '/coaches/billing', icon: CreditCard },
+        { name: 'Billing & Earnings', href: '/coaches/billing', icon: CreditCard, dataGuide: 'billing' },
         { name: 'Revenue & Performance', href: '/coaches/revenue', icon: TrendingUp },
       ]
     },
@@ -555,6 +564,7 @@ export default function CoachLayout({
                             <Link
                               key={item.href}
                               href={item.href}
+                              data-guide={item.dataGuide}
                               onClick={() => {
                                 if (item.href === '/coaches/messages') {
                                   markMessagesAsRead();
@@ -721,7 +731,7 @@ export default function CoachLayout({
 
                       {/* User Dropdown */}
                       {showDropdown && (
-                        <div className="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 z-[10002] border border-gray-200 dark:border-gray-600">
+                        <div className="absolute right-0 top-full mt-2 w-56 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 z-[10002] border border-gray-200 dark:border-gray-600">
                           <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-600">
                             <p className="text-sm font-medium text-gray-900 dark:text-white">
                               {user?.first_name || 'Coach'} {user?.last_name || ''}
@@ -730,6 +740,41 @@ export default function CoachLayout({
                               Coach
                             </p>
                           </div>
+
+                          {/* User Guide Toggle */}
+                          <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-600">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center space-x-2">
+                                <BookOpen className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+                                <span className="text-sm text-gray-700 dark:text-gray-300">User Guide</span>
+                              </div>
+                              <label className="inline-flex items-center cursor-pointer">
+                                <input
+                                  type="checkbox"
+                                  checked={userGuideEnabled}
+                                  onChange={(e) => {
+                                    const isEnabled = e.target.checked;
+                                    setUserGuideEnabled(isEnabled);
+                                    localStorage.setItem('userGuideEnabled', isEnabled ? 'true' : 'false');
+                                    const toast = document.createElement('div');
+                                    toast.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-4 py-3 rounded-lg shadow-lg z-[10000] animate-in fade-in slide-in-from-bottom-2';
+                                    toast.textContent = isEnabled ? 'User guide enabled' : 'User guide disabled';
+                                    document.body.appendChild(toast);
+                                    setTimeout(() => {
+                                      if (toast.parentNode) {
+                                        toast.parentNode.removeChild(toast);
+                                      }
+                                    }, 2000);
+                                  }}
+                                  className="sr-only peer"
+                                />
+                                <div className={`relative w-9 h-5 rounded-full transition-colors ${userGuideEnabled ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700'}`}>
+                                  <div className={`absolute top-0.5 left-0.5 bg-white w-4 h-4 rounded-full transition-transform ${userGuideEnabled ? 'translate-x-4' : ''}`}></div>
+                                </div>
+                              </label>
+                            </div>
+                          </div>
+
                           <button
                             onClick={() => {
                               router.push('/coaches/settings');
@@ -889,7 +934,7 @@ export default function CoachLayout({
                           className="fixed inset-0 bg-black/20 z-[60]"
                           onClick={() => setShowDropdown(false)}
                         />
-                        <div className="fixed right-4 top-16 w-48 bg-white dark:bg-gray-800 rounded-md shadow-xl py-1 z-[70] border border-gray-200 dark:border-gray-600">
+                        <div className="fixed right-4 top-16 w-56 bg-white dark:bg-gray-800 rounded-md shadow-xl py-1 z-[70] border border-gray-200 dark:border-gray-600">
                           <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-600">
                             <p className="text-sm font-medium text-gray-900 dark:text-white">
                               {user?.first_name || 'Coach'} {user?.last_name || ''}
@@ -898,6 +943,41 @@ export default function CoachLayout({
                               Coach
                             </p>
                           </div>
+
+                          {/* User Guide Toggle */}
+                          <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-600">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center space-x-2">
+                                <BookOpen className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+                                <span className="text-sm text-gray-700 dark:text-gray-300">User Guide</span>
+                              </div>
+                              <label className="inline-flex items-center cursor-pointer">
+                                <input
+                                  type="checkbox"
+                                  checked={userGuideEnabled}
+                                  onChange={(e) => {
+                                    const isEnabled = e.target.checked;
+                                    setUserGuideEnabled(isEnabled);
+                                    localStorage.setItem('userGuideEnabled', isEnabled ? 'true' : 'false');
+                                    const toast = document.createElement('div');
+                                    toast.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-4 py-3 rounded-lg shadow-lg z-[10000] animate-in fade-in slide-in-from-bottom-2';
+                                    toast.textContent = isEnabled ? 'User guide enabled' : 'User guide disabled';
+                                    document.body.appendChild(toast);
+                                    setTimeout(() => {
+                                      if (toast.parentNode) {
+                                        toast.parentNode.removeChild(toast);
+                                      }
+                                    }, 2000);
+                                  }}
+                                  className="sr-only peer"
+                                />
+                                <div className={`relative w-9 h-5 rounded-full transition-colors ${userGuideEnabled ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700'}`}>
+                                  <div className={`absolute top-0.5 left-0.5 bg-white w-4 h-4 rounded-full transition-transform ${userGuideEnabled ? 'translate-x-4' : ''}`}></div>
+                                </div>
+                              </label>
+                            </div>
+                          </div>
+
                           <button
                             onClick={(e) => handleThemeToggle(e)}
                             type="button"
@@ -1036,6 +1116,7 @@ export default function CoachLayout({
                                 <Link
                                   key={item.href}
                                   href={item.href}
+                                  data-guide={item.dataGuide}
                                   onClick={() => {
                                     setMobileMenuOpen(false);
                                     if (item.href === '/coaches/messages') {
@@ -1299,6 +1380,7 @@ export default function CoachLayout({
                         <Link
                           key={item.href}
                           href={item.href}
+                          data-guide={item.dataGuide}
                           onClick={() => {
                             handleFlyoutLeave();
                             if (item.href === '/coaches/messages') {
@@ -1339,6 +1421,9 @@ export default function CoachLayout({
           onAccept={handleConsentAccept}
           onDecline={handleConsentDecline}
         />
+
+        {/* User Guide */}
+        <UserGuide userRole="coach" />
       </div>
     </ProtectedRoute>
   );
