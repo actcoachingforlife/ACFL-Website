@@ -4,14 +4,15 @@ import { motion } from "framer-motion"
 import Footer from "@/components/Footer"
 import NavbarLandingPage from "@/components/NavbarLandingPage"
 import { useScrollRestoration } from "@/hooks/useScrollRestoration"
-import { FileText, Users, Search, CheckCircle, User, Briefcase, MessageCircle, Award, ChevronDown, Mail, Lock, Phone, Lightbulb } from "lucide-react"
-import { useState } from "react"
+import { FileText, Users, Search, CheckCircle, User, Briefcase, MessageCircle, Award, ChevronDown, Mail, Lock, Phone, Lightbulb, ArrowUp } from "lucide-react"
+import { useState, useEffect } from "react"
 import { PhoneInput } from "@/components/PhoneInput"
 import Contact from "../component/contactUs"
 
 export default function CareersPage() {
   useScrollRestoration('careersScrollPosition');
   const [isLegacyOpen, setIsLegacyOpen] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -22,6 +23,28 @@ export default function CareersPage() {
   });
   const [errors, setErrors] = useState<{[key: string]: string}>({});
   const [loading, setLoading] = useState(false);
+
+  // Show/hide scroll to top button based on scroll position
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 300) {
+        setShowScrollTop(true);
+      } else {
+        setShowScrollTop(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Scroll to top function
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -377,16 +400,6 @@ export default function CareersPage() {
                 transition={{ duration: 0.3 }}
                 className="mt-4 space-y-6"
               >
-                {/* Warning Notice */}
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                  <div className="flex items-start gap-3">
-                    <Lightbulb className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                    <p className="text-sm text-blue-800">
-                      This legacy registration creates an unverified coach account. We recommend using the new verification process above for faster approval.
-                    </p>
-                  </div>
-                </div>
-
                 {/* Registration Form Card */}
                 <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-8">
                 <h3 className="text-2xl font-bold text-gray-900 mb-6">Use Legacy Registration</h3>
@@ -578,6 +591,20 @@ export default function CareersPage() {
 
       <Contact />
       <Footer />
+
+      {/* Scroll to Top Button */}
+      {showScrollTop && (
+        <motion.button
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.8 }}
+          onClick={scrollToTop}
+          className="fixed bottom-8 right-8 z-50 bg-brand-teal hover:bg-brand-teal/90 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:scale-110"
+          aria-label="Scroll to top"
+        >
+          <ArrowUp className="w-6 h-6" />
+        </motion.button>
+      )}
     </div>
   )
 }
