@@ -27,14 +27,14 @@ export default function CareersPage() {
   // Show/hide scroll to top button based on scroll position
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 300) {
-        setShowScrollTop(true);
-      } else {
-        setShowScrollTop(false);
-      }
+      const shouldShow = window.scrollY > 300;
+      setShowScrollTop(shouldShow);
     };
 
-    window.addEventListener('scroll', handleScroll);
+    // Check scroll position on mount
+    handleScroll();
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -593,14 +593,16 @@ export default function CareersPage() {
       <Footer />
 
       {/* Scroll to Top Button */}
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {showScrollTop && (
           <motion.button
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
+            key="scroll-to-top"
+            initial={{ opacity: 0, scale: 0.8, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: 20 }}
+            transition={{ duration: 0.2 }}
             onClick={scrollToTop}
-            className="fixed bottom-8 right-8 z-50 bg-brand-teal hover:bg-brand-teal/90 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:scale-110"
+            className="fixed bottom-8 right-8 z-50 bg-brand-teal hover:bg-brand-teal/90 text-white p-4 rounded-full shadow-lg hover:shadow-xl"
             aria-label="Scroll to top"
           >
             <ArrowUp className="w-6 h-6" />
