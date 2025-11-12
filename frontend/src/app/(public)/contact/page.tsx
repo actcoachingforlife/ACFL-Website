@@ -11,6 +11,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { MapPin, Mail, Phone } from 'lucide-react'
 import { Facebook, Instagram, Linkedin } from 'lucide-react'
 import { useScrollRestoration } from '@/hooks/useScrollRestoration'
+import ScrollToTop from '@/components/ScrollToTop'
 
 export default function ContactPage() {
   useScrollRestoration('contactScrollPosition');
@@ -339,6 +340,7 @@ export default function ContactPage() {
       </section>
 
       <Footer />
+      <ScrollToTop />
     </div>
   )
 }

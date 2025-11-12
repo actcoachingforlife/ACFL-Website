@@ -1,18 +1,18 @@
 "use client"
 
-import { motion, AnimatePresence } from "framer-motion"
+import { motion } from "framer-motion"
 import Footer from "@/components/Footer"
 import NavbarLandingPage from "@/components/NavbarLandingPage"
 import { useScrollRestoration } from "@/hooks/useScrollRestoration"
-import { FileText, Users, Search, CheckCircle, User, Briefcase, MessageCircle, Award, ChevronDown, Mail, Lock, Phone, Lightbulb, ArrowUp } from "lucide-react"
-import { useState, useEffect } from "react"
+import { FileText, Users, Search, CheckCircle, User, Briefcase, MessageCircle, Award, ChevronDown, Mail, Lock } from "lucide-react"
+import { useState } from "react"
 import { PhoneInput } from "@/components/PhoneInput"
 import Contact from "../component/contactUs"
+import ScrollToTop from "@/components/ScrollToTop"
 
 export default function CareersPage() {
   useScrollRestoration('careersScrollPosition');
   const [isLegacyOpen, setIsLegacyOpen] = useState(false);
-  const [showScrollTop, setShowScrollTop] = useState(false);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -23,28 +23,6 @@ export default function CareersPage() {
   });
   const [errors, setErrors] = useState<{[key: string]: string}>({});
   const [loading, setLoading] = useState(false);
-
-  // Show/hide scroll to top button based on scroll position
-  useEffect(() => {
-    const handleScroll = () => {
-      const shouldShow = window.scrollY > 300;
-      setShowScrollTop(shouldShow);
-    };
-
-    // Check scroll position on mount
-    handleScroll();
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Scroll to top function
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -591,24 +569,7 @@ export default function CareersPage() {
 
       <Contact />
       <Footer />
-
-      {/* Scroll to Top Button */}
-      <AnimatePresence mode="wait">
-        {showScrollTop && (
-          <motion.button
-            key="scroll-to-top"
-            initial={{ opacity: 0, scale: 0.8, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.8, y: 20 }}
-            transition={{ duration: 0.2 }}
-            onClick={scrollToTop}
-            className="fixed bottom-8 right-8 z-50 bg-brand-teal hover:bg-brand-teal/90 text-white p-4 rounded-full shadow-lg hover:shadow-xl"
-            aria-label="Scroll to top"
-          >
-            <ArrowUp className="w-6 h-6" />
-          </motion.button>
-        )}
-      </AnimatePresence>
+      <ScrollToTop />
     </div>
   )
 }

@@ -5,6 +5,7 @@ import Contact from "../component/contactUs";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
 import { useScrollRestoration } from "@/hooks/useScrollRestoration";
+import ScrollToTop from "@/components/ScrollToTop";
 import {
   Users,
   TrendingUp,
@@ -433,6 +434,7 @@ export default function AboutPage() {
       </section>
       <Contact />
       <Footer />
+      <ScrollToTop />
     </div>
   );
 }

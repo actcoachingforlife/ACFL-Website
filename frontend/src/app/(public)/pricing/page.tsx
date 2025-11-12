@@ -7,6 +7,7 @@ import NavbarLandingPage from "@/components/NavbarLandingPage"
 import Footer from "@/components/Footer"
 import Contact from "../component/contactUs"
 import { useScrollRestoration } from "@/hooks/useScrollRestoration"
+import ScrollToTop from "@/components/ScrollToTop"
 import {
   CheckCircle,
   Star,
@@ -514,6 +515,7 @@ export default function PricingPage() {
       <Contact />
 
       <Footer />
+      <ScrollToTop />
     </div>
   )
 }

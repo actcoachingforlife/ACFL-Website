@@ -19,6 +19,7 @@ import NavbarLandingPage from "@/components/NavbarLandingPage";
 import AssessmentCompleteModal from "@/components/AssessmentCompleteModal";
 import Testimonial from "./(public)/component/testimonial";
 import Contact from "./(public)/component/contactUs";
+import ScrollToTop from "@/components/ScrollToTop";
 import imgone from "./(public)/images/HomeImg1.png";
 import imgtwo from "./(public)/images/HomeImg2.png";
 import imgthree from "./(public)/images/HomeImg3.png";
@@ -578,6 +579,7 @@ export default function HomePage() {
         isOpen={showAssessmentModal}
         onClose={() => setShowAssessmentModal(false)}
       />
+      <ScrollToTop />
     </div>
   );
 }

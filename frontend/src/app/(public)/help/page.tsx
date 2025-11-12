@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import Footer from "@/components/Footer"
 import NavbarLandingPage from "@/components/NavbarLandingPage"
 import { useScrollRestoration } from "@/hooks/useScrollRestoration"
+import ScrollToTop from "@/components/ScrollToTop"
 
 interface FAQItem {
   question: string
@@ -575,6 +576,7 @@ export default function HelpCenterPage() {
       </section>
 
       <Footer />
+      <ScrollToTop />
     </div>
   )
 }

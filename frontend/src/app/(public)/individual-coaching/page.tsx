@@ -7,6 +7,7 @@ import NavbarLandingPage from "@/components/NavbarLandingPage"
 import Footer from "@/components/Footer"
 import contactUsPhoto from "@/app/(public)/images/contactUs.png"
 import { useScrollRestoration } from "@/hooks/useScrollRestoration"
+import ScrollToTop from "@/components/ScrollToTop"
 import {
   FileText,
   Users,
@@ -814,6 +815,7 @@ export default function IndividualCoachingPage() {
       </section>
 
       <Footer />
+      <ScrollToTop />
     </div>
   )
 }
