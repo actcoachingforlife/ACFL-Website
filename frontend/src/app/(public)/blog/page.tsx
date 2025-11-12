@@ -7,6 +7,7 @@ import Contact from "../component/contactUs";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useScrollRestoration } from "@/hooks/useScrollRestoration";
+import ScrollToTop from "@/components/ScrollToTop";
 
 // Blog article type
 type BlogArticle = {
@@ -1287,6 +1288,7 @@ export default function BlogPage() {
 
       <Contact />
       <Footer />
+      <ScrollToTop />
     </div>
   );
 }

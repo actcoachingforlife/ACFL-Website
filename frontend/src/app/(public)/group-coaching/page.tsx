@@ -3,6 +3,7 @@ import Footer from "@/components/Footer";
 import NavbarLandingPage from "@/components/NavbarLandingPage";
 import Contact from "../component/contactUs";
 import Testimonial from "../component/testimonial";
+import ScrollToTop from "@/components/ScrollToTop";
 import imgone from "../images/BlogImg1.jpg";
 import imgtwo from "../images/HomeImg1.png";
 import imgthree from "../images/HomeImg2.png";
@@ -679,6 +680,7 @@ export default function BlogPage() {
       </section>
       <Contact />
       <Footer />
+      <ScrollToTop />
     </div>
   );
 }

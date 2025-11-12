@@ -9,6 +9,7 @@ import Footer from "@/components/Footer"
 import Testimonial from "../component/testimonial"
 import Contact from "../component/contactUs"
 import { useScrollRestoration } from "@/hooks/useScrollRestoration"
+import ScrollToTop from "@/components/ScrollToTop"
 
 // Static benefits data
 const defaultBenefits = [
@@ -754,6 +755,7 @@ export default function CorporateProgramsPage() {
       <Contact />
 
       <Footer />
+      <ScrollToTop />
     </div>
   )
 }
