@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import NavbarLandingPage from "@/components/NavbarLandingPage";
 import Contact from "../component/contactUs";
 import Footer from "@/components/Footer";
@@ -18,6 +19,25 @@ import {
 
 export default function AboutPage() {
   useScrollRestoration('aboutScrollPosition');
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return (
+      <div className="flex flex-col min-h-screen bg-white">
+        <nav>
+          <NavbarLandingPage />
+        </nav>
+        <div className="flex-1 flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600"></div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col min-h-screen bg-white">
       <nav>

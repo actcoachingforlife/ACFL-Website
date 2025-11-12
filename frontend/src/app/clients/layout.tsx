@@ -14,11 +14,12 @@ import Footer from '@/components/Footer';
 import AdminImpersonationFloat from '@/components/AdminImpersonationFloat';
 import DeactivatedAccountBanner from '@/components/DeactivatedAccountBanner';
 import ThemeConsentModal from '@/components/ThemeConsentModal';
+import UserGuide from '@/components/UserGuide';
 import {
   Bell, CircleUserRound, LogOut, Sun, Moon, Menu, X, Activity, Calendar,
   Mail, UserSearch, User, CreditCard, Settings, BarChart2,
   ChevronDown, ChevronRight, Search, PanelLeft, MoreHorizontal,
-  Phone, Receipt, Zap, MessageSquare
+  Phone, Receipt, Zap, MessageSquare, BookOpen
 } from 'lucide-react';
 
 const poppins = Poppins({
@@ -32,6 +33,7 @@ interface NavigationItem {
   href: string;
   icon: React.ComponentType<any>;
   notificationCount?: number;
+  dataGuide?: string;
 }
 
 interface NavigationGroup {
@@ -70,6 +72,7 @@ export default function ClientLayout({
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set(['dashboard', 'coaching']));
   const [hoveredGroup, setHoveredGroup] = useState<string | null>(null);
   const [hoverPosition, setHoverPosition] = useState<{x: number, y: number} | null>(null);
+  const [userGuideEnabled, setUserGuideEnabled] = useState(true);
 
   // Refs
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -106,6 +109,12 @@ export default function ClientLayout({
       setTheme(currentDOMTheme);
       setPendingTheme(currentDOMTheme);
       console.log('Client theme initialized to:', currentDOMTheme, '(no consent yet, from DOM)');
+    }
+
+    // Initialize user guide preference from localStorage
+    const savedUserGuide = localStorage.getItem('userGuideEnabled');
+    if (savedUserGuide !== null) {
+      setUserGuideEnabled(savedUserGuide === 'true');
     }
   }, []);
 
@@ -301,8 +310,8 @@ export default function ClientLayout({
       name: 'Coaching',
       icon: UserSearch,
       items: [
-        { name: 'Find Coaches', href: '/clients/search-coaches', icon: UserSearch },
-        { name: 'Appointments', href: '/clients/appointments', icon: Calendar, notificationCount: appointmentNotificationCount },
+        { name: 'Find Coaches', href: '/clients/search-coaches', icon: UserSearch, dataGuide: 'find-coaches' },
+        { name: 'Appointments', href: '/clients/appointments', icon: Calendar, notificationCount: appointmentNotificationCount, dataGuide: 'appointments' },
         { name: 'Messages', href: '/clients/messages', icon: Mail, notificationCount: unreadMessageCount },
       ]
     },
@@ -536,6 +545,7 @@ export default function ClientLayout({
                             <Link
                               key={item.href}
                               href={item.href}
+                              data-guide={item.dataGuide}
                               onClick={() => {
                                 if (item.href === '/clients/messages') {
                                   markMessagesAsRead();
@@ -701,7 +711,7 @@ export default function ClientLayout({
 
                       {/* User Dropdown */}
                       {showDropdown && (
-                        <div className="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 z-[10002] border border-gray-200 dark:border-gray-600">
+                        <div className="absolute right-0 top-full mt-2 w-56 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 z-[10002] border border-gray-200 dark:border-gray-600">
                           <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-600">
                             <p className="text-sm font-medium text-gray-900 dark:text-white">
                               {user?.first_name || 'Client'} {user?.last_name || ''}
@@ -710,6 +720,41 @@ export default function ClientLayout({
                               Client
                             </p>
                           </div>
+
+                          {/* User Guide Toggle */}
+                          <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-600">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center space-x-2">
+                                <BookOpen className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+                                <span className="text-sm text-gray-700 dark:text-gray-300">User Guide</span>
+                              </div>
+                              <label className="inline-flex items-center cursor-pointer">
+                                <input
+                                  type="checkbox"
+                                  checked={userGuideEnabled}
+                                  onChange={(e) => {
+                                    const isEnabled = e.target.checked;
+                                    setUserGuideEnabled(isEnabled);
+                                    localStorage.setItem('userGuideEnabled', isEnabled ? 'true' : 'false');
+                                    const toast = document.createElement('div');
+                                    toast.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-4 py-3 rounded-lg shadow-lg z-[10000] animate-in fade-in slide-in-from-bottom-2';
+                                    toast.textContent = isEnabled ? 'User guide enabled' : 'User guide disabled';
+                                    document.body.appendChild(toast);
+                                    setTimeout(() => {
+                                      if (toast.parentNode) {
+                                        toast.parentNode.removeChild(toast);
+                                      }
+                                    }, 2000);
+                                  }}
+                                  className="sr-only peer"
+                                />
+                                <div className={`relative w-9 h-5 rounded-full transition-colors ${userGuideEnabled ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700'}`}>
+                                  <div className={`absolute top-0.5 left-0.5 bg-white w-4 h-4 rounded-full transition-transform ${userGuideEnabled ? 'translate-x-4' : ''}`}></div>
+                                </div>
+                              </label>
+                            </div>
+                          </div>
+
                           <button
                             onClick={() => {
                               router.push('/clients/settings');
@@ -869,7 +914,7 @@ export default function ClientLayout({
                           className="fixed inset-0 bg-black/20 z-[60]"
                           onClick={() => setShowDropdown(false)}
                         />
-                        <div className="fixed right-4 top-16 w-48 bg-white dark:bg-gray-800 rounded-md shadow-xl py-1 z-[70] border border-gray-200 dark:border-gray-600">
+                        <div className="fixed right-4 top-16 w-56 bg-white dark:bg-gray-800 rounded-md shadow-xl py-1 z-[70] border border-gray-200 dark:border-gray-600">
                           <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-600">
                             <p className="text-sm font-medium text-gray-900 dark:text-white">
                               {user?.first_name || 'Client'} {user?.last_name || ''}
@@ -878,6 +923,41 @@ export default function ClientLayout({
                               Client
                             </p>
                           </div>
+
+                          {/* User Guide Toggle */}
+                          <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-600">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center space-x-2">
+                                <BookOpen className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+                                <span className="text-sm text-gray-700 dark:text-gray-300">User Guide</span>
+                              </div>
+                              <label className="inline-flex items-center cursor-pointer">
+                                <input
+                                  type="checkbox"
+                                  checked={userGuideEnabled}
+                                  onChange={(e) => {
+                                    const isEnabled = e.target.checked;
+                                    setUserGuideEnabled(isEnabled);
+                                    localStorage.setItem('userGuideEnabled', isEnabled ? 'true' : 'false');
+                                    const toast = document.createElement('div');
+                                    toast.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-4 py-3 rounded-lg shadow-lg z-[10000] animate-in fade-in slide-in-from-bottom-2';
+                                    toast.textContent = isEnabled ? 'User guide enabled' : 'User guide disabled';
+                                    document.body.appendChild(toast);
+                                    setTimeout(() => {
+                                      if (toast.parentNode) {
+                                        toast.parentNode.removeChild(toast);
+                                      }
+                                    }, 2000);
+                                  }}
+                                  className="sr-only peer"
+                                />
+                                <div className={`relative w-9 h-5 rounded-full transition-colors ${userGuideEnabled ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700'}`}>
+                                  <div className={`absolute top-0.5 left-0.5 bg-white w-4 h-4 rounded-full transition-transform ${userGuideEnabled ? 'translate-x-4' : ''}`}></div>
+                                </div>
+                              </label>
+                            </div>
+                          </div>
+
                           <button
                             onClick={(e) => handleThemeToggle(e)}
                             type="button"
@@ -1016,6 +1096,7 @@ export default function ClientLayout({
                                 <Link
                                   key={item.href}
                                   href={item.href}
+                                  data-guide={item.dataGuide}
                                   onClick={() => {
                                     setMobileMenuOpen(false);
                                     if (item.href === '/clients/messages') {
@@ -1278,6 +1359,7 @@ export default function ClientLayout({
                         <Link
                           key={item.href}
                           href={item.href}
+                          data-guide={item.dataGuide}
                           onClick={() => {
                             handleFlyoutLeave();
                             if (item.href === '/clients/messages') {
@@ -1318,6 +1400,9 @@ export default function ClientLayout({
           onAccept={handleConsentAccept}
           onDecline={handleConsentDecline}
         />
+
+        {/* User Guide */}
+        <UserGuide userRole="client" />
       </div>
     </ProtectedRoute>
   );

@@ -34,6 +34,12 @@ const poppins = Poppins({
 export default function HomePage() {
   const [showAssessmentModal, setShowAssessmentModal] = useState(false);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const [mounted, setMounted] = useState(false);
+
+  // Handle client-side mounting for framer-motion
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Scroll restoration - save scroll position before navigation
   useEffect(() => {
@@ -80,6 +86,20 @@ export default function HomePage() {
       }, 100);
     }
   }, []);
+
+  // Show loading until mounted to prevent framer-motion SSR issues
+  if (!mounted) {
+    return (
+      <div className={`flex flex-col min-h-screen bg-white ${poppins.className}`}>
+        <nav>
+          <NavbarLandingPage />
+        </nav>
+        <div className="flex-1 flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600"></div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={`flex flex-col min-h-screen bg-white ${poppins.className}`}>

@@ -25,6 +25,7 @@ import invoiceRoutes from './routes/invoiceRoutes';
 import billingRoutes from './routes/billingRoutes';
 import progressRoutes from './routes/progressRoutes';
 import newsletterRoutes from './routes/newsletterRoutes';
+import uploadRoutes from './routes/uploadRoutes';
 import { supabase } from './lib/supabase';
 import { cronService } from './services/cronService';
 import { initializeInvoiceJobs } from './jobs/invoiceJobs';
@@ -64,7 +65,7 @@ const corsOptions: CorsOptions = {
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Cache-Control'],
   exposedHeaders: ['Content-Length', 'Content-Range'],
   maxAge: 86400, // 24 hours
   optionsSuccessStatus: 200,
@@ -94,6 +95,7 @@ app.use('/api', invoiceRoutes);
 app.use('/api/billing', billingRoutes);
 app.use('/api/progress', progressRoutes);
 app.use('/api/newsletter', newsletterRoutes);
+app.use('/api/upload', uploadRoutes);
 app.use('/api', matchRoutes);
 app.use('/api', coachRoutes);
 app.use('/api', clientRoutes);

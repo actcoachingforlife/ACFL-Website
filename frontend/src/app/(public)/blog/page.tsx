@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Footer from "@/components/Footer";
 import NavbarLandingPage from "@/components/NavbarLandingPage";
 import Contact from "../component/contactUs";
@@ -8,151 +8,168 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useScrollRestoration } from "@/hooks/useScrollRestoration";
 import ScrollToTop from "@/components/ScrollToTop";
+import { getApiUrl } from "@/lib/api";
 
 // Blog article type
 type BlogArticle = {
-  id: number;
+  id: string;
   title: string;
   description: string;
   category: string;
-  readTime: string;
+  read_time: string;
   image: string;
+  slug: string;
+  content?: string;
+  author_name?: string;
+  author_title?: string;
+  author_initials?: string;
+  reviewer_name?: string;
+  last_updated?: string;
+  meta_description?: string;
+  created_at?: string;
+  updated_at?: string;
 };
 
-// Helper function to convert article title to URL slug
-const getArticleSlug = (title: string): string => {
-  const slugMap: { [key: string]: string } = {
-    "Setting meaningful life goals": "/blog/life-goals",
-    "Breaking through mental barriers": "/blog/mental-barriers",
-    "Understanding your values in challenging times": "/blog/understanding-values",
-    "Emotional intelligence in the workplace": "/blog/emotional-intelligence",
-    "Building psychological flexibility through ACT": "/blog/psychological-flexibility",
-    "Mastering cognitive defusion": "/blog/defusion-techniques",
-    "Taking committed action": "/blog/committed-action"
-  };
-  return slugMap[title] || "#";
+// Helper function to convert article slug to URL
+const getArticleSlug = (slug: string): string => {
+  return `/blog/${slug}`;
 };
 
-// Sample blog articles data
-const allBlogArticles: BlogArticle[] = [
+// Default/fallback blog articles data
+const defaultBlogArticles: BlogArticle[] = [
   {
-    id: 1,
+    id: "1",
     title: "Setting meaningful life goals",
+    slug: "life-goals",
     description: "Strategies for creating purpose-driven personal and professional objectives",
     category: "Personal Growth",
-    readTime: "5 min read",
+    read_time: "5 min read",
     image: "/images/why-coaching-4.png"
   },
   {
-    id: 2,
+    id: "2",
     title: "Breaking through mental barriers",
+    slug: "mental-barriers",
     description: "Explore strategies to overcome limiting beliefs and create meaningful change",
     category: "Mindfulness",
-    readTime: "5 min read",
+    read_time: "5 min read",
     image: "/images/why-coaching-5.png"
   },
   {
-    id: 3,
+    id: "3",
     title: "Understanding your values in challenging times",
+    slug: "understanding-values",
     description: "Practical techniques to align actions with core personal values",
     category: "Wellness",
-    readTime: "5 min read",
+    read_time: "5 min read",
     image: "/images/coaching-hero.png"
   },
   {
-    id: 4,
+    id: "4",
     title: "Emotional intelligence in the workplace",
+    slug: "emotional-intelligence",
     description: "Develop critical skills for effective communication and team performance",
     category: "Leadership",
-    readTime: "6 min read",
+    read_time: "6 min read",
     image: "/images/why-coaching-3.png"
   },
   {
-    id: 5,
+    id: "5",
     title: "Mindful living practices",
+    slug: "mindful-living",
     description: "Daily techniques to enhance presence and awareness",
     category: "Mindfulness",
-    readTime: "4 min read",
+    read_time: "4 min read",
     image: "/images/why-coaching-1.png"
   },
   {
-    id: 6,
+    id: "6",
     title: "Building resilience in difficult times",
+    slug: "building-resilience",
     description: "Strengthen your ability to bounce back from challenges",
     category: "Wellness",
-    readTime: "7 min read",
+    read_time: "7 min read",
     image: "/images/why-coaching-2.png"
   },
   {
-    id: 7,
+    id: "7",
     title: "Leadership through acceptance",
+    slug: "leadership-acceptance",
     description: "Lead with authenticity and psychological flexibility",
     category: "Leadership",
-    readTime: "6 min read",
+    read_time: "6 min read",
     image: "/images/why-coaching-4.png"
   },
   {
-    id: 8,
+    id: "8",
     title: "Personal transformation journey",
+    slug: "personal-transformation",
     description: "Navigate your path to meaningful personal growth",
     category: "Personal Growth",
-    readTime: "8 min read",
+    read_time: "8 min read",
     image: "/images/why-coaching-5.png"
   },
   {
-    id: 9,
+    id: "9",
     title: "Stress management techniques",
+    slug: "stress-management",
     description: "Effective strategies for managing everyday stress",
     category: "Wellness",
-    readTime: "5 min read",
+    read_time: "5 min read",
     image: "/images/coaching-hero.png"
   },
   {
-    id: 10,
+    id: "10",
     title: "Communication mastery",
+    slug: "communication-mastery",
     description: "Enhance your interpersonal communication skills",
     category: "Leadership",
-    readTime: "6 min read",
+    read_time: "6 min read",
     image: "/images/why-coaching-3.png"
   },
   {
-    id: 11,
+    id: "11",
     title: "Meditation for beginners",
+    slug: "meditation-beginners",
     description: "Start your mindfulness practice with simple techniques",
     category: "Mindfulness",
-    readTime: "4 min read",
+    read_time: "4 min read",
     image: "/images/why-coaching-1.png"
   },
   {
-    id: 12,
+    id: "12",
     title: "Goal setting strategies",
+    slug: "goal-setting",
     description: "Create actionable plans for your personal development",
     category: "Personal Growth",
-    readTime: "7 min read",
+    read_time: "7 min read",
     image: "/images/why-coaching-2.png"
   },
   {
-    id: 13,
+    id: "13",
     title: "Work-life balance essentials",
+    slug: "work-life-balance",
     description: "Find harmony between professional and personal life",
     category: "Wellness",
-    readTime: "5 min read",
+    read_time: "5 min read",
     image: "/images/why-coaching-4.png"
   },
   {
-    id: 14,
+    id: "14",
     title: "Mindful breathing exercises",
+    slug: "mindful-breathing",
     description: "Simple breathing techniques for daily practice",
     category: "Mindfulness",
-    readTime: "3 min read",
+    read_time: "3 min read",
     image: "/images/why-coaching-5.png"
   },
   {
-    id: 15,
+    id: "15",
     title: "Effective team leadership",
+    slug: "team-leadership",
     description: "Build and lead high-performing teams",
     category: "Leadership",
-    readTime: "8 min read",
+    read_time: "8 min read",
     image: "/images/coaching-hero.png"
   }
 ];
@@ -164,9 +181,49 @@ export default function BlogPage() {
   const [message, setMessage] = useState('');
   const [activeFilter, setActiveFilter] = useState<string>('all');
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [allBlogArticles, setAllBlogArticles] = useState<BlogArticle[]>(defaultBlogArticles);
+  const [loading, setLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  // Handle client-side mounting for framer-motion
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const articlesPerPage = 3;
   const categories = ['all', 'Wellness', 'Mindfulness', 'Leadership', 'Personal Growth'];
+
+  // Fetch blog posts from API (falls back to default if API fails)
+  useEffect(() => {
+    const fetchBlogPosts = async () => {
+      try {
+        const apiUrl = getApiUrl();
+        const response = await fetch(`${apiUrl}/api/content/public/blog/posts`, {
+          cache: 'no-store',
+          headers: {
+            'Cache-Control': 'no-cache'
+          }
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          // Only update if we got data from the API
+          if (data && data.length > 0) {
+            setAllBlogArticles(data);
+          }
+          // Otherwise keep using defaultBlogArticles
+        } else {
+          console.log('API not available, using default blog posts');
+        }
+      } catch (error) {
+        console.log('Error fetching blog posts, using default blog posts:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlogPosts();
+  }, []);
 
   // Filter articles based on active category
   const filteredArticles = activeFilter === 'all'
@@ -248,6 +305,21 @@ export default function BlogPage() {
       }, 5000);
     }
   };
+
+  // Show loading until mounted to prevent framer-motion SSR issues
+  if (!mounted) {
+    return (
+      <div className="flex flex-col min-h-screen bg-white">
+        <nav>
+          <NavbarLandingPage />
+        </nav>
+        <div className="flex-1 flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col min-h-screen bg-white">
       <nav>
@@ -871,7 +943,7 @@ export default function BlogPage() {
                       <span className="inline-block bg-cyan-100 text-cyan-600 px-3 py-1 rounded text-xs font-medium">
                         {article.category}
                       </span>
-                      <span className="text-sm text-gray-600">{article.readTime}</span>
+                      <span className="text-sm text-gray-600">{article.read_time}</span>
                     </div>
                     <h3 className="text-xl font-bold text-gray-900 mb-3 leading-tight">
                       {article.title}
@@ -880,7 +952,7 @@ export default function BlogPage() {
                       {article.description}
                     </p>
                     <a
-                      href={getArticleSlug(article.title)}
+                      href={getArticleSlug(article.slug)}
                       className="inline-flex items-center text-sm font-medium text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-50 transition-colors"
                     >
                       Read more
