@@ -16,6 +16,10 @@ import { useMeeting } from '@/contexts/MeetingContext';
 import axios from 'axios';
 import { apiGet, apiPut, API_URL as API_BASE_URL } from '@/lib/api-client';
 import { Video, ArrowUpDown, ArrowUp, ArrowDown, MessageCircle, Search, Filter, ChevronUp, ChevronDown } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
+import { useOnboarding } from '@/contexts/OnboardingContext';
+import OnboardingTour from '@/components/onboarding/OnboardingTour';
+import { appointmentsTourSteps } from '@/components/onboarding/ClientOnboardingTours';
 
 interface Appointment {
   id: string;
@@ -40,6 +44,8 @@ interface Appointment {
 function AppointmentsContent() {
   const { user } = useAuth();
   const { isInMeeting, currentMeetingId, setMeetingState, canJoinMeeting } = useMeeting();
+  const searchParams = useSearchParams();
+  const { startAppointmentsTour, showAppointmentsTour, endTour } = useOnboarding();
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [filteredAppointments, setFilteredAppointments] = useState<Appointment[]>([]);
   const [filter, setFilter] = useState<'all' | 'upcoming' | 'past' | 'pending'>('upcoming');
@@ -150,6 +156,19 @@ function AppointmentsContent() {
       socketRef.current = null;
     };
   }, [user?.id, API_URL]);
+
+  // Detect URL parameter to start tour
+  useEffect(() => {
+    const shouldStartTour = searchParams?.get('startTour');
+
+    if (shouldStartTour === 'true' && !loading && !showAppointmentsTour) {
+      console.log('Starting appointments tour');
+      startAppointmentsTour();
+
+      // Clean up URL parameter
+      window.history.replaceState({}, '', '/clients/appointments');
+    }
+  }, [loading, showAppointmentsTour, searchParams, startAppointmentsTour]);
 
   const isJoinAvailable = (apt: Appointment) => {
     const start = new Date(apt.starts_at).getTime();
@@ -426,7 +445,7 @@ function AppointmentsContent() {
   return (
     // No MeetingBlocker on appointments page - users should always be able to access their appointments
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-16">
-      <div className="mb-8">
+      <div className="mb-8" data-tour="appointments-header">
         <div className="flex justify-between items-start">
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">Calendar & Appointments</h1>
@@ -442,7 +461,7 @@ function AppointmentsContent() {
       )}
 
       {/* Filter Tabs */}
-      <div className="mb-6">
+      <div className="mb-6" data-tour="filter-tabs">
         <div className="border-b border-gray-200 dark:border-gray-700">
           <nav className="-mb-px flex space-x-2 sm:space-x-8 overflow-x-auto">
             {[
@@ -491,7 +510,7 @@ function AppointmentsContent() {
       <div className="mb-6 space-y-4">
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="flex-1">
-            <div className="relative">
+            <div className="relative" data-tour="search-input">
               <Search className="h-4 w-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
               <Input
                 placeholder="Search by coach name, notes, status, or date..."
@@ -503,7 +522,7 @@ function AppointmentsContent() {
           </div>
           <div className="flex gap-2">
             <Select value={dateFilter} onValueChange={(value: any) => setDateFilter(value)}>
-              <SelectTrigger className="w-[150px]">
+              <SelectTrigger className="w-[150px]" data-tour="date-filter">
                 <SelectValue placeholder="Date filter" />
               </SelectTrigger>
               <SelectContent>
@@ -536,7 +555,7 @@ function AppointmentsContent() {
       </div>
 
       {/* Sort Controls - Show for all tabs */}
-      <div className="mb-6">
+      <div className="mb-6" data-tour="sort-controls">
         <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
           <span className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Sort by:</span>
           <div className="flex gap-1 sm:gap-2">
@@ -569,7 +588,7 @@ function AppointmentsContent() {
       </div>
 
       {/* Appointments List */}
-      <div className="space-y-4">
+      <div className="space-y-4" data-tour="appointments-list">
         {initialLoad ? (
           <AppointmentCardSkeleton count={5} />
         ) : (() => {
@@ -593,8 +612,8 @@ function AppointmentsContent() {
               </CardContent>
             </Card>
           ) : (
-            filteredAppointments.map((appointment) => (
-            <Card key={appointment.id} className="overflow-hidden">
+            filteredAppointments.map((appointment, index) => (
+            <Card key={appointment.id} className="overflow-hidden" data-tour={index === 0 ? "appointment-card" : undefined}>
               <CardContent className="p-4 sm:p-6">
                 <div className="flex flex-col">
                   <div className="flex-1">
@@ -644,8 +663,9 @@ function AppointmentsContent() {
                               className={`${isInMeeting && currentMeetingId === appointment.meeting_id ? 'bg-blue-600 hover:bg-blue-700' : 'bg-green-600 hover:bg-green-700'} disabled:opacity-40 disabled:cursor-not-allowed w-full sm:w-auto`}
                               disabled={!isJoinAvailable(appointment) || (isInMeeting && currentMeetingId !== appointment.meeting_id)}
                               size="sm"
+                              data-tour={index === 0 ? "join-session-button" : undefined}
                             >
-                              <Video className="mr-2 h-3 w-3 sm:h-4 sm:w-4" /> 
+                              <Video className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
                               {isInMeeting && currentMeetingId === appointment.meeting_id ? 'Rejoin Session' : 'Join Session'}
                             </Button>
                             {isInMeeting && currentMeetingId !== appointment.meeting_id && (
@@ -668,6 +688,7 @@ function AppointmentsContent() {
                             variant="outline"
                             className="text-blue-600 hover:bg-blue-50 w-full sm:w-auto"
                             size="sm"
+                            data-tour={index === 0 ? "message-coach-button" : undefined}
                           >
                             <MessageCircle className="mr-2 h-3 w-3 sm:h-4 sm:w-4" /> Message
                           </Button>
@@ -683,6 +704,7 @@ function AppointmentsContent() {
                             variant="outline"
                             className="text-blue-600 hover:bg-blue-50 w-full sm:w-auto"
                             size="sm"
+                            data-tour={index === 0 ? "message-coach-button" : undefined}
                           >
                             <MessageCircle className="mr-2 h-3 w-3 sm:h-4 sm:w-4" /> Message Coach
                           </Button>
@@ -715,6 +737,13 @@ function AppointmentsContent() {
           }}
         />
       )}
+
+      {/* Onboarding Tour */}
+      <OnboardingTour
+        steps={appointmentsTourSteps}
+        run={showAppointmentsTour}
+        onFinish={() => endTour('appointments')}
+      />
     </div>
   );
 }
