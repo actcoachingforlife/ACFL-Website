@@ -1,23 +1,23 @@
 
 'use client'
 
-import { useParams, useRouter } from 'next/navigation'
+import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import DeactivatedActionButton from '@/components/DeactivatedActionButton'
-import { 
-  Heart, 
-  Calendar, 
-  MessageCircle, 
-  User, 
-  Star, 
-  MapPin, 
-  Clock, 
-  Award, 
-  Shield, 
-  Video, 
+import {
+  Heart,
+  Calendar,
+  MessageCircle,
+  User,
+  Star,
+  MapPin,
+  Clock,
+  Award,
+  Shield,
+  Video,
   Users,
   CheckCircle,
   Globe,
@@ -28,11 +28,15 @@ import {
   ArrowLeft,
   Sparkles,
   DollarSign,
-  Languages
+  Languages,
+  ClipboardList
 } from 'lucide-react'
 import GHLBookingCalendar from '@/components/GHLBookingCalendar'
 import CoachRating from '@/components/coach/CoachRating'
 import { useAuth } from '@/contexts/AuthContext'
+import { useOnboarding } from '@/contexts/OnboardingContext'
+import OnboardingTour from '@/components/onboarding/OnboardingTour'
+import { bookingFlowTourSteps } from '@/components/onboarding/ClientOnboardingTours'
 import { getApiUrl } from '@/lib/api'
 
 // Test Coach IDs - coaches that show all buttons to clients
@@ -129,7 +133,9 @@ interface Coach {
 function CoachProfileContent() {
   const params = useParams()
   const router = useRouter()
+  const searchParams = useSearchParams()
   const { user, logout } = useAuth()
+  const { startSearchTour, showSearchTour, endTour } = useOnboarding()
   const [coach, setCoach] = useState<Coach | null>(null)
   const [loading, setLoading] = useState(true)
   const [isSaved, setIsSaved] = useState(false)
@@ -138,6 +144,7 @@ function CoachProfileContent() {
   const [ratingStats, setRatingStats] = useState<{ averageRating: number; totalReviews: number }>({ averageRating: 0, totalReviews: 0 })
   const [canRate, setCanRate] = useState(false)
   const [hasAppointmentHistory, setHasAppointmentHistory] = useState(false)
+  const [tourStartStep, setTourStartStep] = useState(0)
 
   useEffect(() => {
     // Fetch coach data based on ID
@@ -399,6 +406,22 @@ function CoachProfileContent() {
       checkIfCoachIsSaved()
     }
   }, [params.id, user])
+
+  // Detect tour continuation from URL parameters
+  useEffect(() => {
+    const continueTour = searchParams.get('continueTour')
+    const tourStep = searchParams.get('tourStep')
+
+    if (continueTour === 'true' && tourStep && !showSearchTour && !loading) {
+      const stepNumber = parseInt(tourStep, 10)
+      console.log('Continuing booking tour from step:', stepNumber)
+      setTourStartStep(stepNumber)
+      startSearchTour()
+
+      // Clean up URL parameters
+      window.history.replaceState({}, '', `/clients/coach-profile/${params.id}`)
+    }
+  }, [searchParams, showSearchTour, loading, startSearchTour, params.id])
 
   const fetchRatingStats = async () => {
     try {
@@ -686,9 +709,23 @@ function CoachProfileContent() {
                     size="lg"
                     className="bg-green-600 text-white hover:bg-green-700 font-semibold transition-all hover:scale-105 w-full sm:w-auto"
                     onClick={() => handleBookSession('session')}
+                    data-tour="book-session-button"
                   >
                     <DollarSign className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                     Book Paid Session
+                  </Button>
+                </DeactivatedActionButton>
+
+                {/* View Scheduled Appointments - Visible to ALL users */}
+                <DeactivatedActionButton action="view appointments">
+                  <Button
+                    size="lg"
+                    className="bg-purple-600 text-white hover:bg-purple-700 font-semibold transition-all hover:scale-105 w-full sm:w-auto"
+                    onClick={() => router.push('/clients/appointments?startTour=true')}
+                    data-tour="view-appointments-button"
+                  >
+                    <ClipboardList className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                    View Scheduled Appointments
                   </Button>
                 </DeactivatedActionButton>
               </div>
@@ -1448,7 +1485,7 @@ function CoachProfileContent() {
       {/* Enhanced GHL Booking Calendar with Square Payment */}
       {showBookingCalendar && coach && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[60] p-2 sm:p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-5xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-5xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto" data-tour="booking-calendar-modal">
             <div className="p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
               <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 dark:text-white pr-2">
                 <span className="hidden sm:inline">
@@ -1467,7 +1504,7 @@ function CoachProfileContent() {
                 </svg>
               </button>
             </div>
-            <div className="p-3 sm:p-4 md:p-6">
+            <div className="p-3 sm:p-4 md:p-6" data-tour="booking-calendar-container">
               <GHLBookingCalendar
                 coach={{
                   id: coach.id,
@@ -1482,6 +1519,13 @@ function CoachProfileContent() {
           </div>
         </div>
       )}
+
+      {/* Onboarding Tour - Continues from search-coaches page */}
+      <OnboardingTour
+        steps={bookingFlowTourSteps.slice(tourStartStep)}
+        run={showSearchTour}
+        onFinish={() => endTour('search')}
+      />
     </div>
   )
 }
