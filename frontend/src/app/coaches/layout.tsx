@@ -15,7 +15,6 @@ import AdminImpersonationFloat from '@/components/AdminImpersonationFloat';
 import DeactivatedAccountBanner from '@/components/DeactivatedAccountBanner';
 import BankAccountSetupBanner from '@/components/coach/BankAccountSetupBanner';
 import ThemeConsentModal from '@/components/ThemeConsentModal';
-import UserGuide from '@/components/UserGuide';
 import {
   Bell, CircleUserRound, LogOut, Sun, Moon, Menu, X, Activity, Calendar,
   MessageSquare, Users, User, MoreHorizontal, TrendingUp, CreditCard,
@@ -1421,9 +1420,6 @@ export default function CoachLayout({
           onAccept={handleConsentAccept}
           onDecline={handleConsentDecline}
         />
-
-        {/* User Guide */}
-        <UserGuide userRole="coach" />
       </div>
     </ProtectedRoute>
   );
