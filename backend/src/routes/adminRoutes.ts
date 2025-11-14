@@ -12,12 +12,16 @@ import staffRoutes from './staffRoutes';
 import { getStaffPermissions, updateStaffPermissions } from '../controllers/staffController';
 import { auditLogger, AuditRequest } from '../utils/auditLogger';
 import { appointmentReminderService } from '../services/appointmentReminderService';
+import { adminLimiter } from '../middleware/rateLimiter';
 
 interface AuthRequest extends Request {
   user?: JWTPayload;
 }
 
 const router = Router();
+
+// Apply rate limiting to all admin routes
+router.use(adminLimiter);
 
 // Apply authentication and admin authorization to all routes
 router.use((req: AuthRequest, res, next) => {

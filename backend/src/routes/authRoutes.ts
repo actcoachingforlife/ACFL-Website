@@ -19,31 +19,32 @@ import {
 } from '../middleware/validation';
 import { authenticate, requireAdmin } from '../middleware/auth';
 import { body } from 'express-validator';
+import { authLimiter, passwordResetLimiter } from '../middleware/rateLimiter';
 
 const router = Router();
 
-// Public routes
-router.post('/register/client', validateRegisterClient, registerClient);
-router.post('/register/coach', validateRegisterCoach, registerCoach);
-router.post('/login', validateLogin, login);
+// Public routes - with strict rate limiting
+router.post('/register/client', authLimiter, validateRegisterClient, registerClient);
+router.post('/register/coach', authLimiter, validateRegisterCoach, registerCoach);
+router.post('/login', authLimiter, validateLogin, login);
 router.post('/logout', authenticate, logout); // Protect logout to access user info for logging
 
-// Email verification routes
-router.post('/verify-email', verifyEmail);
+// Email verification routes - with rate limiting
+router.post('/verify-email', authLimiter, verifyEmail);
 router.get('/verify-email', verifyEmail); // Support both GET and POST for email verification
-router.post('/resend-verification', [
+router.post('/resend-verification', authLimiter, [
   body('email').isEmail().normalizeEmail(),
 ], resendVerificationEmail);
 
-// Password reset routes
-router.post('/forgot-password', [
+// Password reset routes - with strict rate limiting
+router.post('/forgot-password', passwordResetLimiter, [
   body('email').isEmail().normalizeEmail(),
 ], forgotPassword);
-router.post('/verify-reset-otp', [
+router.post('/verify-reset-otp', passwordResetLimiter, [
   body('email').isEmail().normalizeEmail(),
   body('otp').isLength({ min: 6, max: 6 }).isNumeric(),
 ], verifyResetOTP);
-router.post('/reset-password', [
+router.post('/reset-password', passwordResetLimiter, [
   body('email').isEmail().normalizeEmail(),
   body('otp').isLength({ min: 6, max: 6 }).isNumeric(),
   body('newPassword').isLength({ min: 8 }),

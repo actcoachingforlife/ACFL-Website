@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { bookingController } from '../controllers/bookingController';
+import { bookingLimiter } from '../middleware/rateLimiter';
 
 const router = Router();
 
@@ -9,7 +10,7 @@ const router = Router();
  * @desc Create a new booking request
  * @access Client
  */
-router.post('/request', bookingController.createBookingRequest);
+router.post('/request', bookingLimiter, bookingController.createBookingRequest);
 
 /**
  * @route GET /api/bookings/client/requests

@@ -29,6 +29,15 @@ import uploadRoutes from './routes/uploadRoutes';
 import { supabase } from './lib/supabase';
 import { cronService } from './services/cronService';
 import { initializeInvoiceJobs } from './jobs/invoiceJobs';
+import { apiLimiter } from './middleware/rateLimiter';
+import {
+  helmetConfig,
+  sanitizeInput,
+  validateInput,
+  securityLogger,
+  preventParameterPollution,
+  validateHttpMethod
+} from './middleware/security';
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -73,9 +82,29 @@ const corsOptions: CorsOptions = {
 
 app.use(cors(corsOptions));
 
+// Security middleware - must be applied early
+app.use(helmetConfig); // Security headers
+app.use(validateHttpMethod); // Validate HTTP methods
+app.use(securityLogger); // Log security-sensitive requests
+
 // Handle preflight requests explicitly
 // app.options('*', cors(corsOptions));
-app.use(express.json());
+app.use(express.json({ limit: '10mb' })); // Limit payload size
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Input sanitization and validation
+app.use(sanitizeInput); // Prevent NoSQL injection
+app.use(validateInput); // Validate and sanitize input
+app.use(preventParameterPollution); // Prevent parameter pollution
+
+// General API rate limiting (skip admin routes as they have their own limiter)
+app.use('/api/', (req, res, next) => {
+  // Skip general rate limiting for admin routes (they have stricter dedicated limiters)
+  if (req.path.startsWith('/admin')) {
+    return next();
+  }
+  return apiLimiter(req, res, next);
+});
 
 // Note: File uploads now handled by Supabase Storage
 
