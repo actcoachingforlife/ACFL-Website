@@ -66,7 +66,7 @@ function ProfileContent() {
   const { user, logout } = useAuth()
   const router = useRouter()
   const searchParams = useSearchParams()
-  const { startProfileTour, showProfileTour, endTour } = useOnboarding()
+  const { startProfileTour, showProfileTour, endTour, completeStep } = useOnboarding()
   const [isEditing, setIsEditing] = useState(false)
   const [isEditingNotifications, setIsEditingNotifications] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -1508,16 +1508,20 @@ function ProfileContent() {
         onFinish={() => {
           console.log('Profile tour finished, calling endTour');
           endTour('profile');
+          completeStep('complete-profile');
         }}
       />
     </div>
   )
 }
 
-export default function Profile() {
+export default function ProfilePage() {
   return (
     <ProtectedRoute allowedRoles={['client']}>
       <ProfileContent />
     </ProtectedRoute>
-  )
-} 
+  );
+}
+
+// Force dynamic rendering - disable static optimization for this page
+export const dynamic = 'force-dynamic'; 

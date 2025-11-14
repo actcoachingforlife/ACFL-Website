@@ -1,6 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useOnboarding } from "@/contexts/OnboardingContext";
+import OnboardingTour from "@/components/onboarding/OnboardingTour";
+import OnboardingChecklist from "@/components/onboarding/OnboardingChecklist";
+import { adminWelcomeTourSteps } from "@/components/onboarding/AdminOnboardingTours";
 import { PERMISSIONS } from "@/hooks/usePermissions";
 import { PermissionGate } from "@/components/PermissionGate";
 import {
@@ -72,6 +77,9 @@ interface SystemHealth {
 }
 
 export default function AdminDashboard() {
+  const searchParams = useSearchParams();
+  const { completeStep } = useOnboarding();
+  const [showDashboardTour, setShowDashboardTour] = useState(false);
   const [stats, setStats] = useState<DashboardStats>({
     totalUsers: 0,
     totalCoaches: 0,
@@ -133,6 +141,19 @@ export default function AdminDashboard() {
     fetchSystemHealth();
     fetchChartData();
   }, []);
+
+  // Handle tour start from URL parameter
+  useEffect(() => {
+    const shouldStartTour = searchParams.get('startTour');
+    const userGuideEnabled = localStorage.getItem('userGuideEnabled');
+    const isUserGuideEnabled = userGuideEnabled === null || userGuideEnabled === 'true';
+
+    if (shouldStartTour === 'true' && isUserGuideEnabled) {
+      setShowDashboardTour(true);
+      // Remove the URL parameter after starting the tour
+      window.history.replaceState({}, '', '/admin');
+    }
+  }, [searchParams]);
 
   const fetchDashboardData = async () => {
     try {
@@ -414,7 +435,7 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6" data-tour="admin-dashboard-stats">
         {/* Column 1 & 2: Stats and Chart */}
         <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
           {/* Total Users Card */}
@@ -1242,6 +1263,19 @@ export default function AdminDashboard() {
           </div>
         </div>
       </div>
+
+      {/* Admin Dashboard Tour */}
+      <OnboardingTour
+        steps={adminWelcomeTourSteps}
+        run={showDashboardTour}
+        onFinish={() => {
+          setShowDashboardTour(false);
+          completeStep('explore-dashboard');
+        }}
+      />
+
+      {/* Onboarding Checklist - Only visible on dashboard */}
+      <OnboardingChecklist />
     </div>
   );
 }

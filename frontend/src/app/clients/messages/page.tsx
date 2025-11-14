@@ -52,7 +52,7 @@ function CoachMessagesContent() {
 	const API_URL = getApiUrl()
 	const { user, logout } = useAuth()
 	const searchParams = useSearchParams()
-	const { startMessagesTour, showMessagesTour, endTour } = useOnboarding()
+	const { startMessagesTour, showMessagesTour, endTour, completeStep } = useOnboarding()
 	const [conversations, setConversations] = useState<Conversation[]>([])
 	const [filteredConversations, setFilteredConversations] = useState<Conversation[]>([])
 	const [activePartnerId, setActivePartnerId] = useState<string | null>(null)
@@ -997,7 +997,10 @@ function CoachMessagesContent() {
 			<OnboardingTour
 				steps={messagesTourSteps}
 				run={showMessagesTour}
-				onFinish={() => endTour('messages')}
+				onFinish={() => {
+					endTour('messages');
+					completeStep('send-message');
+				}}
 			/>
 		</div>
 	)

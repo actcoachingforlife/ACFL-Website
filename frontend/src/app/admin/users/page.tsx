@@ -36,10 +36,13 @@ import {
   FileText,
   Download
 } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { getApiUrl } from '@/lib/api';
 import SearchInput from '@/components/ui/search-input';
 import Pagination from '@/components/ui/pagination';
+import { useOnboarding } from '@/contexts/OnboardingContext';
+import OnboardingTour from '@/components/onboarding/OnboardingTour';
+import { userManagementTourSteps } from '@/components/onboarding/AdminOnboardingTours';
 
 interface User {
   id: string;
@@ -94,7 +97,10 @@ interface UserFormData {
 
 export default function UserManagement() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { hasPermission, isAdmin, isStaff } = usePermissions();
+  const { completeStep } = useOnboarding();
+  const [showUserManagementTour, setShowUserManagementTour] = useState(false);
   const [users, setUsers] = useState<User[]>([]);
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -236,6 +242,19 @@ export default function UserManagement() {
       return;
     }
   }, [hasPermission, router]);
+
+  // Handle tour start from URL parameter
+  useEffect(() => {
+    const shouldStartTour = searchParams.get('startTour');
+    const userGuideEnabled = localStorage.getItem('userGuideEnabled');
+    const isUserGuideEnabled = userGuideEnabled === null || userGuideEnabled === 'true';
+
+    if (shouldStartTour === 'true' && isUserGuideEnabled) {
+      setShowUserManagementTour(true);
+      // Remove the URL parameter after starting the tour
+      window.history.replaceState({}, '', '/admin/users');
+    }
+  }, [searchParams]);
 
   // Keyboard navigation for action menus
   useEffect(() => {
@@ -1485,6 +1504,7 @@ export default function UserManagement() {
               className="hidden sm:flex lg:grid lg:grid-cols-4 lg:gap-1 overflow-x-auto scrollbar-hide snap-x snap-mandatory lg:snap-none lg:overflow-visible scroll-smooth"
               role="tablist"
               aria-label="User type filters"
+              data-tour="users-tabs"
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               onScroll={(e) => {
                 const container = e.target as HTMLElement;
@@ -1537,6 +1557,7 @@ export default function UserManagement() {
                     role="tab"
                     aria-selected={isActive}
                     aria-controls={`tabpanel-${tab.key}`}
+                    data-tour={tab.key === 'all' ? 'all-users-tab' : tab.key === 'client' ? 'clients-tab' : tab.key === 'coach' ? 'coaches-tab' : 'staff-tab'}
                     className={`
                       flex-shrink-0 lg:flex-shrink lg:w-auto
                       min-w-[140px] sm:min-w-[160px] lg:min-w-0
@@ -3082,6 +3103,16 @@ export default function UserManagement() {
             }
           }}
           onError={showError}
+        />
+
+        {/* User Management Tour */}
+        <OnboardingTour
+          steps={userManagementTourSteps}
+          run={showUserManagementTour}
+          onFinish={() => {
+            setShowUserManagementTour(false);
+            completeStep('manage-users');
+          }}
         />
       </div>
     </div>

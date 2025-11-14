@@ -15,6 +15,8 @@ interface OnboardingState {
   clientSteps: OnboardingStep[];
   // Coach onboarding steps
   coachSteps: OnboardingStep[];
+  // Admin onboarding steps
+  adminSteps: OnboardingStep[];
   // Tour states
   showWelcomeTour: boolean;
   showDashboardTour: boolean;
@@ -64,6 +66,16 @@ const defaultCoachSteps: OnboardingStep[] = [
   { id: 'add-specializations', title: 'Add your specializations', completed: false },
   { id: 'set-availability', title: 'Set your availability', completed: false },
   { id: 'configure-payment', title: 'Configure payment settings', completed: false },
+  { id: 'view-calendar', title: 'Explore calendar & appointments', completed: false },
+];
+
+const defaultAdminSteps: OnboardingStep[] = [
+  { id: 'explore-dashboard', title: 'Explore admin dashboard', completed: false },
+  { id: 'manage-users', title: 'Learn user management', completed: false },
+  { id: 'review-coach-applications', title: 'Review coach applications', completed: false },
+  { id: 'monitor-appointments', title: 'Monitor appointments', completed: false },
+  { id: 'manage-financials', title: 'Manage financials & payouts', completed: false },
+  { id: 'view-analytics', title: 'View platform analytics', completed: false },
 ];
 
 export function OnboardingProvider({ children }: { children: ReactNode }) {
@@ -71,6 +83,7 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<OnboardingState>({
     clientSteps: defaultClientSteps,
     coachSteps: defaultCoachSteps,
+    adminSteps: defaultAdminSteps,
     showWelcomeTour: false,
     showDashboardTour: false,
     showSearchTour: false,
@@ -105,6 +118,11 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
             const savedStep = parsed.coachSteps?.find((s: OnboardingStep) => s.id === defaultStep.id);
             return savedStep || defaultStep;
           });
+        } else if (user.role === 'admin' || user.role === 'staff') {
+          parsed.adminSteps = defaultAdminSteps.map(defaultStep => {
+            const savedStep = parsed.adminSteps?.find((s: OnboardingStep) => s.id === defaultStep.id);
+            return savedStep || defaultStep;
+          });
         }
         setState((prev) => ({
           ...prev,
@@ -123,7 +141,7 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
       localStorage.setItem(versionKey, String(ONBOARDING_VERSION));
 
       // First time user - show welcome tour
-      if (user.role === 'client' || user.role === 'coach') {
+      if (user.role === 'client' || user.role === 'coach' || user.role === 'admin' || user.role === 'staff') {
         setState((prev) => ({ ...prev, showWelcomeTour: true }));
       }
     }
@@ -198,6 +216,16 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
           coachSteps: updatedSteps,
           isOnboardingComplete: allComplete,
         };
+      } else if (role === 'admin' || role === 'staff') {
+        const updatedSteps = prev.adminSteps.map((step) =>
+          step.id === stepId ? { ...step, completed: true } : step
+        );
+        const allComplete = updatedSteps.every((step) => step.completed);
+        return {
+          ...prev,
+          adminSteps: updatedSteps,
+          isOnboardingComplete: allComplete,
+        };
       }
       return prev;
     });
@@ -207,6 +235,7 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
     setState({
       clientSteps: defaultClientSteps,
       coachSteps: defaultCoachSteps,
+      adminSteps: defaultAdminSteps,
       showWelcomeTour: false,
       showDashboardTour: false,
       showSearchTour: false,
@@ -250,6 +279,9 @@ export function OnboardingProvider({ children }: { children: ReactNode }) {
     } else if (role === 'coach') {
       const completed = state.coachSteps.filter((step) => step.completed).length;
       return Math.round((completed / state.coachSteps.length) * 100);
+    } else if (role === 'admin' || role === 'staff') {
+      const completed = state.adminSteps.filter((step) => step.completed).length;
+      return Math.round((completed / state.adminSteps.length) * 100);
     }
     return 0;
   };

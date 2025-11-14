@@ -45,7 +45,7 @@ function AppointmentsContent() {
   const { user } = useAuth();
   const { isInMeeting, currentMeetingId, setMeetingState, canJoinMeeting } = useMeeting();
   const searchParams = useSearchParams();
-  const { startAppointmentsTour, showAppointmentsTour, endTour } = useOnboarding();
+  const { startAppointmentsTour, showAppointmentsTour, endTour, completeStep } = useOnboarding();
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [filteredAppointments, setFilteredAppointments] = useState<Appointment[]>([]);
   const [filter, setFilter] = useState<'all' | 'upcoming' | 'past' | 'pending'>('upcoming');
@@ -743,7 +743,10 @@ function AppointmentsContent() {
       <OnboardingTour
         steps={appointmentsTourSteps}
         run={showAppointmentsTour}
-        onFinish={() => endTour('appointments')}
+        onFinish={() => {
+          endTour('appointments');
+          completeStep('view-appointments');
+        }}
       />
     </div>
   );

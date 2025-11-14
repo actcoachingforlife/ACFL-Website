@@ -175,7 +175,7 @@ function SearchCoachesContent() {
   const { user, logout, isAuthenticated } = useAuth()
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { startSearchTour, showSearchTour, startBookingTour, showBookingTour, endTour } = useOnboarding();
+  const { startSearchTour, showSearchTour, startBookingTour, showBookingTour, endTour, completeStep } = useOnboarding();
   const [showForm, setShowForm] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [matches, setMatches] = useState<Coach[]>([]);
@@ -1411,7 +1411,10 @@ function SearchCoachesContent() {
       <OnboardingTour
         steps={searchCoachesTourSteps}
         run={showSearchTour}
-        onFinish={() => endTour('search')}
+        onFinish={() => {
+          endTour('search');
+          completeStep('browse-coaches');
+        }}
       />
       <OnboardingTour
         steps={bookingFlowSearchSteps}
@@ -1419,6 +1422,7 @@ function SearchCoachesContent() {
         onFinish={() => {
           // When search page tour finishes, redirect to Priya Desai's profile to continue
           console.log('Booking tour search phase complete: Redirecting to Priya Desai profile');
+          completeStep('book-session');
           setTimeout(() => {
             router.push('/clients/coach-profile/426b6553-5caf-4512-b99d-ac022c1ece38?continueTour=booking');
           }, 300);

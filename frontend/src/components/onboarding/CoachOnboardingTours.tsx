@@ -274,34 +274,61 @@ export const paymentTourSteps: Step[] = [
     disableBeacon: true,
   },
   {
-    target: '[data-tour="payment-setup"]',
+    target: '[data-tour="billing-tabs"]',
     content: (
       <div>
-        <h3 className="text-lg font-semibold mb-2">Connect Your Bank Account</h3>
+        <h3 className="text-lg font-semibold mb-2">Billing Management Tabs</h3>
         <p className="text-gray-600 mb-3">
-          Link your bank account to receive payments from clients. All transactions are secure and processed through our payment partner.
-        </p>
-        <p className="text-sm text-gray-500">
-          💡 You'll need your bank account details ready.
+          These tabs help you manage different aspects of your earnings and payments. Let's explore each one!
         </p>
       </div>
     ),
-    placement: 'top',
+    placement: 'bottom',
   },
   {
-    target: '[data-tour="session-rates"]',
+    target: '[data-tour="payouts-tab"]',
     content: (
       <div>
-        <h3 className="text-lg font-semibold mb-2">Set Your Session Rates</h3>
+        <h3 className="text-lg font-semibold mb-2">💰 Payouts Tab</h3>
         <p className="text-gray-600 mb-3">
-          Define your pricing for different session types. You can offer different rates for individual vs. group sessions.
+          Request withdrawals of your earnings here. You can transfer your available balance to your connected bank account.
         </p>
         <p className="text-sm text-gray-500">
-          💡 Research competitive rates in your area and specialty.
+          💡 Tip: You can request payouts anytime your balance is above the minimum threshold.
         </p>
       </div>
     ),
-    placement: 'top',
+    placement: 'bottom',
+  },
+  {
+    target: '[data-tour="history-tab"]',
+    content: (
+      <div>
+        <h3 className="text-lg font-semibold mb-2">📊 History Tab</h3>
+        <p className="text-gray-600 mb-3">
+          View all your past transactions, completed sessions, and payment history. Track your earnings over time.
+        </p>
+        <p className="text-sm text-gray-500">
+          💡 Tip: Use this for tax records and financial tracking.
+        </p>
+      </div>
+    ),
+    placement: 'bottom',
+  },
+  {
+    target: '[data-tour="bank-accounts-tab"]',
+    content: (
+      <div>
+        <h3 className="text-lg font-semibold mb-2">🏦 Bank Accounts Tab</h3>
+        <p className="text-gray-600 mb-3">
+          Connect and manage your bank accounts here. This is where payouts will be sent when you request them.
+        </p>
+        <p className="text-sm text-gray-500">
+          💡 Tip: You must add a bank account before you can receive payouts.
+        </p>
+      </div>
+    ),
+    placement: 'bottom',
   },
   {
     target: 'body',
@@ -312,7 +339,113 @@ export const paymentTourSteps: Step[] = [
           You're now ready to start accepting clients and earning from your coaching sessions!
         </p>
         <p className="text-sm text-gray-500">
-          Your profile is complete. Time to connect with clients!
+          Don't forget to add your bank account in the "Bank Accounts" tab to receive payments.
+        </p>
+      </div>
+    ),
+    placement: 'center',
+  },
+];
+
+export const calendarTourSteps: Step[] = [
+  {
+    target: 'body',
+    content: (
+      <div>
+        <h2 className="text-xl font-bold mb-3">Calendar & Appointments Guide 📅</h2>
+        <p className="text-gray-600 mb-3">
+          Learn how to manage your appointments and calendar integrations in one convenient place.
+        </p>
+        <p className="text-sm text-gray-500">
+          Let's explore the different sections!
+        </p>
+      </div>
+    ),
+    placement: 'center',
+    disableBeacon: true,
+  },
+  {
+    target: '[data-tour="calendar-tabs"]',
+    content: (
+      <div>
+        <h3 className="text-lg font-semibold mb-2">Calendar Management Tabs</h3>
+        <p className="text-gray-600 mb-3">
+          These tabs organize all your calendar and appointment management features. Let's walk through each one!
+        </p>
+      </div>
+    ),
+    placement: 'bottom',
+  },
+  {
+    target: '[data-tour="today-tab"]',
+    content: (
+      <div>
+        <h3 className="text-lg font-semibold mb-2">📋 Today Tab</h3>
+        <p className="text-gray-600 mb-3">
+          View your schedule for today at a glance. See upcoming appointments, quick actions, and integration status all in one place.
+        </p>
+        <p className="text-sm text-gray-500">
+          💡 Tip: This is your command center for daily appointment management.
+        </p>
+      </div>
+    ),
+    placement: 'bottom',
+  },
+  {
+    target: '[data-tour="appointments-tab"]',
+    content: (
+      <div>
+        <h3 className="text-lg font-semibold mb-2">📅 All Appointments Tab</h3>
+        <p className="text-gray-600 mb-3">
+          View and manage all your appointments across all time periods. Filter by status, search for specific clients, and see detailed appointment information.
+        </p>
+        <p className="text-sm text-gray-500">
+          💡 Tip: Use filters to find past, upcoming, or pending appointments quickly.
+        </p>
+      </div>
+    ),
+    placement: 'bottom',
+  },
+  {
+    target: '[data-tour="integration-tab"]',
+    content: (
+      <div>
+        <h3 className="text-lg font-semibold mb-2">🔗 Integration Tab</h3>
+        <p className="text-gray-600 mb-3">
+          Connect external calendars like Google Calendar to automatically sync your coaching appointments. Keep all your schedules in one place!
+        </p>
+        <p className="text-sm text-gray-500">
+          💡 Tip: Syncing with Google Calendar helps prevent double-booking and keeps you organized.
+        </p>
+      </div>
+    ),
+    placement: 'bottom',
+  },
+  {
+    target: '[data-tour="calendar-view-tab"]',
+    content: (
+      <div>
+        <h3 className="text-lg font-semibold mb-2">📆 Calendar View Tab</h3>
+        <p className="text-gray-600 mb-3">
+          See your appointments in a traditional monthly calendar layout. Navigate between months and view appointment details at a glance.
+        </p>
+        <p className="text-sm text-gray-500">
+          💡 Tip: Click on any date to see detailed appointment information for that day.
+        </p>
+      </div>
+    ),
+    placement: 'bottom',
+  },
+  {
+    target: 'body',
+    content: (
+      <div>
+        <h3 className="text-lg font-semibold mb-2 text-green-600">You're All Set! 🎉</h3>
+        <p className="text-gray-600 mb-3">
+          You now know how to manage your calendar and appointments effectively!
+        </p>
+        <p className="text-sm text-gray-500">
+          Explore each tab to get familiar with all the features available to you.
         </p>
       </div>
     ),

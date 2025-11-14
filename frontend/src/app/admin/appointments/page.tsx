@@ -22,11 +22,14 @@ import {
   BarChart3
 } from 'lucide-react';
 import Pagination from '@/components/ui/pagination';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { getApiUrl } from '@/lib/api';
 import RescheduleModal from '@/components/RescheduleModal';
 import NotificationModal from '@/components/NotificationModal';
 import useNotification from '@/hooks/useNotification';
+import { useOnboarding } from '@/contexts/OnboardingContext';
+import OnboardingTour from '@/components/onboarding/OnboardingTour';
+import { appointmentsTourSteps } from '@/components/onboarding/AdminOnboardingTours';
 
 interface Appointment {
   id: string;
@@ -52,6 +55,9 @@ interface Appointment {
 
 export default function AppointmentManagement() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const { completeStep } = useOnboarding();
+  const [showAppointmentsTour, setShowAppointmentsTour] = useState(false);
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [filteredAppointments, setFilteredAppointments] = useState<Appointment[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -142,6 +148,19 @@ export default function AppointmentManagement() {
       setIsSavingNotes(false);
     }
   };
+
+  // Handle tour start from URL parameter
+  useEffect(() => {
+    const shouldStartTour = searchParams.get('startTour');
+    const userGuideEnabled = localStorage.getItem('userGuideEnabled');
+    const isUserGuideEnabled = userGuideEnabled === null || userGuideEnabled === 'true';
+
+    if (shouldStartTour === 'true' && isUserGuideEnabled) {
+      setShowAppointmentsTour(true);
+      // Remove the URL parameter after starting the tour
+      window.history.replaceState({}, '', '/admin/appointments');
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     fetchAppointments();
@@ -590,7 +609,7 @@ export default function AppointmentManagement() {
       </div>
 
       {/* Enhanced Filters Section */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-200 dark:border-gray-700 mb-6 overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-200 dark:border-gray-700 mb-6 overflow-hidden" data-tour="appointments-filters">
         {/* Filter Header */}
         <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-700 dark:to-gray-750 border-b border-gray-200 dark:border-gray-600 px-6 py-4">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
@@ -1621,6 +1640,16 @@ export default function AppointmentManagement() {
         confirmText={notification.confirmText}
         cancelText={notification.cancelText}
         loading={notification.loading}
+      />
+
+      {/* Appointments Tour */}
+      <OnboardingTour
+        steps={appointmentsTourSteps}
+        run={showAppointmentsTour}
+        onFinish={() => {
+          setShowAppointmentsTour(false);
+          completeStep('monitor-appointments');
+        }}
       />
     </div>
   );
