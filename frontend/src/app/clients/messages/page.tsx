@@ -7,6 +7,9 @@ import { getApiUrl } from '@/lib/api'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useAuth } from '@/contexts/AuthContext'
+import { useOnboarding } from '@/contexts/OnboardingContext'
+import OnboardingTour from '@/components/onboarding/OnboardingTour'
+import { messagesTourSteps } from '@/components/onboarding/ClientOnboardingTours'
 import { User, Paperclip, Trash2, Download, X, MoreVertical, EyeOff, ArrowLeft, Send, Search, Filter, Users, MessageCircle, Smile } from 'lucide-react'
 
 type Conversation = {
@@ -49,6 +52,7 @@ function CoachMessagesContent() {
 	const API_URL = getApiUrl()
 	const { user, logout } = useAuth()
 	const searchParams = useSearchParams()
+	const { startMessagesTour, showMessagesTour, endTour } = useOnboarding()
 	const [conversations, setConversations] = useState<Conversation[]>([])
 	const [filteredConversations, setFilteredConversations] = useState<Conversation[]>([])
 	const [activePartnerId, setActivePartnerId] = useState<string | null>(null)
@@ -264,6 +268,19 @@ function CoachMessagesContent() {
 		})()
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
+
+	// Check for tour query parameter
+	useEffect(() => {
+		const shouldStartTour = searchParams?.get('startTour')
+		if (shouldStartTour === 'true') {
+			console.log('Starting messages tour')
+			// Clean up the URL parameter immediately to prevent re-triggering
+			window.history.replaceState({}, '', '/clients/messages')
+			setTimeout(() => {
+				startMessagesTour()
+			}, 800) // Wait a bit longer for conversations to load
+		}
+	}, [searchParams])
 
 	useEffect(() => {
 		if (activePartnerId) {
@@ -579,7 +596,7 @@ function CoachMessagesContent() {
 						</div>
 
 						{/* Contacts List */}
-						<div className="flex-1 overflow-y-auto p-2 space-y-1 min-h-0">
+						<div className="flex-1 overflow-y-auto p-2 space-y-1 min-h-0" data-tour="conversations-list">
 							{filteredConversations.map((c, index) => {
 								const initials = getInitials(c.partnerName)
 								const avatarColor = getAvatarColor(index)
@@ -590,6 +607,7 @@ function CoachMessagesContent() {
 										className={`flex items-center p-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 relative group rounded-md transition-all duration-200 ${
 											activePartnerId === c.partnerId ? 'bg-gray-100 dark:bg-gray-700' : ''
 										}`}
+										data-tour={index === 0 ? "conversation-item" : undefined}
 									>
 										<div
 											onClick={() => {
@@ -747,7 +765,7 @@ function CoachMessagesContent() {
 						</div>
 					</div>
 					{/* Messages */}
-					<div ref={scrollerRef} className="flex-1 overflow-y-auto p-4 space-y-3 bg-white dark:bg-gray-800 min-h-0">
+					<div ref={scrollerRef} className="flex-1 overflow-y-auto p-4 space-y-3 bg-white dark:bg-gray-800 min-h-0" data-tour="messages-area">
 						{!activePartnerId && (
 							<div className="flex items-center justify-center h-full text-gray-500 dark:text-gray-400">
 								<div className="text-center">
@@ -936,6 +954,7 @@ function CoachMessagesContent() {
 								onChange={(e) => setText(e.target.value)}
 								disabled={!activePartnerId}
 								className="flex-1 px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white disabled:opacity-50"
+								data-tour="message-input"
 								onKeyDown={(e) => {
 									if (e.key === 'Enter' && !e.shiftKey) {
 										e.preventDefault()
@@ -955,6 +974,7 @@ function CoachMessagesContent() {
 								className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 disabled:opacity-50"
 								disabled={!activePartnerId}
 								title={activePartnerId ? "Attach file" : "Select a conversation first"}
+								data-tour="attach-button"
 							>
 								<Paperclip size={24} />
 							</button>
@@ -962,6 +982,7 @@ function CoachMessagesContent() {
 								onClick={handleSend}
 								disabled={!activePartnerId || sending || uploading || (!text.trim() && !selectedFile)}
 								className="bg-blue-500 text-white p-3 rounded-full hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+								data-tour="send-button"
 							>
 								<Send size={20} />
 							</button>
@@ -971,6 +992,13 @@ function CoachMessagesContent() {
 				</div>
 				</>
 			)}
+
+			{/* Onboarding Tour */}
+			<OnboardingTour
+				steps={messagesTourSteps}
+				run={showMessagesTour}
+				onFinish={() => endTour('messages')}
+			/>
 		</div>
 	)
 }

@@ -3,11 +3,15 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
+import { useOnboarding } from '@/contexts/OnboardingContext'
 import ProtectedRoute from '@/components/ProtectedRoute'
 import { getApiUrl } from '@/lib/api'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import Link from 'next/link'
+import OnboardingTour from '@/components/onboarding/OnboardingTour'
+import OnboardingChecklist from '@/components/onboarding/OnboardingChecklist'
+import { welcomeTourSteps } from '@/components/onboarding/ClientOnboardingTours'
 import {
   Calendar,
   MessageSquare,
@@ -23,6 +27,7 @@ import axios from 'axios'
 export default function ClientDashboard() {
   const router = useRouter()
   const { user } = useAuth()
+  const { showWelcomeTour, endTour } = useOnboarding()
   const [dashboardData, setDashboardData] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
@@ -126,7 +131,7 @@ export default function ClientDashboard() {
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-6" data-tour="dashboard-stats">
           {/* Upcoming Appointments Card */}
           <div className="bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-5 md:p-6 shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-all duration-300 hover:scale-105 cursor-pointer group">
             <div className="flex items-center justify-between mb-3 sm:mb-4">
@@ -197,7 +202,7 @@ export default function ClientDashboard() {
         </div>
 
         {/* Quick Actions */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6" data-tour="quick-actions">
           <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4">Quick Actions</h3>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <Link href="/clients/search-coaches">
@@ -338,6 +343,16 @@ export default function ClientDashboard() {
             </div>
           </div>
         </div>
+
+        {/* Onboarding Tour */}
+        <OnboardingTour
+          steps={welcomeTourSteps}
+          run={showWelcomeTour}
+          onFinish={() => endTour('welcome')}
+        />
+
+        {/* Onboarding Checklist */}
+        <OnboardingChecklist />
       </div>
     </ProtectedRoute>
   )

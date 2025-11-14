@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -17,6 +17,9 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import ProtectedRoute from '@/components/ProtectedRoute'
 import ProfileCardSkeleton from '@/components/ProfileCardSkeleton'
 import { useAuth } from '@/contexts/AuthContext'
+import { useOnboarding } from '@/contexts/OnboardingContext'
+import OnboardingTour from '@/components/onboarding/OnboardingTour'
+import { profileTourSteps } from '@/components/onboarding/ClientOnboardingTours'
 import { getApiUrl } from '@/lib/api'
 import { User, Edit, Save, X, Calendar, Clock, MapPin, Mail, Shield, Settings, Search, Heart, RefreshCw, Camera, Upload, Bell, BellOff, Volume2, VolumeX, MessageCircle, UserX, Download, FileText, FileImage, Trash2, AlertTriangle, CheckCircle, XCircle } from 'lucide-react'
 import { STATE_NAMES } from '@/constants/states'
@@ -62,6 +65,8 @@ type ProfileFormData = z.infer<typeof profileFormSchema>
 function ProfileContent() {
   const { user, logout } = useAuth()
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const { startProfileTour, showProfileTour, endTour } = useOnboarding()
   const [isEditing, setIsEditing] = useState(false)
   const [isEditingNotifications, setIsEditingNotifications] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -193,6 +198,21 @@ function ProfileContent() {
       setInitialLoad(false)
     }
   }
+
+  // Check for tour query parameter
+  useEffect(() => {
+    const shouldStartTour = searchParams.get('startTour');
+    if (shouldStartTour === 'true') {
+      console.log('Starting profile tour');
+      // Enable editing mode for the tour
+      setIsEditing(true);
+      // Clean up the URL parameter immediately to prevent re-triggering
+      window.history.replaceState({}, '', '/clients/profile');
+      setTimeout(() => {
+        startProfileTour();
+      }, 500);
+    }
+  }, [searchParams]);
 
   // Load user profile data and stats
   useEffect(() => {
@@ -716,7 +736,11 @@ function ProfileContent() {
                 <CardDescription className="text-sm sm:text-base mt-1">Update your personal details and preferences</CardDescription>
               </div>
               {!isEditing ? (
-                <Button onClick={() => setIsEditing(true)} className="bg-blue-600 hover:bg-blue-700 dark:text-white min-h-[44px] touch-manipulation w-full lg:w-auto px-6 text-base">
+                <Button
+                  onClick={() => setIsEditing(true)}
+                  className="bg-blue-600 hover:bg-blue-700 dark:text-white min-h-[44px] touch-manipulation w-full lg:w-auto px-6 text-base"
+                  data-tour="edit-profile-btn"
+                >
                   Edit Profile
                 </Button>
               ) : (
@@ -770,7 +794,7 @@ function ProfileContent() {
               </div>
             )}
             <Form {...form}>
-              <form className="space-y-6">
+              <form className="space-y-6" data-tour="profile-form">
                 {/* Personal Information */}
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1475,6 +1499,17 @@ function ProfileContent() {
           </Card>
         )}
       </div>
+
+      {/* Onboarding Tour */}
+      {console.log('Profile tour render - showProfileTour:', showProfileTour)}
+      <OnboardingTour
+        steps={profileTourSteps}
+        run={showProfileTour}
+        onFinish={() => {
+          console.log('Profile tour finished, calling endTour');
+          endTour('profile');
+        }}
+      />
     </div>
   )
 }

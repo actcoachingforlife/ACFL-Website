@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -27,6 +27,9 @@ import { ProviderCard } from "@/components/ProviderCard";
 import MeetingBlocker from "@/components/MeetingBlocker";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { useAuth } from "@/contexts/AuthContext";
+import { useOnboarding } from "@/contexts/OnboardingContext";
+import OnboardingTour from "@/components/onboarding/OnboardingTour";
+import { searchCoachesTourSteps, bookingFlowSearchSteps } from "@/components/onboarding/ClientOnboardingTours";
 import { 
   Filter, 
   Search, 
@@ -171,6 +174,8 @@ interface SavedCoach extends Coach {
 function SearchCoachesContent() {
   const { user, logout, isAuthenticated } = useAuth()
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const { startSearchTour, showSearchTour, startBookingTour, showBookingTour, endTour } = useOnboarding();
   const [showForm, setShowForm] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [matches, setMatches] = useState<Coach[]>([]);
@@ -188,6 +193,43 @@ function SearchCoachesContent() {
   const [selectedFilters, setSelectedFilters] = useState<Set<string>>(new Set());
   const [openLocation, setOpenLocation] = useState(false);
   const [locationQuery, setLocationQuery] = useState("");
+
+  // Check for tour query parameter
+  useEffect(() => {
+    const startTour = searchParams.get('startTour');
+    const flow = searchParams.get('flow');
+    console.log('Search coaches - checking for tour:', { startTour, flow, showSearchTour, showBookingTour });
+
+    if (startTour === 'true') {
+      // Clean up the URL parameter immediately to prevent re-triggering
+      window.history.replaceState({}, '', '/clients/search-coaches');
+
+      if (flow === 'booking') {
+        console.log('Starting booking flow tour...');
+        // Switch to Discover tab to show coaches
+        setActiveTab('search');
+
+        // Load coaches if not already loaded, then start tour
+        const initializeTour = async () => {
+          if (allCoaches.length === 0) {
+            console.log('Loading coaches for booking tour...');
+            await loadAllCoaches();
+          }
+          // Wait a bit for UI to update
+          setTimeout(() => {
+            startBookingTour();
+          }, 800);
+        };
+
+        initializeTour();
+      } else {
+        console.log('Starting search tour...');
+        setTimeout(() => {
+          startSearchTour();
+        }, 500);
+      }
+    }
+  }, [searchParams]);
 
   const form = useForm<SearchFormData>({
     resolver: zodResolver(searchFormSchema),
@@ -818,7 +860,7 @@ function SearchCoachesContent() {
 
         {/* Tab Navigation */}
         <div className="flex justify-center mb-8 sm:mb-12 px-2">
-          <div className="inline-flex bg-white dark:bg-gray-800 rounded-2xl p-1 shadow-lg border border-gray-200 dark:border-gray-700 w-full sm:w-auto max-w-md sm:max-w-none">
+          <div className="inline-flex bg-white dark:bg-gray-800 rounded-2xl p-1 shadow-lg border border-gray-200 dark:border-gray-700 w-full sm:w-auto max-w-md sm:max-w-none" data-tour="tabs">
             <button
               onClick={() => {
                 setActiveTab('search');
@@ -848,6 +890,7 @@ function SearchCoachesContent() {
                   ? 'bg-teal-500 text-white shadow-lg hover:bg-teal-600'
                   : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-700'
               }`}
+              data-tour="favorites-tab"
             >
               <Heart className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2 flex-shrink-0" />
               <span className="truncate">Favorites ({savedCoaches.length})</span>
@@ -922,6 +965,7 @@ function SearchCoachesContent() {
               <button
                 onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
                 className="inline-flex items-center justify-center bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 border-2 border-gray-200 dark:border-gray-700 rounded-2xl px-4 sm:px-6 py-3 font-semibold text-gray-700 dark:text-gray-200 shadow-lg hover:shadow-xl transition-all duration-200 w-full sm:w-auto max-w-md sm:max-w-none text-sm sm:text-base"
+                data-tour="search-filters"
               >
                 <SlidersHorizontal className="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 flex-shrink-0" />
                 <span>{showAdvancedFilters ? 'Hide' : 'Show'} Advanced Filters</span>
@@ -1238,7 +1282,7 @@ function SearchCoachesContent() {
 
           {/* Coaches Grid */}
           {filteredCoaches.length > 0 && (
-            <div className="grid grid-cols-1 gap-4 sm:gap-6 px-2 sm:px-0">
+            <div className="grid grid-cols-1 gap-4 sm:gap-6 px-2 sm:px-0" data-tour="coach-cards">
               {getCurrentCoaches().map((coach) => (
                 <ProviderCard
                   key={coach.id}
@@ -1266,6 +1310,7 @@ function SearchCoachesContent() {
                   isBestMatch={(coach.matchScore || 0) >= 90}
                   initialIsSaved={savedCoaches.some(sc => sc.id === coach.id)}
                   onSaveChange={refreshSavedCoaches}
+                  tourQueryParams={showBookingTour ? '?continueTour=booking' : ''}
                 />
               ))}
             </div>
@@ -1361,6 +1406,24 @@ function SearchCoachesContent() {
         </div>
       </div>
       </div>
+
+      {/* Onboarding Tours */}
+      <OnboardingTour
+        steps={searchCoachesTourSteps}
+        run={showSearchTour}
+        onFinish={() => endTour('search')}
+      />
+      <OnboardingTour
+        steps={bookingFlowSearchSteps}
+        run={showBookingTour}
+        onFinish={() => {
+          // When search page tour finishes, redirect to Priya Desai's profile to continue
+          console.log('Booking tour search phase complete: Redirecting to Priya Desai profile');
+          setTimeout(() => {
+            router.push('/clients/coach-profile/426b6553-5caf-4512-b99d-ac022c1ece38?continueTour=booking');
+          }, 300);
+        }}
+      />
     </MeetingBlocker>
   );
 }

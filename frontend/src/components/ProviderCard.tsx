@@ -29,6 +29,7 @@ export interface ProviderCardProps {
   isBestMatch?: boolean;
   onSaveChange?: () => void;
   initialIsSaved?: boolean; // Pass saved state from parent
+  tourQueryParams?: string; // Query params to append for tour continuation
 }
 
 export const ProviderCard = ({
@@ -47,7 +48,8 @@ export const ProviderCard = ({
   profilePhoto,
   isBestMatch,
   onSaveChange,
-  initialIsSaved = false
+  initialIsSaved = false,
+  tourQueryParams = ''
 }: ProviderCardProps) => {
   const [showAllSpecialties, setShowAllSpecialties] = useState(false);
   const [showAllModalities, setShowAllModalities] = useState(false);
@@ -211,7 +213,7 @@ export const ProviderCard = ({
           </div>
         )}
         <div className="flex-1">
-          <Link href={`/clients/coach-profile/${id || name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}`}>
+          <Link href={`/clients/coach-profile/${id || name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}${tourQueryParams}`}>
             <h3 className="text-xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer transition-colors">{name}</h3>
           </Link>
           <div className="bg-gradient-to-r from-green-500 to-green-600 text-white px-2 py-0.5 rounded-lg inline-block mt-1">
@@ -245,7 +247,7 @@ export const ProviderCard = ({
         
         <div className="hidden md:flex flex-col sm:flex-row sm:justify-between sm:items-start mb-4">
           <div className="flex-1">
-            <Link href={`/clients/coach-profile/${id || name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}`}>
+            <Link href={`/clients/coach-profile/${id || name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}${tourQueryParams}`}>
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer transition-colors">{name}</h3>
             </Link>
             <div className="bg-gradient-to-r from-green-500 to-green-600 text-white px-3 py-1 rounded-xl inline-block">

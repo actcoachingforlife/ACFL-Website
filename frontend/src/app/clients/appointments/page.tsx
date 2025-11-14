@@ -161,14 +161,15 @@ function AppointmentsContent() {
   useEffect(() => {
     const shouldStartTour = searchParams?.get('startTour');
 
-    if (shouldStartTour === 'true' && !loading && !showAppointmentsTour) {
+    if (shouldStartTour === 'true') {
       console.log('Starting appointments tour');
-      startAppointmentsTour();
-
-      // Clean up URL parameter
+      // Clean up URL parameter immediately to prevent re-triggering
       window.history.replaceState({}, '', '/clients/appointments');
+      setTimeout(() => {
+        startAppointmentsTour();
+      }, 500); // Small delay to ensure page is loaded
     }
-  }, [loading, showAppointmentsTour, searchParams, startAppointmentsTour]);
+  }, [searchParams]);
 
   const isJoinAvailable = (apt: Appointment) => {
     const start = new Date(apt.starts_at).getTime();
