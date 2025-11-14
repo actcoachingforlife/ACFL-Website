@@ -84,81 +84,90 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     socketConnection.on('message:new', (msg: any) => {
       // Only show notification if message is not from current user
       if (msg.sender_id !== user?.id) {
-        const senderName = msg.sender_name || (user.role === 'coach' ? 'Client' : 'Coach');
-        
-        // Play notification sound
-        try {
-          const audio = new Audio('/sounds/message.mp3');
-          audio.volume = 0.5;
-          audio.play().catch(() => {
-            // Fallback to a proper beep sound if custom sound fails
+        const currentPath = window.location.pathname;
+        const isOnMessagesPage = currentPath.includes('/messages');
+
+        // Only show toast and play sound if NOT on messages page
+        if (!isOnMessagesPage) {
+          const senderName = msg.sender_name || (user.role === 'coach' ? 'Client' : 'Coach');
+
+          // Play notification sound
+          try {
+            const audio = new Audio('/sounds/message.mp3');
+            audio.volume = 0.5;
+            audio.play().catch(() => {
+              // Fallback to a proper beep sound if custom sound fails
+              playFallbackSound('message');
+            });
+          } catch (error) {
+            console.log('Could not play notification sound');
             playFallbackSound('message');
-          });
-        } catch (error) {
-          console.log('Could not play notification sound');
-          playFallbackSound('message');
-        }
-        
-        toast(
-          <div className="relative w-full bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 rounded-lg p-4 shadow-xl border border-blue-200 dark:border-blue-700/50 overflow-hidden">
-            {/* Clean background - no blur effect */}
-            
-            <div className="relative flex items-start space-x-3">
-              {/* Icon with animation */}
-              <div className="flex-shrink-0">
-                <div className="w-10 h-10 rounded-full bg-blue-500 dark:bg-blue-600 flex items-center justify-center shadow-lg animate-bounce">
-                  <MessageCircle className="w-5 h-5 text-white" />
-                </div>
-              </div>
-      
-              {/* Content */}
-              <div className="min-w-0 flex-1">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <div className="font-semibold text-gray-900 dark:text-white text-sm">
-                      New Message
-                    </div>
-                    <div className="flex items-center gap-1 mt-0.5">
-                      <User className="w-3 h-3 text-gray-500 dark:text-gray-400" />
-                      <span className="text-xs text-gray-600 dark:text-gray-400">
-                        {senderName}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
-                    <Clock className="w-3 h-3" />
-                    <span>Just now</span>
-                  </div>
-                </div>
-                
-                <div className="text-sm text-gray-700 dark:text-gray-300 mt-2 line-clamp-2 font-medium">
-                  {msg.body}
-                </div>
-                
-                <button
-                  onClick={() => {
-                    window.location.href = user.role === 'coach' ? '/coaches/messages' : '/clients/messages';
-                  }}
-                  className="mt-3 inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-full bg-blue-500 hover:bg-blue-600 text-white transition-all transform hover:scale-105 shadow-md"
-                >
-                  View Message
-                </button>
-              </div>
-            </div>
-          </div>,
-          {
-            position: "top-right",
-            autoClose: 7000,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: true,
-            draggable: true,
-            className: "!p-0 !bg-transparent !shadow-none",
           }
-        );
-        
-        
-        setUnreadMessageCount(prev => prev + 1);
+
+          toast(
+            <div className="relative w-full bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 rounded-lg p-4 shadow-xl border border-blue-200 dark:border-blue-700/50 overflow-hidden">
+              {/* Clean background - no blur effect */}
+
+              <div className="relative flex items-start space-x-3">
+                {/* Icon with animation */}
+                <div className="flex-shrink-0">
+                  <div className="w-10 h-10 rounded-full bg-blue-500 dark:bg-blue-600 flex items-center justify-center shadow-lg animate-bounce">
+                    <MessageCircle className="w-5 h-5 text-white" />
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <div className="font-semibold text-gray-900 dark:text-white text-sm">
+                        New Message
+                      </div>
+                      <div className="flex items-center gap-1 mt-0.5">
+                        <User className="w-3 h-3 text-gray-500 dark:text-gray-400" />
+                        <span className="text-xs text-gray-600 dark:text-gray-400">
+                          {senderName}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
+                      <Clock className="w-3 h-3" />
+                      <span>Just now</span>
+                    </div>
+                  </div>
+
+                  <div className="text-sm text-gray-700 dark:text-gray-300 mt-2 line-clamp-2 font-medium">
+                    {msg.body}
+                  </div>
+
+                  <button
+                    onClick={() => {
+                      window.location.href = user.role === 'coach' ? '/coaches/messages' : '/clients/messages';
+                    }}
+                    className="mt-3 inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-full bg-blue-500 hover:bg-blue-600 text-white transition-all transform hover:scale-105 shadow-md"
+                  >
+                    View Message
+                  </button>
+                </div>
+              </div>
+            </div>,
+            {
+              position: "top-right",
+              autoClose: 7000,
+              hideProgressBar: false,
+              closeOnClick: false,
+              pauseOnHover: true,
+              draggable: true,
+              className: "!p-0 !bg-transparent !shadow-none",
+            }
+          );
+        }
+
+
+        // Only increment counter if not already on messages page
+        if (!isOnMessagesPage) {
+          setUnreadMessageCount(prev => prev + 1);
+        }
       }
     });
 

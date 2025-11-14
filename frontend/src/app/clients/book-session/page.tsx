@@ -133,6 +133,32 @@ export default function BookSessionPage() {
         const data = await response.json();
         setBookingDetails(data.appointment);
         setBookingComplete(true);
+
+        // Log the booking activity
+        try {
+          await fetch(
+            `${API_BASE_URL}/api/client/log-activity`,
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+              },
+              body: JSON.stringify({
+                activity_type: 'session_booked',
+                metadata: {
+                  appointment_id: data.appointment.id,
+                  coach_name: `${selectedCoach.first_name} ${selectedCoach.last_name}`,
+                  session_date: selectedSlot.slot_start,
+                  session_type: 'Coaching Session'
+                }
+              })
+            }
+          );
+        } catch (activityError) {
+          console.error('Failed to log booking activity:', activityError);
+          // Don't block the user even if activity logging fails
+        }
       } else {
         const error = await response.json();
         alert(error.error || 'Failed to book appointment');

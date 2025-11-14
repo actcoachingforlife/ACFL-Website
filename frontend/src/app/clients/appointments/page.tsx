@@ -195,17 +195,42 @@ function AppointmentsContent() {
     return 'Session ended';
   };
 
-  const handleJoinMeeting = (appointment: Appointment) => {
+  const handleJoinMeeting = async (appointment: Appointment) => {
     const meetingId = appointment.meeting_id;
     if (!meetingId) return;
-    
+
     // Simple check - if already in a different meeting, don't allow
     if (isInMeeting && currentMeetingId !== meetingId) {
       console.log('❌ Already in meeting:', currentMeetingId, 'cannot join:', meetingId);
       return;
     }
-    
+
     console.log('✅ Opening meeting container for:', meetingId);
+
+    // Log the session join activity
+    try {
+      await axios.post(
+        `${API_BASE_URL}/api/client/log-activity`,
+        {
+          activity_type: 'session_joined',
+          metadata: {
+            appointment_id: appointment.id,
+            coach_name: `${appointment.coaches?.first_name} ${appointment.coaches?.last_name}`,
+            session_type: appointment.status,
+            session_date: appointment.starts_at
+          }
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        }
+      );
+    } catch (error) {
+      console.error('Failed to log session join activity:', error);
+      // Don't block the user from joining even if logging fails
+    }
+
     setMeetingAppointment(appointment);
     setShowMeeting(true);
   };

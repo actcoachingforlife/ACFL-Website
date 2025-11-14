@@ -10,6 +10,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useNotifications } from '@/contexts/NotificationContext';
 import { useMeeting } from '@/contexts/MeetingContext';
 import { OnboardingProvider } from '@/contexts/OnboardingContext';
+import { ToastProvider } from '@/hooks/useToast';
 import NotificationBadge from '@/components/NotificationBadge';
 import Footer from '@/components/Footer';
 import AdminImpersonationFloat from '@/components/AdminImpersonationFloat';
@@ -428,6 +429,7 @@ export default function CoachLayout({
   return (
     <ProtectedRoute allowedRoles={['coach']}>
       <OnboardingProvider>
+        <ToastProvider>
         <div className={`min-h-screen bg-gray-50 dark:bg-gray-900 flex overflow-x-hidden ${poppins.className}`}>
           {/* Admin Impersonation Float */}
           <AdminImpersonationFloat />
@@ -1423,6 +1425,7 @@ export default function CoachLayout({
           onDecline={handleConsentDecline}
         />
         </div>
+        </ToastProvider>
       </OnboardingProvider>
     </ProtectedRoute>
   );

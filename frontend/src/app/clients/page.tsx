@@ -20,7 +20,10 @@ import {
   RefreshCw,
   User,
   Clock,
-  Search
+  Search,
+  Video,
+  X,
+  CheckCircle
 } from 'lucide-react'
 import axios from 'axios'
 
@@ -309,35 +312,78 @@ export default function ClientDashboard() {
                 </div>
               ) : (
                 <div className="space-y-3">
-                  {recentActivity.map((activity: any, index: number) => (
-                    <div key={`${activity.id}-${index}`} className="flex items-center space-x-3 p-3 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-lg transition-all duration-200 border border-transparent hover:border-gray-200 dark:hover:border-gray-600">
-                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                        activity.type === 'appointment' ? 'bg-blue-50 dark:bg-blue-900/20' :
-                        activity.type === 'message' ? 'bg-green-50 dark:bg-green-900/20' :
-                        'bg-purple-50 dark:bg-purple-900/20'
-                      }`}>
-                        {activity.type === 'appointment' ? (
-                          <Calendar className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                        ) : activity.type === 'message' ? (
-                          <MessageSquare className="w-5 h-5 text-green-600 dark:text-green-400" />
-                        ) : (
-                          <Heart className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                        )}
+                  {recentActivity.map((activity: any, index: number) => {
+                    // Determine icon and color based on activity type
+                    let icon, bgColor, iconColor;
+
+                    switch (activity.type) {
+                      case 'session_joined':
+                        icon = <Video className="w-5 h-5" />;
+                        bgColor = 'bg-green-50 dark:bg-green-900/20';
+                        iconColor = 'text-green-600 dark:text-green-400';
+                        break;
+                      case 'session_booked':
+                        icon = <CheckCircle className="w-5 h-5" />;
+                        bgColor = 'bg-blue-50 dark:bg-blue-900/20';
+                        iconColor = 'text-blue-600 dark:text-blue-400';
+                        break;
+                      case 'session_cancelled':
+                        icon = <X className="w-5 h-5" />;
+                        bgColor = 'bg-red-50 dark:bg-red-900/20';
+                        iconColor = 'text-red-600 dark:text-red-400';
+                        break;
+                      case 'appointment':
+                        icon = <Calendar className="w-5 h-5" />;
+                        bgColor = 'bg-blue-50 dark:bg-blue-900/20';
+                        iconColor = 'text-blue-600 dark:text-blue-400';
+                        break;
+                      case 'message':
+                        icon = <MessageSquare className="w-5 h-5" />;
+                        bgColor = 'bg-green-50 dark:bg-green-900/20';
+                        iconColor = 'text-green-600 dark:text-green-400';
+                        break;
+                      case 'saved':
+                        icon = <Heart className="w-5 h-5" />;
+                        bgColor = 'bg-purple-50 dark:bg-purple-900/20';
+                        iconColor = 'text-purple-600 dark:text-purple-400';
+                        break;
+                      case 'search':
+                      case 'coach_searched':
+                        icon = <Search className="w-5 h-5" />;
+                        bgColor = 'bg-orange-50 dark:bg-orange-900/20';
+                        iconColor = 'text-orange-600 dark:text-orange-400';
+                        break;
+                      case 'profile_updated':
+                        icon = <User className="w-5 h-5" />;
+                        bgColor = 'bg-indigo-50 dark:bg-indigo-900/20';
+                        iconColor = 'text-indigo-600 dark:text-indigo-400';
+                        break;
+                      default:
+                        icon = <Clock className="w-5 h-5" />;
+                        bgColor = 'bg-gray-50 dark:bg-gray-900/20';
+                        iconColor = 'text-gray-600 dark:text-gray-400';
+                    }
+
+                    return (
+                      <div key={`${activity.id}-${index}`} className="flex items-center space-x-3 p-3 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-lg transition-all duration-200 border border-transparent hover:border-gray-200 dark:hover:border-gray-600">
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${bgColor}`}>
+                          <div className={iconColor}>{icon}</div>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-medium text-gray-900 dark:text-white truncate text-sm">
+                            {activity.title}
+                          </p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                            {activity.subtitle}
+                          </p>
+                          <p className="text-xs text-gray-400 dark:text-gray-500">
+                            {new Date(activity.date).toLocaleDateString()}
+                          </p>
+                        </div>
+                        <ArrowRight className="w-4 h-4 text-gray-400 flex-shrink-0" />
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="font-medium text-gray-900 dark:text-white truncate text-sm">
-                          {activity.title}
-                        </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
-                          {activity.subtitle}
-                        </p>
-                        <p className="text-xs text-gray-400 dark:text-gray-500">
-                          {new Date(activity.date).toLocaleDateString()}
-                        </p>
-                      </div>
-                      <ArrowRight className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>
