@@ -4,8 +4,12 @@ import { supabase } from '../lib/supabase';
 import multer from 'multer';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
+import { uploadLimiter } from '../middleware/rateLimiter';
 
 const router = Router();
+
+// Apply rate limiting to all upload routes
+router.use(uploadLimiter);
 
 // Configure multer for memory storage
 const storage = multer.memoryStorage();

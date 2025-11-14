@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { paymentController } from '../controllers/paymentController';
 import { authenticate } from '../middleware/auth';
+import { paymentLimiter } from '../middleware/rateLimiter';
 
 const router = Router();
 
@@ -19,18 +20,18 @@ router.post('/public/calculate-package-discount', paymentController.calculatePac
 // Test endpoint for Square payment (temporary - remove in production)
 router.post('/test-payment-authorization', paymentController.testPaymentAuthorization);
 
-// Square Payment Processing Routes (protected)
-router.post('/create-payment-authorization', authenticate, paymentController.createPaymentIntent); // Creates authorization
-router.post('/capture-payment/:paymentId', authenticate, paymentController.capturePayment); // Captures after session
-router.post('/cancel-authorization/:paymentId', authenticate, paymentController.cancelAuthorization); // Cancels authorization
-router.post('/refunds', authenticate, paymentController.createRefund);
+// Square Payment Processing Routes (protected) - with rate limiting
+router.post('/create-payment-authorization', paymentLimiter, authenticate, paymentController.createPaymentIntent); // Creates authorization
+router.post('/capture-payment/:paymentId', paymentLimiter, authenticate, paymentController.capturePayment); // Captures after session
+router.post('/cancel-authorization/:paymentId', paymentLimiter, authenticate, paymentController.cancelAuthorization); // Cancels authorization
+router.post('/refunds', paymentLimiter, authenticate, paymentController.createRefund);
 
 // Square Payment Webhook (no auth - called by Square)
 router.post('/webhook/square', paymentController.handlePaymentWebhook);
 router.post('/webhook', paymentController.handlePaymentWebhook); // Alternative webhook path for Square
 
-// Legacy routes for backward compatibility (protected)
-router.post('/create-payment-intent', authenticate, paymentController.createPaymentIntent);
-router.post('/confirm-payment/:paymentIntentId', authenticate, paymentController.capturePayment);
+// Legacy routes for backward compatibility (protected) - with rate limiting
+router.post('/create-payment-intent', paymentLimiter, authenticate, paymentController.createPaymentIntent);
+router.post('/confirm-payment/:paymentIntentId', paymentLimiter, authenticate, paymentController.capturePayment);
 
 export default router;
