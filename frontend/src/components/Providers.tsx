@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { ThemeProvider as MuiThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ToastContainer } from 'react-toastify';
@@ -58,6 +59,12 @@ const theme = createTheme({
 });
 
 export default function Providers({ children }: { children: React.ReactNode }) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   return (
     <ThemeProvider>
       <AuthProvider>
@@ -65,21 +72,27 @@ export default function Providers({ children }: { children: React.ReactNode }) {
           <AdminNotificationProvider>
             <MeetingProvider>
               <MuiThemeProvider theme={theme}>
-                <CssBaseline />
-                {children}
-                <ToastContainer
-                  position="top-right"
-                  autoClose={5000}
-                  hideProgressBar={false}
-                  newestOnTop={false}
-                  closeOnClick
-                  rtl={false}
-                  pauseOnFocusLoss
-                  draggable
-                  pauseOnHover
-                  theme="colored"
-                  toastClassName="custom-toast"
-                />
+                {/* Wrap in div with suppressHydrationWarning to handle MUI emotion styles */}
+                <div suppressHydrationWarning>
+                  <CssBaseline />
+                  {children}
+                  {/* Only render ToastContainer on client to avoid hydration mismatch */}
+                  {mounted && (
+                    <ToastContainer
+                      position="top-right"
+                      autoClose={5000}
+                      hideProgressBar={false}
+                      newestOnTop={false}
+                      closeOnClick
+                      rtl={false}
+                      pauseOnFocusLoss
+                      draggable
+                      pauseOnHover
+                      theme="colored"
+                      toastClassName="custom-toast"
+                    />
+                  )}
+                </div>
               </MuiThemeProvider>
             </MeetingProvider>
           </AdminNotificationProvider>

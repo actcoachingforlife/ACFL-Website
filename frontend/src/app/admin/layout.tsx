@@ -118,38 +118,42 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
   // Initialize theme from DOM and localStorage on mount
   useEffect(() => {
+    // Set mounted first
     setMounted(true);
 
-    // Check if user has already given consent
-    const storageConsent = localStorage.getItem('theme-storage-consent');
+    // Use setTimeout to ensure DOM is ready
+    setTimeout(() => {
+      // Check if user has already given consent
+      const storageConsent = localStorage.getItem('theme-storage-consent');
 
-    // Get the current theme from DOM (set by ThemeScript)
-    const currentDOMTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+      // Get the current theme from DOM (set by ThemeScript)
+      const currentDOMTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
 
-    if (storageConsent === 'granted') {
-      setHasStorageConsent(true);
-      // Use the theme that's already applied to the DOM by ThemeScript
-      setTheme(currentDOMTheme);
-      setPendingTheme(currentDOMTheme);
-      console.log('Admin theme initialized to:', currentDOMTheme, '(consent granted, from DOM)');
-    } else if (storageConsent === 'denied') {
-      setHasStorageConsent(false);
-      // Use the theme from DOM but don't save
-      setTheme(currentDOMTheme);
-      setPendingTheme(currentDOMTheme);
-      console.log('Admin theme initialized to:', currentDOMTheme, '(consent denied, from DOM)');
-    } else {
-      // No consent recorded yet - use current DOM theme
-      setTheme(currentDOMTheme);
-      setPendingTheme(currentDOMTheme);
-      console.log('Admin theme initialized to:', currentDOMTheme, '(no consent yet, from DOM)');
-    }
+      if (storageConsent === 'granted') {
+        setHasStorageConsent(true);
+        // Use the theme that's already applied to the DOM by ThemeScript
+        setTheme(currentDOMTheme);
+        setPendingTheme(currentDOMTheme);
+        console.log('Admin theme initialized to:', currentDOMTheme, '(consent granted, from DOM)');
+      } else if (storageConsent === 'denied') {
+        setHasStorageConsent(false);
+        // Use the theme from DOM but don't save
+        setTheme(currentDOMTheme);
+        setPendingTheme(currentDOMTheme);
+        console.log('Admin theme initialized to:', currentDOMTheme, '(consent denied, from DOM)');
+      } else {
+        // No consent recorded yet - use current DOM theme
+        setTheme(currentDOMTheme);
+        setPendingTheme(currentDOMTheme);
+        console.log('Admin theme initialized to:', currentDOMTheme, '(no consent yet, from DOM)');
+      }
 
-    // Initialize user guide preference from localStorage
-    const savedUserGuide = localStorage.getItem('userGuideEnabled');
-    if (savedUserGuide !== null) {
-      setUserGuideEnabled(savedUserGuide === 'true');
-    }
+      // Initialize user guide preference from localStorage
+      const savedUserGuide = localStorage.getItem('userGuideEnabled');
+      if (savedUserGuide !== null) {
+        setUserGuideEnabled(savedUserGuide === 'true');
+      }
+    }, 0);
   }, []);
 
   const toggleTheme = () => {
@@ -463,6 +467,11 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     setHoveredGroup(null);
     setHoverPosition(null);
   };
+
+  // Don't render anything until client-side hydration is complete
+  if (!mounted) {
+    return null;
+  }
 
   if (isLoading) {
     return (

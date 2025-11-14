@@ -9,6 +9,7 @@ import ProtectedRoute from '@/components/ProtectedRoute';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNotifications } from '@/contexts/NotificationContext';
 import { useMeeting } from '@/contexts/MeetingContext';
+import { OnboardingProvider } from '@/contexts/OnboardingContext';
 import NotificationBadge from '@/components/NotificationBadge';
 import Footer from '@/components/Footer';
 import AdminImpersonationFloat from '@/components/AdminImpersonationFloat';
@@ -426,9 +427,10 @@ export default function CoachLayout({
 
   return (
     <ProtectedRoute allowedRoles={['coach']}>
-      <div className={`min-h-screen bg-gray-50 dark:bg-gray-900 flex overflow-x-hidden ${poppins.className}`}>
-        {/* Admin Impersonation Float */}
-        <AdminImpersonationFloat />
+      <OnboardingProvider>
+        <div className={`min-h-screen bg-gray-50 dark:bg-gray-900 flex overflow-x-hidden ${poppins.className}`}>
+          {/* Admin Impersonation Float */}
+          <AdminImpersonationFloat />
 
         {/* Collapsible Sidebar - Desktop */}
         {!isInMeeting && (
@@ -1420,7 +1422,8 @@ export default function CoachLayout({
           onAccept={handleConsentAccept}
           onDecline={handleConsentDecline}
         />
-      </div>
+        </div>
+      </OnboardingProvider>
     </ProtectedRoute>
   );
 }

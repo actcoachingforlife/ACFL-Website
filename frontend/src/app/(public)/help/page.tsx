@@ -67,7 +67,7 @@ export default function HelpCenterPage() {
   const [billingFAQs, setBillingFAQs] = useState<FAQItem[]>([
     {
       question: "What payment methods do you accept?",
-      answer: "We accept major credit and debit cards, bank transfers, and selected digital payment platforms (such as GCash or PayPal, if applicable). Payment details will be provided during booking confirmation.",
+      answer: "We use Square as our payment processor, which accepts major credit and debit cards through bank accounts. Please note that digital payment platforms such as PayPal and GCash are not supported. Payment details will be provided during booking confirmation.",
       isOpen: true
     },
     {
