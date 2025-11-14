@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { toast } from 'react-toastify'
 import NavbarLandingPage from '@/components/NavbarLandingPage'
 import Footer from '@/components/Footer'
 import { Button } from '@/components/ui/button'
@@ -33,11 +34,30 @@ export default function ContactPage() {
 
     try {
       console.log('Form submitted:', data)
-      alert('Thank you for contacting us! We will get back to you soon.')
+
+      // Show success toast
+      toast.success('Thank you for contacting us! We will get back to you soon.', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      })
+
       e.currentTarget.reset()
     } catch (error) {
       console.error('Form submission error:', error)
-      alert('There was an error sending your message. Please try again.')
+
+      // Show error toast
+      toast.error('There was an error sending your message. Please try again.', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      })
     } finally {
       setIsSubmitting(false)
     }

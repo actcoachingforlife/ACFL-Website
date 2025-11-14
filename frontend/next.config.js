@@ -5,8 +5,12 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  // Empty turbopack config to acknowledge we're aware of Turbopack
+  // Socket.io polyfills are handled by the library itself in newer versions
+  turbopack: {},
   webpack: (config, { isServer, webpack }) => {
     // Add global polyfills for browser-only globals used by socket.io
+    // This config is kept for webpack mode compatibility
     if (isServer) {
       config.plugins = config.plugins || [];
       config.plugins.push(
@@ -31,7 +35,7 @@ const nextConfig = {
   },
   images: {
     unoptimized: process.env.NODE_ENV === "development",
-    domains: ['storage.googleapis.com'],
+    // Removed deprecated domains property - using remotePatterns instead
     remotePatterns: [
       {
         protocol: 'https',
