@@ -377,24 +377,12 @@ export const profileTourSteps: Step[] = [
     disableBeacon: true,
   },
   {
-    target: '[data-tour="edit-profile-btn"]',
-    content: (
-      <div>
-        <h3 className="text-lg font-semibold mb-2">Edit Your Information</h3>
-        <p className="text-gray-600">
-          Click the "Edit Profile" button to update your personal information, preferences, and bio.
-        </p>
-      </div>
-    ),
-    placement: 'bottom',
-  },
-  {
     target: '[data-tour="profile-form"]',
     content: (
       <div>
         <h3 className="text-lg font-semibold mb-2">Fill Out Your Details</h3>
         <p className="text-gray-600 mb-3">
-          Complete these fields to help us understand you better:
+          Your profile is now in editing mode. Complete these fields to help us understand you better:
         </p>
         <ul className="text-sm text-gray-600 space-y-1 mb-2 list-disc list-inside">
           <li><strong>Contact Info</strong> - Keep your email and phone up to date</li>
@@ -625,6 +613,12 @@ export const bookingFlowTourSteps: Step[] = [
     placement: 'center',
   },
 ];
+
+// Booking Flow - Search Page Steps (Steps 0-4)
+export const bookingFlowSearchSteps: Step[] = bookingFlowTourSteps.slice(0, 5);
+
+// Booking Flow - Profile Page Steps (Steps 5-8)
+export const bookingFlowProfileSteps: Step[] = bookingFlowTourSteps.slice(5);
 
 export const searchCoachesTourSteps: Step[] = [
   {

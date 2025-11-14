@@ -36,7 +36,7 @@ import CoachRating from '@/components/coach/CoachRating'
 import { useAuth } from '@/contexts/AuthContext'
 import { useOnboarding } from '@/contexts/OnboardingContext'
 import OnboardingTour from '@/components/onboarding/OnboardingTour'
-import { bookingFlowTourSteps } from '@/components/onboarding/ClientOnboardingTours'
+import { bookingFlowProfileSteps } from '@/components/onboarding/ClientOnboardingTours'
 import { getApiUrl } from '@/lib/api'
 
 // Test Coach IDs - coaches that show all buttons to clients
@@ -135,7 +135,7 @@ function CoachProfileContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const { user, logout } = useAuth()
-  const { startSearchTour, showSearchTour, endTour } = useOnboarding()
+  const { startSearchTour, showSearchTour, startBookingTour, showBookingTour, endTour } = useOnboarding()
   const [coach, setCoach] = useState<Coach | null>(null)
   const [loading, setLoading] = useState(true)
   const [isSaved, setIsSaved] = useState(false)
@@ -144,7 +144,6 @@ function CoachProfileContent() {
   const [ratingStats, setRatingStats] = useState<{ averageRating: number; totalReviews: number }>({ averageRating: 0, totalReviews: 0 })
   const [canRate, setCanRate] = useState(false)
   const [hasAppointmentHistory, setHasAppointmentHistory] = useState(false)
-  const [tourStartStep, setTourStartStep] = useState(0)
 
   useEffect(() => {
     // Fetch coach data based on ID
@@ -410,18 +409,17 @@ function CoachProfileContent() {
   // Detect tour continuation from URL parameters
   useEffect(() => {
     const continueTour = searchParams.get('continueTour')
-    const tourStep = searchParams.get('tourStep')
 
-    if (continueTour === 'true' && tourStep && !showSearchTour && !loading) {
-      const stepNumber = parseInt(tourStep, 10)
-      console.log('Continuing booking tour from step:', stepNumber)
-      setTourStartStep(stepNumber)
-      startSearchTour()
-
-      // Clean up URL parameters
+    if (continueTour === 'booking' && !showBookingTour && !loading) {
+      console.log('Continuing booking tour on coach profile page')
+      // Clean up URL parameters immediately to prevent re-triggering
       window.history.replaceState({}, '', `/clients/coach-profile/${params.id}`)
+      // Start booking tour from step 5 (coach profile page step)
+      setTimeout(() => {
+        startBookingTour()
+      }, 500)
     }
-  }, [searchParams, showSearchTour, loading, startSearchTour, params.id])
+  }, [searchParams])
 
   const fetchRatingStats = async () => {
     try {
@@ -1522,9 +1520,9 @@ function CoachProfileContent() {
 
       {/* Onboarding Tour - Continues from search-coaches page */}
       <OnboardingTour
-        steps={bookingFlowTourSteps.slice(tourStartStep)}
-        run={showSearchTour}
-        onFinish={() => endTour('search')}
+        steps={bookingFlowProfileSteps}
+        run={showBookingTour}
+        onFinish={() => endTour('booking')}
       />
     </div>
   )

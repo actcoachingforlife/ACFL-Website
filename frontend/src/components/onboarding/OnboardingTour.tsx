@@ -23,10 +23,13 @@ export default function OnboardingTour({
   showSkipButton = true,
 }: OnboardingTourProps) {
   const handleJoyrideCallback = (data: CallBackProps) => {
-    const { status, type } = data;
+    const { status, type, action, index } = data;
     const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
 
+    console.log('Joyride callback:', { status, type, action, index, lifecycle: data.lifecycle });
+
     if (finishedStatuses.includes(status)) {
+      console.log('Tour finished with status:', status);
       onFinish();
     }
 
