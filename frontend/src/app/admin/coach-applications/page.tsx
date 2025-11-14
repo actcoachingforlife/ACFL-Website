@@ -6,10 +6,13 @@ import { Button } from '@/components/ui/button';
 import { getApiUrl } from '@/lib/api';
 import { useAuth } from '@/contexts/AuthContext';
 import { X, User, Users, Check, AlertTriangle, FileCheck, MessageSquare, Search, Filter } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import CoachApplicationSkeleton from '@/components/CoachApplicationSkeleton';
 import SearchInput from '@/components/ui/search-input';
 import Pagination from '@/components/ui/pagination';
+import { useOnboarding } from '@/contexts/OnboardingContext';
+import OnboardingTour from '@/components/onboarding/OnboardingTour';
+import { coachApplicationsTourSteps } from '@/components/onboarding/AdminOnboardingTours';
 
 // Simple Badge component since ui/badge doesn't exist
 const Badge = ({ children, className = '', variant = 'default' }: {
@@ -81,6 +84,9 @@ interface ApplicationDetails extends CoachApplication {
 
 export default function CoachApplicationsPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const { completeStep } = useOnboarding();
+  const [showApplicationsTour, setShowApplicationsTour] = useState(false);
   const [applications, setApplications] = useState<CoachApplication[]>([]);
   const [selectedApplication, setSelectedApplication] = useState<ApplicationDetails | null>(null);
   const [loading, setLoading] = useState(true);
@@ -122,6 +128,19 @@ export default function CoachApplicationsPage() {
     });
     router.push(`/admin/messages?${params.toString()}`);
   };
+
+  // Handle tour start from URL parameter
+  useEffect(() => {
+    const shouldStartTour = searchParams.get('startTour');
+    const userGuideEnabled = localStorage.getItem('userGuideEnabled');
+    const isUserGuideEnabled = userGuideEnabled === null || userGuideEnabled === 'true';
+
+    if (shouldStartTour === 'true' && isUserGuideEnabled) {
+      setShowApplicationsTour(true);
+      // Remove the URL parameter after starting the tour
+      window.history.replaceState({}, '', '/admin/coach-applications');
+    }
+  }, [searchParams]);
 
   // Debounce search term
   useEffect(() => {
@@ -483,14 +502,14 @@ export default function CoachApplicationsPage() {
             {/* Filter Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
               {/* Status Filter */}
-              <div>
+              <div data-tour="applications-tabs">
                 <label htmlFor="status-filter" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   <div className="flex items-center gap-2">
                     <FileCheck className="w-4 h-4 text-gray-500 dark:text-gray-400" />
                     <span>Status</span>
                   </div>
                 </label>
-                <div className="relative">
+                <div className="relative" data-tour="pending-tab">
                   <select
                     id="status-filter"
                     value={statusFilter}
@@ -1089,6 +1108,16 @@ export default function CoachApplicationsPage() {
           loading={actionLoading}
         />
       )}
+
+      {/* Coach Applications Tour */}
+      <OnboardingTour
+        steps={coachApplicationsTourSteps}
+        run={showApplicationsTour}
+        onFinish={() => {
+          setShowApplicationsTour(false);
+          completeStep('review-coach-applications');
+        }}
+      />
     </div>
   );
 }

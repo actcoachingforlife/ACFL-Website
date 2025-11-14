@@ -8,6 +8,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import CalendarIntegration from '@/components/coach/CalendarIntegration'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { useOnboarding } from '@/contexts/OnboardingContext'
+import OnboardingTour from '@/components/onboarding/OnboardingTour'
+import { calendarTourSteps } from '@/components/onboarding/CoachOnboardingTours'
 import { toast } from 'sonner'
 import { Calendar, Settings, List, Clock } from 'lucide-react'
 
@@ -62,8 +65,10 @@ const CalendarView = dynamic(() => import('@/components/coach/calendar/CalendarV
 export default function UnifiedCalendarPage() {
   const [coachId, setCoachId] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState('overview')
+  const [showCalendarTour, setShowCalendarTour] = useState(false)
   const router = useRouter()
   const searchParams = useSearchParams()
+  const { completeStep } = useOnboarding()
 
   useEffect(() => {
     // Get coach ID from localStorage or token
@@ -80,6 +85,19 @@ export default function UnifiedCalendarPage() {
       router.push('/auth/login')
     }
   }, [router])
+
+  useEffect(() => {
+    // Check URL param to start tour
+    const shouldStartTour = searchParams.get('startTour')
+    const userGuideEnabled = localStorage.getItem('userGuideEnabled')
+    const isUserGuideEnabled = userGuideEnabled === null || userGuideEnabled === 'true'
+
+    if (shouldStartTour === 'true' && coachId && isUserGuideEnabled) {
+      console.log('Starting calendar tour from URL param')
+      setShowCalendarTour(true)
+      window.history.replaceState({}, '', '/coaches/calendar')
+    }
+  }, [searchParams, coachId])
 
   useEffect(() => {
     // Handle URL parameters for setting active tab
@@ -153,23 +171,23 @@ export default function UnifiedCalendarPage() {
       <div className="space-y-6">
         {/* Unified Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4 h-auto p-1">
-            <TabsTrigger value="overview" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 px-2 py-2 sm:py-1.5 text-xs sm:text-sm">
+          <TabsList className="grid w-full grid-cols-4 h-auto p-1" data-tour="calendar-tabs">
+            <TabsTrigger value="overview" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 px-2 py-2 sm:py-1.5 text-xs sm:text-sm" data-tour="today-tab">
               <Clock className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
               <span className="hidden sm:inline">Today</span>
               <span className="sm:hidden text-[10px] leading-tight">Today</span>
             </TabsTrigger>
-            <TabsTrigger value="appointments" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 px-2 py-2 sm:py-1.5 text-xs sm:text-sm">
+            <TabsTrigger value="appointments" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 px-2 py-2 sm:py-1.5 text-xs sm:text-sm" data-tour="appointments-tab">
               <List className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
               <span className="hidden sm:inline">All Appointments</span>
               <span className="sm:hidden text-[10px] leading-tight text-center">All</span>
             </TabsTrigger>
-            <TabsTrigger value="integration" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 px-2 py-2 sm:py-1.5 text-xs sm:text-sm">
+            <TabsTrigger value="integration" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 px-2 py-2 sm:py-1.5 text-xs sm:text-sm" data-tour="integration-tab">
               <Settings className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
               <span className="hidden sm:inline">Integration</span>
               <span className="sm:hidden text-[10px] leading-tight text-center">Setup</span>
             </TabsTrigger>
-            <TabsTrigger value="calendar" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 px-2 py-2 sm:py-1.5 text-xs sm:text-sm">
+            <TabsTrigger value="calendar" className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 px-2 py-2 sm:py-1.5 text-xs sm:text-sm" data-tour="calendar-view-tab">
               <Calendar className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
               <span className="hidden sm:inline">Calendar View</span>
               <span className="sm:hidden text-[10px] leading-tight text-center">View</span>
@@ -274,6 +292,16 @@ export default function UnifiedCalendarPage() {
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* Onboarding Tour */}
+      <OnboardingTour
+        steps={calendarTourSteps}
+        run={showCalendarTour}
+        onFinish={() => {
+          setShowCalendarTour(false)
+          completeStep('view-calendar')
+        }}
+      />
     </CoachPageWrapper>
   )
 }

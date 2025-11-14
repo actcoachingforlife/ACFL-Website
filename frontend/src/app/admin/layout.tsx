@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { Poppins } from 'next/font/google';
 import { useAuth } from '@/contexts/AuthContext';
 import { useAdminNotifications } from '@/contexts/AdminNotificationContext';
+import { OnboardingProvider } from '@/contexts/OnboardingContext';
 import { usePermissions, PERMISSIONS } from '@/hooks/usePermissions';
 import { getApiUrl } from '@/lib/api';
 import NotificationBadge from '@/components/NotificationBadge';
@@ -479,7 +480,8 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   }
 
   return (
-    <div className={`min-h-screen bg-gray-50 dark:bg-gray-900 flex ${poppins.className}`}>
+    <OnboardingProvider>
+      <div className={`min-h-screen bg-gray-50 dark:bg-gray-900 flex ${poppins.className}`}>
       {/* Collapsible Sidebar - Desktop */}
       <div
         className={`hidden lg:flex lg:flex-col lg:fixed lg:inset-y-0 lg:z-[10001] ${
@@ -529,7 +531,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
           {/* Navigation Groups - Scrollable */}
           <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide min-h-0">
-            <nav className="space-y-1 p-4">
+            <nav className="space-y-1 p-4" data-tour="admin-navigation">
             {filteredNavigationGroups.map((group) => {
               const filteredItems = filterItemsBySearch(group.items);
               const isExpanded = expandedGroups.has(group.id);
@@ -1508,6 +1510,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         onAccept={handleConsentAccept}
         onDecline={handleConsentDecline}
       />
-    </div>
+      </div>
+    </OnboardingProvider>
   );
 }

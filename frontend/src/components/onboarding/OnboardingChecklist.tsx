@@ -19,6 +19,7 @@ export default function OnboardingChecklist() {
   const {
     clientSteps,
     coachSteps,
+    adminSteps,
     isOnboardingComplete,
     skipOnboarding,
   } = useOnboarding();
@@ -62,30 +63,82 @@ export default function OnboardingChecklist() {
     });
   }, [isVisible, isOnboardingComplete, userGuideEnabled]);
 
-  const steps = user?.role === 'client' ? clientSteps : coachSteps;
+  const steps = user?.role === 'client' ? clientSteps :
+                user?.role === 'coach' ? coachSteps :
+                (user?.role === 'admin' || user?.role === 'staff') ? adminSteps :
+                [];
 
   const handleStepClick = (stepId: string) => {
-    // Navigate and start appropriate tour based on step
-    switch (stepId) {
-      case 'browse-coaches':
-        // Redirect to find coaches page with tour
-        router.push('/clients/search-coaches?startTour=true');
-        break;
-      case 'complete-profile':
-        router.push('/clients/profile?startTour=true');
-        break;
-      case 'book-session':
-        // Redirect to find coaches page with booking flow tour
-        router.push('/clients/search-coaches?startTour=true&flow=booking');
-        break;
-      case 'send-message':
-        router.push('/clients/messages?startTour=true');
-        break;
-      case 'view-appointments':
-        router.push('/clients/appointments?startTour=true');
-        break;
-      default:
-        break;
+    // Navigate and start appropriate tour based on step and user role
+    if (user?.role === 'client') {
+      // Client navigation
+      switch (stepId) {
+        case 'browse-coaches':
+          router.push('/clients/search-coaches?startTour=true');
+          break;
+        case 'complete-profile':
+          router.push('/clients/profile?startTour=true');
+          break;
+        case 'book-session':
+          router.push('/clients/search-coaches?startTour=true&flow=booking');
+          break;
+        case 'send-message':
+          router.push('/clients/messages?startTour=true');
+          break;
+        case 'view-appointments':
+          router.push('/clients/appointments?startTour=true');
+          break;
+        default:
+          break;
+      }
+    } else if (user?.role === 'coach') {
+      // Coach navigation
+      switch (stepId) {
+        case 'upload-photo':
+          router.push('/coaches/profile?startTour=true&section=photo');
+          break;
+        case 'complete-basic-info':
+          router.push('/coaches/profile?startTour=true&section=basic-info');
+          break;
+        case 'add-specializations':
+          router.push('/coaches/profile?startTour=true&section=specializations');
+          break;
+        case 'set-availability':
+          router.push('/coaches/availability?startTour=true');
+          break;
+        case 'configure-payment':
+          router.push('/coaches/billing?startTour=true');
+          break;
+        case 'view-calendar':
+          router.push('/coaches/calendar?startTour=true');
+          break;
+        default:
+          break;
+      }
+    } else if (user?.role === 'admin' || user?.role === 'staff') {
+      // Admin/Staff navigation
+      switch (stepId) {
+        case 'explore-dashboard':
+          router.push('/admin?startTour=true');
+          break;
+        case 'manage-users':
+          router.push('/admin/users?startTour=true');
+          break;
+        case 'review-coach-applications':
+          router.push('/admin/coach-applications?startTour=true');
+          break;
+        case 'monitor-appointments':
+          router.push('/admin/appointments?startTour=true');
+          break;
+        case 'manage-financials':
+          router.push('/admin/financials?startTour=true');
+          break;
+        case 'view-analytics':
+          router.push('/admin/analytics?startTour=true');
+          break;
+        default:
+          break;
+      }
     }
   };
 
@@ -135,12 +188,11 @@ export default function OnboardingChecklist() {
             {steps.map((step) => (
               <button
                 key={step.id}
-                onClick={() => !step.completed && handleStepClick(step.id)}
-                disabled={step.completed}
-                className={`w-full flex items-start p-3 rounded-lg border transition-all text-left ${
+                onClick={() => handleStepClick(step.id)}
+                className={`w-full flex items-start p-3 rounded-lg border transition-all text-left cursor-pointer ${
                   step.completed
-                    ? 'bg-green-50 border-green-200 cursor-default'
-                    : 'bg-gray-50 border-gray-200 hover:bg-gray-100 hover:border-blue-300 cursor-pointer'
+                    ? 'bg-green-50 border-green-200 hover:bg-green-100 hover:border-green-300'
+                    : 'bg-gray-50 border-gray-200 hover:bg-gray-100 hover:border-blue-300'
                 }`}
               >
                 <div className="flex-1 min-w-0">
@@ -153,6 +205,11 @@ export default function OnboardingChecklist() {
                   >
                     {step.title}
                   </p>
+                  {step.completed && (
+                    <p className="text-xs text-green-600 mt-1">
+                      Click to review tutorial
+                    </p>
+                  )}
                 </div>
               </button>
             ))}
