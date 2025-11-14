@@ -2,10 +2,17 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
+import { useOnboarding } from '@/contexts/OnboardingContext';
+import OnboardingTour from '@/components/onboarding/OnboardingTour';
+import {
+  uploadPhotoTourSteps,
+  basicInfoTourSteps,
+  specializationsTourSteps
+} from '@/components/onboarding/CoachOnboardingTours';
 import { Checkbox } from '@/components/ui/checkbox';
 import CoachPageWrapper from '@/components/CoachPageWrapper';
 import ProfileCardSkeleton from '@/components/ProfileCardSkeleton';
@@ -62,6 +69,14 @@ const PROFESSIONAL_CERTIFICATIONS = [
 export default function CoachProfilePage() {
   const { user } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const { completeStep } = useOnboarding();
+
+  // Tour states
+  const [showUploadPhotoTour, setShowUploadPhotoTour] = useState(false);
+  const [showBasicInfoTour, setShowBasicInfoTour] = useState(false);
+  const [showSpecializationsTour, setShowSpecializationsTour] = useState(false);
+
   const [editing, setEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -156,6 +171,31 @@ export default function CoachProfilePage() {
     loadProfile();
     loadStats();
   }, []);
+
+  // Check URL param to start tours after navigation
+  useEffect(() => {
+    const shouldStartTour = searchParams.get('startTour');
+    const section = searchParams.get('section');
+
+    if (shouldStartTour === 'true' && !loadingProfile) {
+      console.log('Starting coach profile tour from URL param, section:', section);
+
+      // Start appropriate tour based on section parameter
+      if (section === 'photo') {
+        setShowUploadPhotoTour(true);
+        setActiveTab('basic'); // Ensure we're on the right tab
+      } else if (section === 'basic-info') {
+        setShowBasicInfoTour(true);
+        setActiveTab('basic');
+      } else if (section === 'specializations') {
+        setShowSpecializationsTour(true);
+        setActiveTab('specialization');
+      }
+
+      // Clean up URL
+      window.history.replaceState({}, '', '/coaches/profile');
+    }
+  }, [searchParams, loadingProfile]);
 
   const refreshData = async () => {
     setLoading(true);
@@ -656,7 +696,7 @@ export default function CoachProfilePage() {
       ) : (
         <div className="space-y-6">
           {/* Profile Photo Section */}
-          <Card>
+          <Card data-tour="profile-photo">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Camera className="w-5 h-5" />
@@ -714,6 +754,7 @@ export default function CoachProfilePage() {
                 ) : (
                   <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 w-full lg:w-auto">
                     <Button
+                      data-tour="save-profile"
                       onClick={handleSave}
                       disabled={saving}
                       className="bg-green-600 hover:bg-green-700 flex items-center dark:text-white min-h-[44px] touch-manipulation px-6 text-base justify-center"
@@ -786,8 +827,8 @@ export default function CoachProfilePage() {
               {activeTab === 'basic' && (
                 <div className="space-y-6">
                   <h3 className="text-lg font-semibold">Basic Information</h3>
-                  
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6" data-tour="basic-info-form">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-300">
                         First Name <span className="text-red-500">*</span>
@@ -843,7 +884,7 @@ export default function CoachProfilePage() {
                     </div>
                   </div>
 
-                  <div>
+                  <div data-tour="bio-section">
                     <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-300">Bio / Coaching Philosophy</label>
                     <textarea
                       name="bio"
@@ -868,7 +909,7 @@ export default function CoachProfilePage() {
                         className="w-full px-4 py-3 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-background text-foreground touch-manipulation min-h-[48px]"
                       />
                     </div>
-                    <div>
+                    <div data-tour="session-rates">
                       <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-300">Hourly Rate ($)</label>
                       <input
                         type="number"
@@ -1157,8 +1198,8 @@ export default function CoachProfilePage() {
               {activeTab === 'specialization' && (
                 <div className="space-y-6">
                   <h3 className="text-lg font-semibold">Specialization & Expertise</h3>
-                  
-                  <div>
+
+                  <div data-tour="specializations-section">
                     <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-300">
                       Specialties <span className="text-red-500">*</span>
                     </label>
@@ -1640,6 +1681,34 @@ export default function CoachProfilePage() {
 
         </div>
       )}
+
+      {/* Onboarding Tours */}
+      <OnboardingTour
+        steps={uploadPhotoTourSteps}
+        run={showUploadPhotoTour}
+        onFinish={() => {
+          setShowUploadPhotoTour(false);
+          completeStep('upload-photo');
+        }}
+      />
+
+      <OnboardingTour
+        steps={basicInfoTourSteps}
+        run={showBasicInfoTour}
+        onFinish={() => {
+          setShowBasicInfoTour(false);
+          completeStep('complete-basic-info');
+        }}
+      />
+
+      <OnboardingTour
+        steps={specializationsTourSteps}
+        run={showSpecializationsTour}
+        onFinish={() => {
+          setShowSpecializationsTour(false);
+          completeStep('add-specializations');
+        }}
+      />
       </CoachPageWrapper>
     </>
   );

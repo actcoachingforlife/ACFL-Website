@@ -19,7 +19,7 @@ export default function OnboardingTour({
   onFinish,
   onStepChange,
   continuous = true,
-  showProgress = true,
+  showProgress = false,
   showSkipButton = true,
 }: OnboardingTourProps) {
   const handleJoyrideCallback = (data: CallBackProps) => {

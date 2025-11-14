@@ -1,7 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
+import { useOnboarding } from '@/contexts/OnboardingContext';
+import OnboardingTour from '@/components/onboarding/OnboardingTour';
+import { availabilityTourSteps } from '@/components/onboarding/CoachOnboardingTours';
 import { Calendar, Clock, Plus, X, Edit3, Trash2, Save, CalendarDays, Settings, Grid, List, AlertTriangle } from 'lucide-react';
 import CalendarSkeleton from '@/components/CalendarSkeleton';
 import { getApiUrl } from '@/lib/api';
@@ -41,6 +45,11 @@ const DAYS_OF_WEEK = [
 
 export default function CoachAvailabilityPage() {
   const { user } = useAuth();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { completeStep } = useOnboarding();
+
+  const [showAvailabilityTour, setShowAvailabilityTour] = useState(false);
   const [availabilitySlots, setAvailabilitySlots] = useState<AvailabilitySlot[]>([]);
   const [blockedSlots, setBlockedSlots] = useState<BlockedSlot[]>([]);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -116,6 +125,19 @@ export default function CoachAvailabilityPage() {
       return () => clearTimeout(timer);
     }
   }, [toast.isOpen]);
+
+  // Check URL param to start tour after navigation
+  useEffect(() => {
+    const shouldStartTour = searchParams.get('startTour');
+
+    if (shouldStartTour === 'true' && !loading) {
+      console.log('Starting availability tour from URL param');
+      setShowAvailabilityTour(true);
+
+      // Clean up URL
+      window.history.replaceState({}, '', '/coaches/availability');
+    }
+  }, [searchParams, loading]);
 
   const showToast = (message: string, type: 'success' | 'error') => {
     setToast({ isOpen: true, message, type });
@@ -602,7 +624,7 @@ export default function CoachAvailabilityPage() {
         </TabsList>
 
         {/* Weekly Schedule Tab */}
-        <TabsContent value="calendar" className="space-y-6 mt-6">
+        <TabsContent value="calendar" className="space-y-6 mt-6" data-tour="availability-calendar">
           <div className="flex justify-between items-center">
             <div>
               <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Weekly Schedule</h2>
@@ -618,7 +640,7 @@ export default function CoachAvailabilityPage() {
             </div>
           </div>
 
-          <div className="grid gap-4">
+          <div className="grid gap-4" data-tour="time-slots">
             {DAYS_OF_WEEK.map((day, dayIndex) => {
               const daySlot = availabilitySlots.find(slot => slot.day_of_week === dayIndex && slot.is_active);
               const hasSlot = !!daySlot;
@@ -1668,6 +1690,16 @@ export default function CoachAvailabilityPage() {
           </div>
         </div>
       )}
+
+      {/* Onboarding Tour */}
+      <OnboardingTour
+        steps={availabilityTourSteps}
+        run={showAvailabilityTour}
+        onFinish={() => {
+          setShowAvailabilityTour(false);
+          completeStep('set-availability');
+        }}
+      />
       </div>
     </CoachPageWrapper>
   );
