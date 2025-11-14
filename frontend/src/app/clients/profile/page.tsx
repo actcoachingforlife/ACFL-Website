@@ -18,8 +18,8 @@ import ProtectedRoute from '@/components/ProtectedRoute'
 import ProfileCardSkeleton from '@/components/ProfileCardSkeleton'
 import { useAuth } from '@/contexts/AuthContext'
 import { useOnboarding } from '@/contexts/OnboardingContext'
-import OnboardingTour from '@/components/onboarding/OnboardingTour'
-import { profileTourSteps } from '@/components/onboarding/ClientOnboardingTours'
+import CustomTour from '@/components/onboarding/CustomTour'
+import { profileTourSteps } from '@/components/onboarding/customTourSteps'
 import { getApiUrl } from '@/lib/api'
 import { User, Edit, Save, X, Calendar, Clock, MapPin, Mail, Shield, Settings, Search, Heart, RefreshCw, Camera, Upload, Bell, BellOff, Volume2, VolumeX, MessageCircle, UserX, Download, FileText, FileImage, Trash2, AlertTriangle, CheckCircle, XCircle } from 'lucide-react'
 import { STATE_NAMES } from '@/constants/states'
@@ -1502,10 +1502,11 @@ function ProfileContent() {
 
       {/* Onboarding Tour */}
       {console.log('Profile tour render - showProfileTour:', showProfileTour)}
-      <OnboardingTour
+      <CustomTour
         steps={profileTourSteps}
-        run={showProfileTour}
-        onFinish={() => {
+        isOpen={showProfileTour}
+        onClose={() => endTour('profile')}
+        onComplete={() => {
           console.log('Profile tour finished, calling endTour');
           endTour('profile');
           completeStep('complete-profile');

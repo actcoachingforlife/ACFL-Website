@@ -18,8 +18,8 @@ import { apiGet, apiPut, API_URL as API_BASE_URL } from '@/lib/api-client';
 import { Video, ArrowUpDown, ArrowUp, ArrowDown, MessageCircle, Search, Filter, ChevronUp, ChevronDown } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { useOnboarding } from '@/contexts/OnboardingContext';
-import OnboardingTour from '@/components/onboarding/OnboardingTour';
-import { appointmentsTourSteps } from '@/components/onboarding/ClientOnboardingTours';
+import CustomTour from '@/components/onboarding/CustomTour';
+import { appointmentsTourSteps } from '@/components/onboarding/customTourSteps';
 
 interface Appointment {
   id: string;
@@ -765,10 +765,11 @@ function AppointmentsContent() {
       )}
 
       {/* Onboarding Tour */}
-      <OnboardingTour
+      <CustomTour
         steps={appointmentsTourSteps}
-        run={showAppointmentsTour}
-        onFinish={() => {
+        isOpen={showAppointmentsTour}
+        onClose={() => endTour('appointments')}
+        onComplete={() => {
           endTour('appointments');
           completeStep('view-appointments');
         }}

@@ -9,9 +9,8 @@ import { getApiUrl } from '@/lib/api'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import Link from 'next/link'
-import OnboardingTour from '@/components/onboarding/OnboardingTour'
-import OnboardingChecklist from '@/components/onboarding/OnboardingChecklist'
-import { welcomeTourSteps } from '@/components/onboarding/ClientOnboardingTours'
+import CustomTour from '@/components/onboarding/CustomTour'
+import { welcomeTourSteps } from '@/components/onboarding/customTourSteps'
 import {
   Calendar,
   MessageSquare,
@@ -391,14 +390,12 @@ export default function ClientDashboard() {
         </div>
 
         {/* Onboarding Tour */}
-        <OnboardingTour
+        <CustomTour
           steps={welcomeTourSteps}
-          run={showWelcomeTour}
-          onFinish={() => endTour('welcome')}
+          isOpen={showWelcomeTour}
+          onClose={() => endTour('welcome')}
+          onComplete={() => endTour('welcome')}
         />
-
-        {/* Onboarding Checklist */}
-        <OnboardingChecklist />
       </div>
     </ProtectedRoute>
   )
