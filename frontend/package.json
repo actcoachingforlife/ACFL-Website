@@ -40,7 +40,7 @@
     "@supabase/supabase-js": "^2.81.1",
     "@types/papaparse": "^5.3.16",
     "@types/three": "^0.179.0",
-    "@videosdk.live/react-sdk": "^0.1.105",
+    "@videosdk.live/react-sdk": "^0.3.14",
     "autoprefixer": "^10.4.22",
     "axios": "^1.13.2",
     "chart.js": "^4.5.1",
@@ -86,6 +86,10 @@
     "typescript": "5.9.3"
   },
   "overrides": {
-    "quill": "^2.0.3"
+    "quill": "^2.0.3",
+    "@videosdk.live/react-sdk": {
+      "react": "^19.2.0",
+      "react-dom": "^19.2.0"
+    }
   }
 }
