@@ -28,8 +28,8 @@ import MeetingBlocker from "@/components/MeetingBlocker";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { useAuth } from "@/contexts/AuthContext";
 import { useOnboarding } from "@/contexts/OnboardingContext";
-import OnboardingTour from "@/components/onboarding/OnboardingTour";
-import { searchCoachesTourSteps, bookingFlowSearchSteps } from "@/components/onboarding/ClientOnboardingTours";
+import CustomTour from "@/components/onboarding/CustomTour";
+import { searchCoachesTourSteps } from "@/components/onboarding/customTourSteps";
 import { 
   Filter, 
   Search, 
@@ -1408,24 +1408,13 @@ function SearchCoachesContent() {
       </div>
 
       {/* Onboarding Tours */}
-      <OnboardingTour
+      <CustomTour
         steps={searchCoachesTourSteps}
-        run={showSearchTour}
-        onFinish={() => {
+        isOpen={showSearchTour}
+        onClose={() => endTour('search')}
+        onComplete={() => {
           endTour('search');
           completeStep('browse-coaches');
-        }}
-      />
-      <OnboardingTour
-        steps={bookingFlowSearchSteps}
-        run={showBookingTour}
-        onFinish={() => {
-          // When search page tour finishes, redirect to Priya Desai's profile to continue
-          console.log('Booking tour search phase complete: Redirecting to Priya Desai profile');
-          completeStep('book-session');
-          setTimeout(() => {
-            router.push('/clients/coach-profile/426b6553-5caf-4512-b99d-ac022c1ece38?continueTour=booking');
-          }, 300);
         }}
       />
     </MeetingBlocker>

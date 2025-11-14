@@ -9,8 +9,8 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useAuth } from '@/contexts/AuthContext'
 import { useOnboarding } from '@/contexts/OnboardingContext'
-import OnboardingTour from '@/components/onboarding/OnboardingTour'
-import { messagesTourSteps } from '@/components/onboarding/ClientOnboardingTours'
+import CustomTour from '@/components/onboarding/CustomTour'
+import { messagesTourSteps } from '@/components/onboarding/customTourSteps'
 import { User, Paperclip, Trash2, X, MoreVertical, EyeOff, ArrowLeft, Send, Search, Filter, Users, MessageCircle, Smile } from 'lucide-react'
 import { useToast } from '@/hooks/useToast'
 import ConfirmModal from '@/components/ui/confirm-modal'
@@ -1026,10 +1026,11 @@ function CoachMessagesContent() {
 			)}
 
 			{/* Onboarding Tour */}
-			<OnboardingTour
+			<CustomTour
 				steps={messagesTourSteps}
-				run={showMessagesTour}
-				onFinish={() => {
+				isOpen={showMessagesTour}
+				onClose={() => endTour('messages')}
+				onComplete={() => {
 					endTour('messages');
 					completeStep('send-message');
 				}}

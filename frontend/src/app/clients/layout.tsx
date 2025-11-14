@@ -9,7 +9,7 @@ import ProtectedRoute from '@/components/ProtectedRoute';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNotifications } from '@/contexts/NotificationContext';
 import { useMeeting } from '@/contexts/MeetingContext';
-import { OnboardingProvider } from '@/contexts/OnboardingContext';
+import { OnboardingProvider, useOnboarding } from '@/contexts/OnboardingContext';
 import { ToastProvider } from '@/hooks/useToast';
 import NotificationBadge from '@/components/NotificationBadge';
 import Footer from '@/components/Footer';
@@ -44,7 +44,7 @@ interface NavigationGroup {
   items: NavigationItem[];
 }
 
-export default function ClientLayout({
+function ClientLayoutInner({
   children,
 }: {
   children: React.ReactNode;
@@ -54,6 +54,7 @@ export default function ClientLayout({
   const { user, logout } = useAuth();
   const { unreadMessageCount, appointmentNotificationCount, markMessagesAsRead, markAppointmentsAsRead } = useNotifications();
   const { isInMeeting } = useMeeting();
+  const { showWelcomeTour } = useOnboarding();
 
   // Client theme management with localStorage integration
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
@@ -67,7 +68,7 @@ export default function ClientLayout({
   const [showNotificationDropdown, setShowNotificationDropdown] = useState(false);
   const [showBottomNavOverflow, setShowBottomNavOverflow] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(!showWelcomeTour); // Keep expanded during tour
   const [sidebarManuallyToggled, setSidebarManuallyToggled] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set(['dashboard', 'coaching']));
@@ -160,6 +161,14 @@ export default function ClientLayout({
     };
   }, []);
 
+  // Keep sidebar expanded during welcome tour
+  useEffect(() => {
+    if (showWelcomeTour) {
+      setSidebarCollapsed(false);
+      setSidebarManuallyToggled(true); // Prevent auto-collapse
+    }
+  }, [showWelcomeTour]);
+
   // Auto-minimize sidebar when modals open (desktop only)
   // EXCLUDES: Notification dropdown and Profile dropdown
   useEffect(() => {
@@ -219,7 +228,7 @@ export default function ClientLayout({
 
       const hasModal = hasRealModal || hasRealBackdrop || hasRealModalElement;
 
-      if (hasModal) {
+      if (hasModal && !showWelcomeTour) {
         console.log('Modal detected (excluding notifications/profile), collapsing sidebar');
         setSidebarCollapsed(true);
       }
@@ -239,7 +248,7 @@ export default function ClientLayout({
     checkAndCollapseForModal();
 
     return () => observer.disconnect();
-  }, [sidebarCollapsed]);
+  }, [sidebarCollapsed, showWelcomeTour]);
 
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
@@ -408,9 +417,6 @@ export default function ClientLayout({
   }
 
   return (
-    <ProtectedRoute allowedRoles={['client']}>
-      <OnboardingProvider>
-        <ToastProvider>
         <div className={`min-h-screen bg-gray-50 dark:bg-gray-900 flex overflow-x-hidden ${poppins.className}`}>
         {/* Admin Impersonation Float */}
         <AdminImpersonationFloat />
@@ -422,12 +428,12 @@ export default function ClientLayout({
               sidebarCollapsed ? 'lg:w-16' : 'lg:w-72'
             } transition-all duration-500 ease-out will-change-[width]`}
             onMouseEnter={() => {
-              if (!sidebarManuallyToggled) {
+              if (!sidebarManuallyToggled && !showWelcomeTour) {
                 setSidebarCollapsed(false);
               }
             }}
             onMouseLeave={() => {
-              if (!sidebarManuallyToggled) {
+              if (!sidebarManuallyToggled && !showWelcomeTour) {
                 setSidebarCollapsed(true);
               }
             }}
@@ -464,7 +470,7 @@ export default function ClientLayout({
             )}
 
             {/* Navigation Groups - Scrollable */}
-            <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide min-h-0">
+            <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide min-h-0" data-tour="navigation">
               <nav className="space-y-1 p-4">
               {navigationGroups.map((group) => {
                 const filteredItems = filterItemsBySearch(group.items);
@@ -1404,6 +1410,19 @@ export default function ClientLayout({
           onDecline={handleConsentDecline}
         />
         </div>
+  );
+}
+
+export default function ClientLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <ProtectedRoute allowedRoles={['client']}>
+      <OnboardingProvider>
+        <ToastProvider>
+          <ClientLayoutInner>{children}</ClientLayoutInner>
         </ToastProvider>
       </OnboardingProvider>
     </ProtectedRoute>
