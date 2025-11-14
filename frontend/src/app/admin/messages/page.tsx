@@ -4,11 +4,14 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import MessagesSkeleton from '@/components/MessagesSkeleton'
+import AttachmentPreview from '@/components/AttachmentPreview'
 import { getApiUrl } from '@/lib/api'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useAuth } from '@/contexts/AuthContext'
-import { User, Paperclip, Trash2, Download, X, MoreVertical, EyeOff, ArrowLeft, Send, Search, Filter, Users, MessageCircle, Smile } from 'lucide-react'
+import { User, Paperclip, Trash2, X, MoreVertical, EyeOff, ArrowLeft, Send, Search, Filter, Users, MessageCircle, Smile } from 'lucide-react'
+import { useToast } from '@/hooks/useToast'
+import ConfirmModal from '@/components/ui/confirm-modal'
 
 type Conversation = {
 	partnerId: string
@@ -53,6 +56,7 @@ function AdminMessagesContent() {
 	const API_URL = getApiUrl()
 	const { user, logout } = useAuth()
 	const searchParams = useSearchParams()
+	const toast = useToast()
 	const [conversations, setConversations] = useState<Conversation[]>([])
 	const [filteredConversations, setFilteredConversations] = useState<Conversation[]>([])
 	const [activePartnerId, setActivePartnerId] = useState<string | null>(null)
@@ -69,6 +73,17 @@ function AdminMessagesContent() {
 	const [showUnreadOnly, setShowUnreadOnly] = useState(false)
 	const [openDropdownId, setOpenDropdownId] = useState<string | null>(null)
 	const [openConversationDropdown, setOpenConversationDropdown] = useState<string | null>(null)
+	const [confirmModal, setConfirmModal] = useState<{
+		isOpen: boolean
+		title: string
+		description: string
+		onConfirm: () => void
+	}>({
+		isOpen: false,
+		title: '',
+		description: '',
+		onConfirm: () => {},
+	})
 	const fileInputRef = useRef<HTMLInputElement>(null)
 	const scrollerRef = useRef<HTMLDivElement>(null)
 	const dropdownRef = useRef<HTMLDivElement>(null)
@@ -77,7 +92,10 @@ function AdminMessagesContent() {
 	const loadConversations = async (preserveManualConversations = false) => {
 		try {
 			const res = await fetch(`${API_URL}/api/admin/conversations`, {
-				headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+				headers: {
+					'Authorization': `Bearer ${localStorage.getItem('token')}`,
+					'Cache-Control': 'no-cache, no-store, must-revalidate'
+				}
 			})
 			const data = await res.json()
 			if (data.success) {
@@ -107,7 +125,10 @@ function AdminMessagesContent() {
 		try {
 			const params = new URLSearchParams({ conversation_with: partnerId })
 			const res = await fetch(`${API_URL}/api/admin/messages?${params.toString()}`, {
-				headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+				headers: {
+					'Authorization': `Bearer ${localStorage.getItem('token')}`,
+					'Cache-Control': 'no-cache, no-store, must-revalidate'
+				}
 			})
 			const data = await res.json()
 			if (data.success) {
@@ -315,12 +336,23 @@ function AdminMessagesContent() {
 
 	// Socket.IO Realtime
 	const socketRef = useRef<any>(null)
+	const activePartnerIdRef = useRef<string | null>(null)
+
+	// Keep ref in sync with state
+	useEffect(() => {
+		activePartnerIdRef.current = activePartnerId
+	}, [activePartnerId])
 
 	useEffect(() => {
 		if (!user?.id || typeof window === 'undefined') return
 
 		// Dynamically import socket.io-client to avoid build-time issues
 		import('socket.io-client').then(({ io }) => {
+			// Close existing socket if it exists
+			if (socketRef.current) {
+				socketRef.current.close()
+			}
+
 			const socket = io(API_URL, {
 				transports: ['websocket'],
 				auth: { token: `Bearer ${localStorage.getItem('token')}` }
@@ -328,11 +360,12 @@ function AdminMessagesContent() {
 			socketRef.current = socket
 
 			socket.on('connect', () => {
-				// Connected
+				console.log('Socket connected')
 			})
 
 			socket.on('message:new', async (msg: Message) => {
-				const partnerId = activePartnerId
+				// Use ref to get current value, not stale closure
+				const partnerId = activePartnerIdRef.current
 				const involvesActive = partnerId && (msg.sender_id === partnerId || msg.recipient_id === partnerId)
 
 				if (involvesActive) {
@@ -352,6 +385,7 @@ function AdminMessagesContent() {
 			})
 
 			socket.on('message:deleted_everyone', ({ messageId, deletedBy }: { messageId: string; deletedBy: string }) => {
+				console.log('Message deleted event received:', messageId)
 				// Update the message to show it was deleted
 				setMessages(prev => prev.map(m =>
 					m.id === messageId
@@ -364,11 +398,13 @@ function AdminMessagesContent() {
 		})
 
 		return () => {
-			socketRef.current?.close()
-			socketRef.current = null
+			if (socketRef.current) {
+				socketRef.current.close()
+				socketRef.current = null
+			}
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [user?.id, activePartnerId])
+	}, [user?.id])
 
 	useEffect(() => {
 		scrollerRef.current?.scrollTo({ top: scrollerRef.current.scrollHeight, behavior: 'smooth' })
@@ -423,7 +459,7 @@ function AdminMessagesContent() {
 		if (file) {
 			// Check file size (10MB limit)
 			if (file.size > 10 * 1024 * 1024) {
-				alert('File size must be less than 10MB')
+				toast.error('File too large', 'File size must be less than 10MB')
 				return
 			}
 			setSelectedFile(file)
@@ -451,56 +487,65 @@ function AdminMessagesContent() {
 	}
 
 	const deleteConversation = async (partnerId: string) => {
-		if (!confirm('Are you sure you want to delete this conversation? This action cannot be undone.')) {
-			return
-		}
+		setConfirmModal({
+			isOpen: true,
+			title: 'Delete Conversation',
+			description: 'Are you sure you want to delete this conversation? This action cannot be undone.',
+			onConfirm: async () => {
+				try {
+					const response = await fetch(`${API_URL}/api/admin/conversations/${partnerId}`, {
+						method: 'DELETE',
+						headers: {
+							'Authorization': `Bearer ${localStorage.getItem('token')}`
+						}
+					})
 
-		try {
-			const response = await fetch(`${API_URL}/api/admin/conversations/${partnerId}`, {
-				method: 'DELETE',
-				headers: {
-					'Authorization': `Bearer ${localStorage.getItem('token')}`
+					const result = await response.json()
+					if (result.success) {
+						// Remove conversation from list and clear messages if it was active
+						setConversations(prev => prev.filter(c => c.partnerId !== partnerId))
+						if (activePartnerId === partnerId) {
+							setActivePartnerId(null)
+							setMessages([])
+						}
+						toast.success('Conversation deleted', 'The conversation has been removed')
+					} else {
+						toast.error('Delete failed', result.message || 'Failed to delete conversation')
+					}
+				} catch (error) {
+					console.error('Delete conversation error:', error)
+					toast.error('Delete failed', 'Failed to delete conversation')
 				}
-			})
-
-			const result = await response.json()
-			if (result.success) {
-				// Remove conversation from list and clear messages if it was active
-				setConversations(prev => prev.filter(c => c.partnerId !== partnerId))
-				if (activePartnerId === partnerId) {
-					setActivePartnerId(null)
-					setMessages([])
-				}
-			} else {
-				alert(result.message || 'Failed to delete conversation')
 			}
-		} catch (error) {
-			console.error('Delete conversation error:', error)
-			alert('Failed to delete conversation')
-		}
+		})
 	}
 
 	const deleteMessageForEveryone = async (messageId: string) => {
-		if (!confirm('Delete this message for everyone? This action cannot be undone.')) {
-			return
-		}
+		setConfirmModal({
+			isOpen: true,
+			title: 'Delete Message',
+			description: 'Delete this message for everyone? This action cannot be undone.',
+			onConfirm: async () => {
+				try {
+					const response = await fetch(`${API_URL}/api/admin/messages/${messageId}/everyone`, {
+						method: 'DELETE',
+						headers: {
+							'Authorization': `Bearer ${localStorage.getItem('token')}`
+						}
+					})
 
-		try {
-			const response = await fetch(`${API_URL}/api/admin/messages/${messageId}/everyone`, {
-				method: 'DELETE',
-				headers: {
-					'Authorization': `Bearer ${localStorage.getItem('token')}`
+					const result = await response.json()
+					if (result.success) {
+						toast.success('Message deleted', 'The message has been deleted for everyone')
+					} else {
+						toast.error('Delete failed', result.message || 'Failed to delete message')
+					}
+				} catch (error) {
+					console.error('Delete message error:', error)
+					toast.error('Delete failed', 'Failed to delete message')
 				}
-			})
-
-			const result = await response.json()
-			if (!result.success) {
-				alert(result.message || 'Failed to delete message')
 			}
-		} catch (error) {
-			console.error('Delete message error:', error)
-			alert('Failed to delete message')
-		}
+		})
 	}
 
 	const hideMessageForMe = async (messageId: string) => {
@@ -520,7 +565,7 @@ function AdminMessagesContent() {
 			if (!response.ok) {
 				const errorText = await response.text()
 				console.error('Hide message HTTP error:', response.status, errorText)
-				alert(`Failed to hide message: ${response.status} ${errorText}`)
+				toast.error('Hide failed', `Failed to hide message: ${response.status}`)
 				return
 			}
 
@@ -536,13 +581,14 @@ function AdminMessagesContent() {
 				})
 				// Also refresh conversations to update last message if needed
 				loadConversations(true)
+				toast.success('Message hidden', 'The message has been hidden from your view')
 			} else {
 				console.error('Hide message failed:', result)
-				alert(result.error || result.message || 'Failed to hide message')
+				toast.error('Hide failed', result.error || result.message || 'Failed to hide message')
 			}
 		} catch (error) {
 			console.error('Hide message error:', error)
-			alert('Failed to hide message: ' + (error as Error).message)
+			toast.error('Hide failed', 'Failed to hide message: ' + (error as Error).message)
 		}
 	}
 
@@ -559,7 +605,7 @@ function AdminMessagesContent() {
 				try {
 					attachment = await uploadFile(selectedFile)
 				} catch (error) {
-					alert('Failed to upload file: ' + (error as Error).message)
+					toast.error('Upload failed', 'Failed to upload file: ' + (error as Error).message)
 					return
 				} finally {
 					setUploading(false)
@@ -862,27 +908,13 @@ t									</div>
 										<div className={`${isMine ? 'bg-blue-500 text-white ml-auto' : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'} rounded-2xl px-4 py-3 ${isDeleted ? 'italic opacity-70' : ''}`}>
 											{m.body && <p className="text-sm">{m.body}</p>}
 											{hasAttachment && (
-												<div className={`mt-2 p-2 rounded border ${isMine ? 'border-blue-400 bg-blue-600' : 'border-gray-300 dark:border-gray-600 bg-gray-200 dark:bg-gray-600'}`}>
-													<div className="flex items-center gap-2">
-														<Paperclip size={16} />
-														<span className="truncate text-sm">{m.attachment_name}</span>
-														<a
-															href={m.attachment_url || '#'}
-															download={m.attachment_name || undefined}
-															className="p-1 hover:opacity-80"
-															title="Download"
-															target="_blank"
-															rel="noopener noreferrer"
-														>
-															<Download size={14} />
-														</a>
-													</div>
-													{m.attachment_size && (
-														<div className="text-xs mt-1 opacity-75">
-															{(m.attachment_size / 1024 / 1024).toFixed(2)} MB
-														</div>
-													)}
-												</div>
+												<AttachmentPreview
+													attachmentUrl={m.attachment_url!}
+													attachmentName={m.attachment_name!}
+													attachmentSize={m.attachment_size}
+													attachmentType={m.attachment_type}
+													isMine={isMine}
+												/>
 											)}
 										</div>
 
@@ -1053,6 +1085,17 @@ t									</div>
 				</div>
 				</>
 			)}
+
+			{/* Confirmation Modal */}
+			<ConfirmModal
+				isOpen={confirmModal.isOpen}
+				onClose={() => setConfirmModal(prev => ({ ...prev, isOpen: false }))}
+				onConfirm={confirmModal.onConfirm}
+				title={confirmModal.title}
+				description={confirmModal.description}
+				variant="danger"
+				confirmText="Delete"
+			/>
 		</div>
 	)
 }

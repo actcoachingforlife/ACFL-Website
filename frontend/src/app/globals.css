@@ -285,6 +285,51 @@
   @apply text-gray-400 hover:text-white;
 }
 
+/* React Joyride Tour Customization */
+/* Prevent tour elements from overlapping with navbar (height: 64px on desktop, ~72px on mobile) */
+
+/* Ensure overlay starts below navbar on desktop */
+@media (min-width: 1024px) {
+  .react-joyride__overlay {
+    top: 64px !important;
+    height: calc(100vh - 64px) !important;
+  }
+}
+
+/* Mobile navbar height */
+@media (max-width: 1023px) {
+  .react-joyride__overlay {
+    top: 72px !important;
+    height: calc(100vh - 72px) !important;
+  }
+}
+
+/* Ensure tooltips are above navbar but overlay respects navbar */
+.__floater {
+  z-index: 10000 !important;
+}
+
+/* For center-placed tooltips, add top margin */
+.__floater.__floater--open[data-placement*="center"] {
+  margin-top: 80px !important;
+}
+
+/* Tooltip body adjustments */
+.__floater__body {
+  max-height: calc(100vh - 100px) !important;
+  overflow-y: auto !important;
+}
+
+/* Beacon positioning */
+.react-joyride__beacon {
+  z-index: 10000 !important;
+}
+
+/* Spotlight positioning */
+.react-joyride__spotlight {
+  z-index: 9998 !important;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

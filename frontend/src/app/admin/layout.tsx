@@ -8,6 +8,7 @@ import { Poppins } from 'next/font/google';
 import { useAuth } from '@/contexts/AuthContext';
 import { useAdminNotifications } from '@/contexts/AdminNotificationContext';
 import { OnboardingProvider } from '@/contexts/OnboardingContext';
+import { ToastProvider } from '@/hooks/useToast';
 import { usePermissions, PERMISSIONS } from '@/hooks/usePermissions';
 import { getApiUrl } from '@/lib/api';
 import NotificationBadge from '@/components/NotificationBadge';
@@ -490,6 +491,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
   return (
     <OnboardingProvider>
+      <ToastProvider>
       <div className={`min-h-screen bg-gray-50 dark:bg-gray-900 flex ${poppins.className}`}>
       {/* Collapsible Sidebar - Desktop */}
       <div
@@ -1520,6 +1522,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         onDecline={handleConsentDecline}
       />
       </div>
+      </ToastProvider>
     </OnboardingProvider>
   );
 }

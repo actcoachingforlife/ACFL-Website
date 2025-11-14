@@ -2028,6 +2028,24 @@ router.get('/client/activity', authenticate, async (req: Request & { user?: any 
       console.error('Search history query error:', searchError);
     }
 
+    // Get logged user activities
+    const { data: userActivities, error: userActivitiesError } = await supabase
+      .from('user_activities')
+      .select(`
+        id,
+        activity_type,
+        metadata,
+        created_at
+      `)
+      .eq('user_id', clientId)
+      .eq('user_role', 'client')
+      .order('created_at', { ascending: false })
+      .limit(10);
+
+    if (userActivitiesError) {
+      console.error('User activities query error:', userActivitiesError);
+    }
+
     // Combine and format all activities
     const activities = [];
 
@@ -2155,14 +2173,73 @@ router.get('/client/activity', authenticate, async (req: Request & { user?: any 
           title: 'Coach Search',
           subtitle: `Found ${search.results_count} coaches`,
           date: search.created_at,
-          time: new Date(search.created_at).toLocaleTimeString([], { 
-            hour: '2-digit', 
-            minute: '2-digit' 
+          time: new Date(search.created_at).toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit'
           }),
           timestamp: new Date(search.created_at).getTime(),
           data: search
         });
       });
+    }
+
+    // Add user logged activities
+    if (userActivities) {
+      for (const userActivity of userActivities) {
+        let activityTitle = 'Activity';
+        let activitySubtitle = '';
+        let activityType = userActivity.activity_type;
+
+        // Format based on activity type
+        switch (userActivity.activity_type) {
+          case 'session_joined':
+            activityTitle = `Joined Session`;
+            if (userActivity.metadata?.coach_name) {
+              activityTitle = `Joined Session with ${userActivity.metadata.coach_name}`;
+            }
+            activitySubtitle = userActivity.metadata?.session_type || 'Video session';
+            break;
+          case 'session_booked':
+            activityTitle = 'Booked a Session';
+            if (userActivity.metadata?.coach_name) {
+              activityTitle = `Booked Session with ${userActivity.metadata.coach_name}`;
+            }
+            activitySubtitle = userActivity.metadata?.session_date || 'Upcoming session';
+            break;
+          case 'session_cancelled':
+            activityTitle = 'Cancelled Session';
+            if (userActivity.metadata?.coach_name) {
+              activityTitle = `Cancelled Session with ${userActivity.metadata.coach_name}`;
+            }
+            activitySubtitle = userActivity.metadata?.reason || 'Session cancelled';
+            break;
+          case 'profile_updated':
+            activityTitle = 'Updated Profile';
+            activitySubtitle = userActivity.metadata?.fields_updated || 'Profile information updated';
+            break;
+          case 'coach_searched':
+            activityTitle = 'Searched for Coaches';
+            activitySubtitle = userActivity.metadata?.query || 'Coach search';
+            break;
+          default:
+            activityTitle = userActivity.activity_type.replace(/_/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase());
+            activitySubtitle = userActivity.metadata?.description || '';
+        }
+
+        activities.push({
+          id: userActivity.id,
+          type: activityType,
+          title: activityTitle,
+          subtitle: activitySubtitle,
+          date: userActivity.created_at,
+          time: new Date(userActivity.created_at).toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit'
+          }),
+          timestamp: new Date(userActivity.created_at).getTime(),
+          data: userActivity
+        });
+      }
     }
 
     // Sort all activities by timestamp (most recent first) and limit to 10
@@ -2172,13 +2249,84 @@ router.get('/client/activity', authenticate, async (req: Request & { user?: any 
 
     res.json({
       success: true,
-      data: sortedActivities
+      data: {
+        activities: sortedActivities
+      }
     });
   } catch (error) {
     console.error('Get client activity error:', error);
     res.status(500).json({ 
       success: false, 
       message: 'Failed to get client activity' 
+    });
+  }
+});
+
+// Log user activity endpoint
+router.post('/client/log-activity', authenticate, async (req: Request & { user?: any }, res: Response) => {
+  try {
+    if (!req.user || req.user.role !== 'client') {
+      return res.status(403).json({
+        success: false,
+        message: 'Access denied. Client role required.'
+      });
+    }
+
+    // Get client profile
+    const { data: clientProfile, error: clientError } = await supabase
+      .from('clients')
+      .select('id')
+      .ilike('email', req.user.email)
+      .single();
+
+    if (clientError || !clientProfile) {
+      return res.status(404).json({ success: false, message: 'Client profile not found' });
+    }
+
+    const { activity_type, metadata } = req.body;
+
+    if (!activity_type) {
+      return res.status(400).json({
+        success: false,
+        message: 'Activity type is required'
+      });
+    }
+
+    // Create or update user_activities table entry
+    const { data: activity, error: activityError } = await supabase
+      .from('user_activities')
+      .insert({
+        user_id: clientProfile.id,
+        user_role: 'client',
+        activity_type,
+        metadata: metadata || {},
+        created_at: new Date().toISOString()
+      })
+      .select()
+      .single();
+
+    if (activityError) {
+      console.error('Error logging activity:', activityError);
+      // Don't fail the request if activity logging fails
+      return res.json({
+        success: true,
+        message: 'Activity logged (with warnings)',
+        data: null
+      });
+    }
+
+    res.json({
+      success: true,
+      message: 'Activity logged successfully',
+      data: activity
+    });
+  } catch (error) {
+    console.error('Log activity error:', error);
+    // Return success even if logging fails to not disrupt user experience
+    res.json({
+      success: true,
+      message: 'Activity logging attempted',
+      data: null
     });
   }
 });
