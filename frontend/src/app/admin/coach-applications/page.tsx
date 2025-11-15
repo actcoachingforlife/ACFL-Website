@@ -729,7 +729,7 @@ export default function CoachApplicationsPage() {
       </div>
 
       {/* Applications Table */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden" data-tour="application-card">
         {loading ? (
           <>
             {/* Desktop Table Skeleton */}
@@ -922,7 +922,7 @@ export default function CoachApplicationsPage() {
                         })}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <div className="flex items-center justify-end space-x-2">
+                        <div className="flex items-center justify-end space-x-2" data-tour="application-actions">
                           <Button
                             onClick={() => fetchApplicationDetails(application.id)}
                             variant="outline"
@@ -940,7 +940,7 @@ export default function CoachApplicationsPage() {
                             <MessageSquare className="h-3 w-3" />
                           </Button>
                           {application.status === 'pending' && (
-                            <>
+                            <div data-tour="approval-buttons">
                               <Button
                                 onClick={() => updateApplicationStatus(application.id, 'approved')}
                                 size="sm"
@@ -952,11 +952,11 @@ export default function CoachApplicationsPage() {
                                 onClick={() => updateApplicationStatus(application.id, 'rejected', 'Application did not meet requirements')}
                                 size="sm"
                                 variant="destructive"
-                                className="text-xs"
+                                className="text-xs ml-2"
                               >
                                 Reject
                               </Button>
-                            </>
+                            </div>
                           )}
                         </div>
                       </td>

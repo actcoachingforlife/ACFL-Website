@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
 import { X, ArrowRight, ArrowLeft } from 'lucide-react';
 
 export interface TourStep {
@@ -9,6 +10,7 @@ export interface TourStep {
   title?: string;
   placement?: 'top' | 'bottom' | 'left' | 'right' | 'center';
   disableOverlayClose?: boolean;
+  navigateTo?: string; // URL to navigate to before showing this step
 }
 
 interface CustomTourProps {
@@ -19,18 +21,43 @@ interface CustomTourProps {
 }
 
 export default function CustomTour({ steps, isOpen, onClose, onComplete }: CustomTourProps) {
+  const router = useRouter();
+  const pathname = usePathname();
   const [currentStep, setCurrentStep] = useState(0);
   const [targetRect, setTargetRect] = useState<DOMRect | null>(null);
   const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
   const tooltipRef = useRef<HTMLDivElement>(null);
+  const [isNavigating, setIsNavigating] = useState(false);
 
   const step = steps[currentStep];
   const isLastStep = currentStep === steps.length - 1;
   const isFirstStep = currentStep === 0;
 
+  // Handle navigation when step changes
+  useEffect(() => {
+    if (!isOpen || !step || !step.navigateTo) return;
+
+    // Check if we're already on the target page
+    if (pathname === step.navigateTo) {
+      setIsNavigating(false);
+      return;
+    }
+
+    // Navigate to the target page
+    setIsNavigating(true);
+    router.push(step.navigateTo);
+
+    // Give time for navigation to complete
+    const navigationTimeout = setTimeout(() => {
+      setIsNavigating(false);
+    }, 500);
+
+    return () => clearTimeout(navigationTimeout);
+  }, [isOpen, step, pathname, router]);
+
   // Update target element position and scroll into view
   useEffect(() => {
-    if (!isOpen || !step) return;
+    if (!isOpen || !step || isNavigating) return;
 
     const updatePosition = () => {
       if (step.placement === 'center') {
@@ -38,27 +65,52 @@ export default function CustomTour({ steps, isOpen, onClose, onComplete }: Custo
         return;
       }
 
-      const element = document.querySelector(step.target);
+      const element = document.querySelector(step.target) as HTMLElement;
       if (element) {
         const rect = element.getBoundingClientRect();
-        setTargetRect(rect);
 
-        // Scroll element into view with offset for fixed headers
-        const scrollOffset = 100;
-        const elementTop = rect.top + window.scrollY - scrollOffset;
+        // Check if element exists (has dimensions)
+        const elementExists = rect.width > 0 && rect.height > 0;
 
-        window.scrollTo({
-          top: elementTop,
-          behavior: 'smooth'
-        });
+        if (elementExists) {
+          // Scroll element into view with offset for fixed headers
+          const scrollOffset = 150;
+          const viewportHeight = window.innerHeight;
+
+          // Check if element needs scrolling
+          const isAboveViewport = rect.top < scrollOffset;
+          const isBelowViewport = rect.bottom > viewportHeight - 100;
+          const needsScroll = isAboveViewport || isBelowViewport;
+
+          if (needsScroll) {
+            const elementTop = rect.top + window.scrollY - scrollOffset;
+            window.scrollTo({
+              top: Math.max(0, elementTop),
+              behavior: 'smooth'
+            });
+
+            // Wait for scroll to complete before setting position
+            setTimeout(() => {
+              const newRect = element.getBoundingClientRect();
+              setTargetRect(newRect);
+            }, 600);
+          } else {
+            setTargetRect(rect);
+          }
+        } else {
+          console.warn(`Tour target not visible: ${step.target}`);
+          // Use center placement as fallback
+          setTargetRect(null);
+        }
       } else {
         console.warn(`Tour target not found: ${step.target}`);
+        // Use center placement as fallback
         setTargetRect(null);
       }
     };
 
     // Delay to allow for page render
-    const timeout = setTimeout(updatePosition, 100);
+    const timeout = setTimeout(updatePosition, 150);
 
     // Update on window resize or scroll
     window.addEventListener('resize', updatePosition);
@@ -77,37 +129,81 @@ export default function CustomTour({ steps, isOpen, onClose, onComplete }: Custo
 
     const tooltip = tooltipRef.current.getBoundingClientRect();
     const padding = 20;
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
     let top = 0;
     let left = 0;
+    let actualPlacement = step.placement || 'bottom';
 
-    switch (step.placement) {
+    // Calculate initial position based on placement
+    switch (actualPlacement) {
       case 'top':
         top = targetRect.top - tooltip.height - padding;
         left = targetRect.left + (targetRect.width / 2) - (tooltip.width / 2);
+
+        // If doesn't fit on top, try bottom
+        if (top < 20) {
+          top = targetRect.bottom + padding;
+          actualPlacement = 'bottom';
+        }
         break;
+
       case 'bottom':
         top = targetRect.bottom + padding;
         left = targetRect.left + (targetRect.width / 2) - (tooltip.width / 2);
+
+        // If doesn't fit on bottom, try top
+        if (top + tooltip.height > viewportHeight - 20) {
+          top = targetRect.top - tooltip.height - padding;
+          actualPlacement = 'top';
+        }
         break;
+
       case 'left':
         top = targetRect.top + (targetRect.height / 2) - (tooltip.height / 2);
         left = targetRect.left - tooltip.width - padding;
+
+        // If doesn't fit on left, try right
+        if (left < 20) {
+          left = targetRect.right + padding;
+          actualPlacement = 'right';
+        }
         break;
+
       case 'right':
         top = targetRect.top + (targetRect.height / 2) - (tooltip.height / 2);
         left = targetRect.right + padding;
+
+        // If doesn't fit on right, try left
+        if (left + tooltip.width > viewportWidth - 20) {
+          left = targetRect.left - tooltip.width - padding;
+          actualPlacement = 'left';
+        }
         break;
+
       default:
         top = targetRect.bottom + padding;
         left = targetRect.left + (targetRect.width / 2) - (tooltip.width / 2);
     }
 
-    // Keep tooltip within viewport
-    const maxLeft = window.innerWidth - tooltip.width - 20;
-    const maxTop = window.innerHeight - tooltip.height - 20;
+    // Final boundary checks - keep tooltip within viewport
+    const minMargin = 20;
+    const maxLeft = viewportWidth - tooltip.width - minMargin;
+    const maxTop = viewportHeight - tooltip.height - minMargin;
 
-    left = Math.max(20, Math.min(left, maxLeft));
-    top = Math.max(20, Math.min(top, maxTop));
+    // Constrain left position
+    if (left < minMargin) {
+      left = minMargin;
+    } else if (left > maxLeft) {
+      left = maxLeft;
+    }
+
+    // Constrain top position
+    if (top < minMargin) {
+      top = minMargin;
+    } else if (top > maxTop) {
+      top = maxTop;
+    }
 
     setTooltipPosition({ top, left });
   }, [targetRect, step?.placement]);
@@ -204,7 +300,7 @@ export default function CustomTour({ steps, isOpen, onClose, onComplete }: Custo
         )}
 
         {/* Full overlay for center placement */}
-        {step.placement === 'center' && (
+        {(step.placement === 'center' || !targetRect) && (
           <div className="absolute inset-0 bg-black/60" />
         )}
       </div>
@@ -215,7 +311,7 @@ export default function CustomTour({ steps, isOpen, onClose, onComplete }: Custo
         className="absolute bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 max-w-md transition-all duration-300"
         style={{
           pointerEvents: 'auto',
-          ...(step.placement === 'center'
+          ...(step.placement === 'center' || !targetRect
             ? {
                 top: '50%',
                 left: '50%',

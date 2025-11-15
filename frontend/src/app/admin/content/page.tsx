@@ -966,7 +966,7 @@ export default function ContentManagement() {
               Manage content for public pages with structured editing
             </p>
           </div>
-          <div className="flex items-center gap-2 sm:gap-4">
+          <div className="flex items-center gap-2 sm:gap-4" data-tour="publish-toggle">
             {pageContent && (
               <button
                 onClick={togglePublishStatus}
@@ -986,9 +986,9 @@ export default function ContentManagement() {
       </div>
 
       {/* Page Selector */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6 mb-6">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6 mb-6" data-tour="page-selector">
         <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-4">Select Page to Edit</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 mb-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 mb-4" data-tour="page-templates">
           {Object.entries(PAGE_TEMPLATES).map(([key, template]) => {
             const IconComponent = template.icon;
             return (
@@ -1021,7 +1021,7 @@ export default function ContentManagement() {
           <div className="animate-spin rounded-full h-6 w-6 sm:h-8 sm:w-8 border-b-2 border-blue-600 dark:border-blue-400"></div>
         </div>
       ) : (
-        <div className="space-y-4 sm:space-y-6 mb-6">
+        <div className="space-y-4 sm:space-y-6 mb-6" data-tour="page-editor">
           {currentTemplate.sections.map((section) => {
             const isEditing = editingSections.has(section.id);
 
@@ -1048,7 +1048,7 @@ export default function ContentManagement() {
                         </span>
                       )}
                     </div>
-                    <div className="flex gap-1 sm:gap-2">
+                    <div className="flex gap-1 sm:gap-2" data-tour="section-actions">
                       {!isEditing ? (
                         <button
                           onClick={() => toggleEditSection(section.id)}

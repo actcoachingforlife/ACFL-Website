@@ -316,6 +316,7 @@ export default function BlogManagementPage() {
           </div>
           <button
             onClick={handleCreateNew}
+            data-tour="create-post"
             className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
           >
             <Plus className="w-5 h-5" />
@@ -324,7 +325,7 @@ export default function BlogManagementPage() {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6" data-tour="blog-stats">
           <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
             <div className="flex items-center gap-3">
               <BookOpen className="w-8 h-8 text-blue-600" />
@@ -359,7 +360,7 @@ export default function BlogManagementPage() {
         </div>
 
         {/* Filters */}
-        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
+        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700" data-tour="blog-filters">
           <div className="flex flex-col sm:flex-row gap-4">
             {/* Search */}
             <div className="flex-1">
@@ -431,7 +432,7 @@ export default function BlogManagementPage() {
           </button>
         </div>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-4" data-tour="blog-posts-list">
           {filteredPosts.map((post) => (
             <div
               key={post.id}
@@ -485,7 +486,7 @@ export default function BlogManagementPage() {
                   </div>
 
                   {/* Actions */}
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2" data-tour="post-actions">
                     <button
                       onClick={() => handleEdit(post)}
                       className="inline-flex items-center gap-2 px-3 py-1.5 text-sm border border-blue-600 text-blue-600 rounded-md hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
