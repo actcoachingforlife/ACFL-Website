@@ -62,13 +62,22 @@ export default function ClientUserGuide() {
   const [checklistItems, setChecklistItems] = useState<ChecklistItem[]>([]);
   const [isEnabled, setIsEnabled] = useState(true);
 
-  // Load user guide preferences
+  // Check if user guide is enabled
   useEffect(() => {
-    const enabled = localStorage.getItem('userGuideEnabled');
-    if (enabled !== null) {
-      setIsEnabled(enabled === 'true');
-    }
+    const checkEnabled = () => {
+      const enabled = localStorage.getItem('userGuideEnabled');
+      setIsEnabled(enabled === null || enabled === 'true');
+    };
 
+    checkEnabled();
+
+    // Listen for changes to userGuideEnabled
+    const interval = setInterval(checkEnabled, 500);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Load checklist progress
+  useEffect(() => {
     const savedChecklist = localStorage.getItem('clientChecklistProgress');
     if (savedChecklist) {
       setChecklistItems(JSON.parse(savedChecklist));
