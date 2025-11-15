@@ -5,7 +5,13 @@ export {
   adminWelcomeTourSteps,
   adminUserManagementTourSteps,
   adminCoachApplicationsTourSteps,
-  adminAppointmentsTourSteps
+  adminAppointmentsTourSteps,
+  adminFinancialsTourSteps,
+  adminAnalyticsTourSteps,
+  adminSettingsTourSteps,
+  adminContentTourSteps,
+  adminPageContentTourSteps,
+  adminSystemLogsTourSteps
 } from './customTourSteps';
 
 // Alias exports for backward compatibility

@@ -290,6 +290,7 @@ export default function SystemLogs() {
         <button
           onClick={exportLogs}
           className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-200 shadow-sm hover:shadow-md"
+          data-tour="export-logs"
         >
           <Download className="w-4 h-4" />
           Export Logs
@@ -384,7 +385,7 @@ export default function SystemLogs() {
       </div>
 
       {/* Filters - Mobile Responsive */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden" data-tour="log-filters">
         {/* Gradient Header */}
         <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-700 dark:to-gray-750 border-b border-gray-200 dark:border-gray-600 px-6 py-4">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
@@ -525,7 +526,7 @@ export default function SystemLogs() {
       </div>
 
       {/* System Logs - Desktop & Mobile Responsive */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden" data-tour="audit-trail">
         {isLoading ? (
           <div className="p-8 text-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>

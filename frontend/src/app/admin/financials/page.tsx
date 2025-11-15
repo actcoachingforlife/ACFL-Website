@@ -474,6 +474,116 @@ export default function FinancialManagement() {
     }).format(amount);
   };
 
+  // Export transactions to CSV
+  const exportToCSV = () => {
+    const headers = ['Transaction ID', 'Date', 'Client', 'Coach', 'Amount', 'Status', 'Payment Method'];
+    const csvData = filteredTransactions.map(t => [
+      t.id,
+      new Date(t.created_at).toLocaleDateString(),
+      `${t.client.first_name} ${t.client.last_name}`,
+      `${t.coach.first_name} ${t.coach.last_name}`,
+      formatCurrency(t.amount_cents ? t.amount_cents / 100 : t.amount),
+      t.status,
+      t.payment_method
+    ]);
+
+    const csv = [
+      headers.join(','),
+      ...csvData.map(row => row.map(cell => `"${cell}"`).join(','))
+    ].join('\n');
+
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `financial-report-${new Date().toISOString().split('T')[0]}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+  };
+
+  // Generate financial report
+  const generateReport = () => {
+    const reportWindow = window.open('', '_blank');
+    if (!reportWindow) return;
+
+    const reportHTML = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Financial Report - ${new Date().toLocaleDateString()}</title>
+        <style>
+          body { font-family: Arial, sans-serif; padding: 40px; }
+          h1 { color: #1f2937; }
+          .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin: 30px 0; }
+          .stat-card { border: 1px solid #e5e7eb; padding: 20px; border-radius: 8px; }
+          .stat-label { color: #6b7280; font-size: 14px; }
+          .stat-value { font-size: 24px; font-weight: bold; color: #1f2937; margin-top: 8px; }
+          table { width: 100%; border-collapse: collapse; margin-top: 30px; }
+          th, td { padding: 12px; text-align: left; border-bottom: 1px solid #e5e7eb; }
+          th { background: #f9fafb; font-weight: 600; }
+          @media print { button { display: none; } }
+        </style>
+      </head>
+      <body>
+        <h1>Financial Report</h1>
+        <p>Generated on: ${new Date().toLocaleString()}</p>
+
+        <div class="stats">
+          <div class="stat-card">
+            <div class="stat-label">Total Revenue</div>
+            <div class="stat-value">${stats ? formatCurrency(stats.totalRevenue) : '$0.00'}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Total Transactions</div>
+            <div class="stat-value">${stats?.totalTransactions || 0}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Average Transaction</div>
+            <div class="stat-value">${stats ? formatCurrency(stats.averageTransactionAmount) : '$0.00'}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Pending Amount</div>
+            <div class="stat-value">${stats ? formatCurrency(stats.pendingAmount) : '$0.00'}</div>
+          </div>
+        </div>
+
+        <h2>Recent Transactions</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Client</th>
+              <th>Coach</th>
+              <th>Amount</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${filteredTransactions.slice(0, 50).map(t => `
+              <tr>
+                <td>${new Date(t.created_at).toLocaleDateString()}</td>
+                <td>${t.client.first_name} ${t.client.last_name}</td>
+                <td>${t.coach.first_name} ${t.coach.last_name}</td>
+                <td>${formatCurrency(t.amount_cents ? t.amount_cents / 100 : t.amount)}</td>
+                <td>${t.status}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+
+        <button onclick="window.print()" style="margin-top: 30px; padding: 10px 20px; background: #3b82f6; color: white; border: none; border-radius: 6px; cursor: pointer;">
+          Print Report
+        </button>
+      </body>
+      </html>
+    `;
+
+    reportWindow.document.write(reportHTML);
+    reportWindow.document.close();
+  };
+
   if (loading || statsLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -486,16 +596,40 @@ export default function FinancialManagement() {
     <div className="w-full">
       {/* Header */}
       <div className="mb-8">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Financial Management</h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            Monitor billing, payments, and financial performance
-          </p>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Financial Management</h1>
+            <p className="text-gray-600 dark:text-gray-400">
+              Monitor billing, payments, and financial performance
+            </p>
+          </div>
+
+          {/* Export/Reports Buttons */}
+          <div className="flex items-center gap-2" data-tour="financial-reports">
+            <button
+              onClick={exportToCSV}
+              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              Export CSV
+            </button>
+            <button
+              onClick={generateReport}
+              className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              Generate Report
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Statistics Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6" data-tour="revenue-stats">
         {/* Total Revenue Card */}
         <div className="bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-5 md:p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105 cursor-pointer group border border-gray-200 animate-in fade-in slide-in-from-bottom-2" style={{ animationDelay: '0ms', animationFillMode: 'backwards' }}>
           <div className="flex items-center justify-between mb-3 sm:mb-4">
@@ -772,7 +906,7 @@ export default function FinancialManagement() {
       </div>
 
       {/* Transactions Table */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden" data-tour="transactions-list">
         <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Recent Transactions</h2>
         </div>

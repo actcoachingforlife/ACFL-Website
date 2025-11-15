@@ -694,6 +694,7 @@ export const adminWelcomeTourSteps: TourStep[] = [
     target: 'body',
     placement: 'center',
     title: 'Welcome to Admin Dashboard!',
+    navigateTo: '/admin',
     content: (
       <div>
         <p className="mb-3">
@@ -716,13 +717,18 @@ export const adminWelcomeTourSteps: TourStep[] = [
     )
   },
   {
-    target: '[data-tour="admin-navigation"]',
+    target: '[data-tour="admin-sidebar"]',
     placement: 'right',
     title: 'Admin Navigation',
     content: (
-      <p>
-        Access all admin features through this menu. Manage users, monitor operations, view analytics, and configure system settings.
-      </p>
+      <div>
+        <p className="mb-3">
+          Access all admin features through this menu. Manage users, monitor operations, view analytics, and configure system settings.
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Tip: Hover over the sidebar to expand it and see all menu options!
+        </p>
+      </div>
     )
   }
 ];
@@ -733,6 +739,7 @@ export const adminUserManagementTourSteps: TourStep[] = [
     target: 'body',
     placement: 'center',
     title: 'User Management Guide',
+    navigateTo: '/admin/users',
     content: (
       <div>
         <p className="mb-3">
@@ -748,29 +755,113 @@ export const adminUserManagementTourSteps: TourStep[] = [
     target: '[data-tour="users-tabs"]',
     placement: 'bottom',
     title: 'User Categories',
+    navigateTo: '/admin/users',
     content: (
       <div>
         <p className="mb-2">Use these tabs to filter users by role:</p>
         <ul className="text-sm space-y-1 list-disc list-inside">
-          <li><strong>All Users</strong> - View everyone</li>
-          <li><strong>Clients</strong> - Client accounts</li>
-          <li><strong>Coaches</strong> - Coach accounts</li>
+          <li><strong>All Users</strong> - View everyone (28 total)</li>
+          <li><strong>Clients</strong> - Client accounts only</li>
+          <li><strong>Coaches</strong> - Approved coaches</li>
           <li><strong>Staff</strong> - Admin and staff members</li>
         </ul>
       </div>
     )
   },
   {
-    target: '[data-tour="all-users-tab"]',
+    target: '[data-tour="user-actions"]',
     placement: 'bottom',
-    title: 'View All Users',
+    title: 'User Management Actions',
+    content: (
+      <div>
+        <p className="mb-2">Quick actions available:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside">
+          <li><strong>Add User</strong> - Manually create new accounts</li>
+          <li><strong>Import</strong> - Bulk import users from CSV</li>
+          <li><strong>Export</strong> - Download user list</li>
+          <li><strong>Invite</strong> - Send invitation emails</li>
+          <li><strong>Manage Invitations</strong> - Track pending invites</li>
+        </ul>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="filter-users"]',
+    placement: 'bottom',
+    title: 'Advanced Filtering',
     content: (
       <div>
         <p className="mb-3">
-          The "All Users" tab shows every account on the platform with filtering and search options.
+          Use advanced filters to find specific users. Filter by status, joined date, role, and more.
         </p>
         <p className="text-sm text-gray-500 dark:text-gray-400">
-          💡 Use the search bar to find specific users quickly!
+          💡 Combine multiple filters for precise results!
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="search-users"]',
+    placement: 'bottom',
+    title: 'Search Functionality',
+    content: (
+      <div>
+        <p className="mb-3">
+          Search users by name, email, or role. Results update in real-time as you type.
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Use partial names or emails for broader search!
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="user-table"]',
+    placement: 'top',
+    title: 'User List',
+    content: (
+      <div>
+        <p className="mb-2">Each user row shows:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside mb-3">
+          <li>Name, email, and phone</li>
+          <li>Role badge (Client, Coach, Staff)</li>
+          <li>Account status (Active, Suspended, etc.)</li>
+          <li>Join date and last login</li>
+          <li>Quick actions menu (⋮)</li>
+        </ul>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Click on any row to view full user details!
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="user-status"]',
+    placement: 'top',
+    title: 'User Status Management',
+    content: (
+      <div>
+        <p className="mb-2">Monitor and control user account status:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside">
+          <li><strong>Active</strong> - Full access to platform</li>
+          <li><strong>Suspended</strong> - Temporarily disabled</li>
+          <li><strong>Pending</strong> - Email verification needed</li>
+          <li><strong>Banned</strong> - Permanently blocked</li>
+        </ul>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="items-per-page"]',
+    placement: 'left',
+    title: 'Items Per Page',
+    content: (
+      <div>
+        <p className="mb-3">
+          Control how many users are displayed per page. Choose from 10, 20, 50, or 100 users at a time.
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Tip: Higher values mean less clicking between pages, but slower loading times.
         </p>
       </div>
     )
@@ -782,14 +873,15 @@ export const adminCoachApplicationsTourSteps: TourStep[] = [
   {
     target: 'body',
     placement: 'center',
-    title: 'Coach Applications',
+    title: 'Coach Applications Management',
+    navigateTo: '/admin/coach-applications',
     content: (
       <div>
         <p className="mb-3">
-          Review and approve coach applications. Maintain quality by carefully evaluating each applicant.
+          Review and approve coach applications. Maintain quality by carefully evaluating each applicant's credentials, experience, and qualifications.
         </p>
         <p className="text-sm text-gray-500 dark:text-gray-400">
-          💡 You can approve, reject, or request more information.
+          💡 You can approve, reject, or request more information from applicants.
         </p>
       </div>
     )
@@ -797,29 +889,111 @@ export const adminCoachApplicationsTourSteps: TourStep[] = [
   {
     target: '[data-tour="applications-tabs"]',
     placement: 'bottom',
-    title: 'Application Status',
+    title: 'Application Status Tabs',
+    navigateTo: '/admin/coach-applications',
     content: (
       <div>
         <p className="mb-2">Filter applications by status:</p>
         <ul className="text-sm space-y-1 list-disc list-inside">
           <li><strong>Pending</strong> - New applications awaiting review</li>
-          <li><strong>Approved</strong> - Accepted coaches</li>
-          <li><strong>Rejected</strong> - Declined applications</li>
+          <li><strong>Approved</strong> - Accepted coaches (now active)</li>
+          <li><strong>Rejected</strong> - Declined applications with reasons</li>
+        </ul>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+          💡 Badge numbers show count in each category
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="application-actions"]',
+    placement: 'bottom',
+    title: 'Application Actions',
+    content: (
+      <div>
+        <p className="mb-2">Available actions:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside">
+          <li><strong>Search</strong> - Find specific applications</li>
+          <li><strong>Filter</strong> - By specialty, experience, date</li>
+          <li><strong>Sort</strong> - Order by date, name, status</li>
+          <li><strong>Export</strong> - Download application data</li>
         </ul>
       </div>
     )
   },
   {
-    target: '[data-tour="pending-tab"]',
-    placement: 'bottom',
-    title: 'Review Pending Applications',
+    target: '[data-tour="application-card"]',
+    placement: 'top',
+    title: 'Application Details',
+    content: (
+      <div>
+        <p className="mb-2">Each application shows:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside mb-3">
+          <li>Coach name, photo, and contact info</li>
+          <li>Specializations and expertise areas</li>
+          <li>Years of experience and certifications</li>
+          <li>Hourly rate and availability</li>
+          <li>Application date and current status</li>
+        </ul>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Click "View Details" to see full application
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="review-process"]',
+    placement: 'center',
+    title: 'Review Process',
     content: (
       <div>
         <p className="mb-3">
-          Click on any application to view full details including credentials, experience, and references.
+          When reviewing an application, check:
+        </p>
+        <ul className="text-sm space-y-1 list-disc list-inside mb-3">
+          <li>Professional credentials and certifications</li>
+          <li>Relevant coaching experience (minimum 2 years)</li>
+          <li>Client testimonials and references</li>
+          <li>Background check status</li>
+          <li>Sample coaching session video</li>
+          <li>Specialization alignment with platform needs</li>
+        </ul>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Maintain high quality standards for best client experience
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="approval-buttons"]',
+    placement: 'top',
+    title: 'Approval Actions',
+    content: (
+      <div>
+        <p className="mb-2">Decision options:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside mb-3">
+          <li><strong>Approve</strong> - Accept and activate coach account</li>
+          <li><strong>Reject</strong> - Decline with reason notification</li>
+          <li><strong>Request Info</strong> - Ask for additional documents</li>
+          <li><strong>Schedule Interview</strong> - Set up video call</li>
+        </ul>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 All decisions send automatic email notifications
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="analytics-link"]',
+    placement: 'bottom',
+    title: 'Application Analytics',
+    content: (
+      <div>
+        <p className="mb-3">
+          View detailed analytics about coach applications including approval rates, processing times, and quality metrics.
         </p>
         <p className="text-sm text-gray-500 dark:text-gray-400">
-          💡 Take your time to review each application thoroughly!
+          💡 Use data to improve your review process!
         </p>
       </div>
     )
@@ -831,14 +1005,15 @@ export const adminAppointmentsTourSteps: TourStep[] = [
   {
     target: 'body',
     placement: 'center',
-    title: 'Monitor All Appointments',
+    title: 'Appointments Management',
+    navigateTo: '/admin/appointments',
     content: (
       <div>
         <p className="mb-3">
-          View and manage all coaching appointments across the platform. Monitor bookings, track status, and ensure quality service.
+          View and manage all coaching appointments across the platform. Monitor bookings, track status, resolve issues, and ensure quality service delivery.
         </p>
         <p className="text-sm text-gray-500 dark:text-gray-400">
-          💡 You have full oversight of all coaching sessions!
+          💡 You have full oversight and control over all coaching sessions!
         </p>
       </div>
     )
@@ -846,15 +1021,678 @@ export const adminAppointmentsTourSteps: TourStep[] = [
   {
     target: '[data-tour="appointments-filters"]',
     placement: 'bottom',
-    title: 'Filter Appointments',
+    title: 'Appointment Filters',
+    navigateTo: '/admin/appointments',
     content: (
       <div>
-        <p className="mb-2">Filter appointments by:</p>
+        <p className="mb-2">Filter appointments by status:</p>
         <ul className="text-sm space-y-1 list-disc list-inside">
-          <li><strong>Status</strong> - Scheduled, completed, cancelled</li>
-          <li><strong>Date Range</strong> - View specific time periods</li>
-          <li><strong>Coach/Client</strong> - Filter by specific users</li>
+          <li><strong>All</strong> - View all appointments</li>
+          <li><strong>Upcoming</strong> - Scheduled future sessions</li>
+          <li><strong>In Progress</strong> - Currently active sessions</li>
+          <li><strong>Completed</strong> - Finished sessions</li>
+          <li><strong>Cancelled</strong> - Cancelled by coach or client</li>
+          <li><strong>No-Show</strong> - Missed appointments</li>
         </ul>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="appointments-search"]',
+    placement: 'bottom',
+    title: 'Search & Filter',
+    content: (
+      <div>
+        <p className="mb-2">Find specific appointments using:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside mb-3">
+          <li>Coach or client name</li>
+          <li>Appointment ID</li>
+          <li>Date range filters</li>
+          <li>Session type</li>
+          <li>Payment status</li>
+        </ul>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Combine filters for precise results
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="appointment-list"]',
+    placement: 'top',
+    title: 'Appointment Details',
+    content: (
+      <div>
+        <p className="mb-2">Each appointment displays:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside mb-3">
+          <li>Coach and client names with photos</li>
+          <li>Session date, time, and duration</li>
+          <li>Session type and topic</li>
+          <li>Payment and booking status</li>
+          <li>Quick action buttons</li>
+        </ul>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Click any appointment for full details
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="appointment-actions"]',
+    placement: 'bottom',
+    title: 'Admin Actions',
+    content: (
+      <div>
+        <p className="mb-2">Available actions:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside mb-3">
+          <li><strong>View Details</strong> - See full appointment info</li>
+          <li><strong>Cancel</strong> - Cancel with refund options</li>
+          <li><strong>Reschedule</strong> - Change date/time</li>
+          <li><strong>Contact Parties</strong> - Message coach or client</li>
+          <li><strong>Process Refund</strong> - Handle payment issues</li>
+          <li><strong>Mark Status</strong> - Update appointment status</li>
+        </ul>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Handle disputes and issues promptly
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="appointment-reports"]',
+    placement: 'bottom',
+    title: 'Reports & Analytics',
+    content: (
+      <div>
+        <p className="mb-3">
+          Generate detailed reports on appointment metrics including booking rates, completion rates, cancellation reasons, and revenue by session type.
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Export reports for analysis and decision making
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="quality-monitoring"]',
+    placement: 'center',
+    title: 'Quality Monitoring',
+    content: (
+      <div>
+        <p className="mb-3">Monitor session quality through:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside mb-3">
+          <li>Client feedback and ratings</li>
+          <li>Session completion rates</li>
+          <li>No-show patterns</li>
+          <li>Complaint tracking</li>
+          <li>Coach performance metrics</li>
+        </ul>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Identify and address quality issues early
+        </p>
+      </div>
+    )
+  }
+];
+
+// Admin Financials Tour
+export const adminFinancialsTourSteps: TourStep[] = [
+  {
+    target: 'body',
+    placement: 'center',
+    title: 'Financial Management',
+    navigateTo: '/admin/financials',
+    content: (
+      <div>
+        <p className="mb-3">
+          Track all platform revenue, manage coach payouts, monitor transactions, and generate financial reports.
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Complete oversight of platform finances and payments
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="revenue-stats"]',
+    placement: 'bottom',
+    title: 'Revenue Dashboard',
+    navigateTo: '/admin/financials',
+    content: (
+      <div>
+        <p className="mb-2">Key financial metrics:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside mb-3">
+          <li>Total monthly revenue</li>
+          <li>Platform commission earned</li>
+          <li>Coach earnings (to be paid out)</li>
+          <li>Pending transactions</li>
+          <li>Refunds processed</li>
+        </ul>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Track trends over time with charts
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="transactions-list"]',
+    placement: 'top',
+    title: 'Transaction History',
+    content: (
+      <div>
+        <p className="mb-2">View all financial transactions:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside mb-3">
+          <li>Client payments for sessions</li>
+          <li>Coach payout transfers</li>
+          <li>Refunds and adjustments</li>
+          <li>Platform fees collected</li>
+          <li>Failed or disputed payments</li>
+        </ul>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Filter by date, user, or transaction type
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="payout-management"]',
+    placement: 'bottom',
+    title: 'Coach Payouts',
+    content: (
+      <div>
+        <p className="mb-3">
+          Manage coach payout requests. Review pending requests, approve payments, and track payout history.
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Set minimum payout thresholds and payment schedules
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="financial-reports"]',
+    placement: 'bottom',
+    title: 'Reports & Export',
+    content: (
+      <div>
+        <p className="mb-2">Generate detailed reports:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside">
+          <li>Monthly/quarterly revenue reports</li>
+          <li>Coach earnings breakdown</li>
+          <li>Tax documentation</li>
+          <li>Commission analysis</li>
+          <li>Export to CSV/PDF for accounting</li>
+        </ul>
+      </div>
+    )
+  }
+];
+
+// Admin Analytics Tour
+export const adminAnalyticsTourSteps: TourStep[] = [
+  {
+    target: 'body',
+    placement: 'center',
+    title: 'Platform Analytics',
+    navigateTo: '/admin/analytics',
+    content: (
+      <div>
+        <p className="mb-3">
+          Access comprehensive analytics and insights about platform performance, user behavior, and business metrics.
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Data-driven decisions for platform growth
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="analytics-overview"]',
+    placement: 'bottom',
+    title: 'Key Metrics Dashboard',
+    navigateTo: '/admin/analytics',
+    content: (
+      <div>
+        <p className="mb-2">Monitor important KPIs:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside">
+          <li>User growth and retention rates</li>
+          <li>Session booking trends</li>
+          <li>Revenue and conversion metrics</li>
+          <li>Platform engagement levels</li>
+          <li>Coach performance statistics</li>
+        </ul>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="analytics-charts"]',
+    placement: 'bottom',
+    title: 'Visual Analytics',
+    content: (
+      <div>
+        <p className="mb-3">
+          Interactive charts and graphs showing trends over time. Filter by date range and compare different metrics.
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Identify patterns and growth opportunities
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="user-analytics"]',
+    placement: 'bottom',
+    title: 'User Behavior Analytics',
+    content: (
+      <div>
+        <p className="mb-2">Understand user behavior:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside">
+          <li>User acquisition sources</li>
+          <li>Feature usage patterns</li>
+          <li>Session duration and frequency</li>
+          <li>Drop-off points</li>
+          <li>Popular coach categories</li>
+        </ul>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="export-analytics"]',
+    placement: 'bottom',
+    title: 'Export & Reports',
+    content: (
+      <div>
+        <p className="mb-3">
+          Export analytics data for deeper analysis. Generate custom reports and share insights with stakeholders.
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Schedule automated weekly/monthly reports
+        </p>
+      </div>
+    )
+  }
+];
+
+// Admin Settings Tour
+export const adminSettingsTourSteps: TourStep[] = [
+  {
+    target: 'body',
+    placement: 'center',
+    title: 'System Settings',
+    navigateTo: '/admin/settings',
+    content: (
+      <div>
+        <p className="mb-3">
+          Configure platform settings, manage permissions, customize features, and control system behavior.
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Careful: Changes here affect the entire platform
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="general-settings"]',
+    placement: 'bottom',
+    title: 'General Settings',
+    navigateTo: '/admin/settings?tab=general',
+    content: (
+      <div>
+        <p className="mb-2">Configure basic platform settings:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside">
+          <li>Platform name and branding</li>
+          <li>Contact information</li>
+          <li>Time zone and locale</li>
+          <li>Default currency</li>
+          <li>Maintenance mode</li>
+        </ul>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="email-settings"]',
+    placement: 'bottom',
+    title: 'Email & Notifications',
+    navigateTo: '/admin/settings?tab=notifications',
+    content: (
+      <div>
+        <p className="mb-2">Configure communication settings:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside">
+          <li>Email templates</li>
+          <li>SMTP configuration</li>
+          <li>Notification preferences</li>
+          <li>Automated email schedules</li>
+          <li>SMS integration</li>
+        </ul>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="security-settings"]',
+    placement: 'bottom',
+    title: 'Security & Privacy',
+    navigateTo: '/admin/settings?tab=security',
+    content: (
+      <div>
+        <p className="mb-2">Enhance platform security:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside">
+          <li>Two-factor authentication</li>
+          <li>Password policies</li>
+          <li>Session timeout settings</li>
+          <li>API access controls</li>
+          <li>Privacy and GDPR compliance</li>
+        </ul>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="payment-settings"]',
+    placement: 'bottom',
+    title: 'Payment Configuration',
+    navigateTo: '/admin/settings?tab=payment',
+    content: (
+      <div>
+        <p className="mb-2">Manage payment settings:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside">
+          <li>Payment gateway integration</li>
+          <li>Commission rates and fees</li>
+          <li>Minimum payout amounts</li>
+          <li>Refund policies</li>
+          <li>Tax settings</li>
+        </ul>
+      </div>
+    )
+  }
+];
+
+// Admin Content Management Tour (Blog)
+export const adminContentTourSteps: TourStep[] = [
+  {
+    target: 'body',
+    placement: 'center',
+    title: 'Blog Management',
+    navigateTo: '/admin/blog',
+    content: (
+      <div>
+        <p className="mb-3">
+          Create, edit, and manage blog posts for your platform. Keep your audience engaged with fresh content.
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Quality content drives user engagement and SEO rankings
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="blog-stats"]',
+    placement: 'bottom',
+    title: 'Blog Statistics',
+    navigateTo: '/admin/blog',
+    content: (
+      <div>
+        <p className="mb-2">Track your blog performance:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside">
+          <li><strong>Total Posts</strong> - All blog posts in the system</li>
+          <li><strong>Published</strong> - Live posts visible to users</li>
+          <li><strong>Drafts</strong> - Unpublished posts in progress</li>
+        </ul>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+          💡 Keep a steady flow of published content
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="create-post"]',
+    placement: 'bottom',
+    title: 'Create New Post',
+    content: (
+      <div>
+        <p className="mb-3">
+          Click here to create a new blog post. You'll be able to add a title, description, content, featured image, and more.
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Use rich text formatting for better readability
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="blog-filters"]',
+    placement: 'bottom',
+    title: 'Search & Filter Posts',
+    content: (
+      <div>
+        <p className="mb-2">Find posts quickly using filters:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside mb-3">
+          <li>Search by title, description, or category</li>
+          <li>Filter by category (Personal Growth, Mindfulness, etc.)</li>
+          <li>Show only published or draft posts</li>
+        </ul>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Combine filters for precise results
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="blog-posts-list"]',
+    placement: 'top',
+    title: 'Blog Posts List',
+    content: (
+      <div>
+        <p className="mb-2">Each post card shows:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside mb-3">
+          <li>Featured image and title</li>
+          <li>Category badge and read time</li>
+          <li>Author, date, and publish status</li>
+          <li>Quick action buttons</li>
+        </ul>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Click on any post to view full details
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="post-actions"]',
+    placement: 'top',
+    title: 'Post Actions',
+    content: (
+      <div>
+        <p className="mb-2">Manage your posts:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside mb-3">
+          <li><strong>Edit</strong> - Update post content and settings</li>
+          <li><strong>Publish/Unpublish</strong> - Toggle visibility</li>
+          <li><strong>Delete</strong> - Remove post (requires confirmation)</li>
+        </ul>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Draft posts are saved but not visible to users
+        </p>
+      </div>
+    )
+  }
+];
+
+// Admin Page Content Management Tour
+export const adminPageContentTourSteps: TourStep[] = [
+  {
+    target: 'body',
+    placement: 'center',
+    title: 'Page Content Management',
+    navigateTo: '/admin/content',
+    content: (
+      <div>
+        <p className="mb-3">
+          Manage static page content for your website. Edit public-facing pages like About, Contact, Pricing, and more.
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Changes are saved per section and can be published or kept as drafts
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="page-selector"]',
+    placement: 'bottom',
+    title: 'Page Selector',
+    navigateTo: '/admin/content',
+    content: (
+      <div>
+        <p className="mb-2">Select which page you want to edit:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside mb-3">
+          <li><strong>Help</strong> - FAQ and support pages</li>
+          <li><strong>About</strong> - Company information and mission</li>
+          <li><strong>Careers</strong> - Job listings and benefits</li>
+          <li><strong>Contact</strong> - Contact information and form</li>
+          <li><strong>Press</strong> - Media and press releases</li>
+          <li><strong>Resources</strong> - Educational resources</li>
+          <li><strong>Pricing</strong> - Pricing plans and features</li>
+          <li>And more...</li>
+        </ul>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Click any page template to load its content
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="publish-toggle"]',
+    placement: 'left',
+    title: 'Publish Status',
+    content: (
+      <div>
+        <p className="mb-3">
+          Toggle between Published and Draft status. Draft pages are not visible to the public.
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Test your changes as drafts before publishing
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="page-editor"]',
+    placement: 'top',
+    title: 'Section-Based Editor',
+    content: (
+      <div>
+        <p className="mb-2">Pages are organized into sections:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside mb-3">
+          <li><strong>Hero Section</strong> - Page title and subtitle</li>
+          <li><strong>Content Sections</strong> - Main page content</li>
+          <li><strong>Features/Benefits</strong> - Lists and descriptions</li>
+          <li><strong>FAQs</strong> - Questions and answers</li>
+        </ul>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Each section can be edited independently
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="section-actions"]',
+    placement: 'left',
+    title: 'Section Actions',
+    content: (
+      <div>
+        <p className="mb-2">Manage individual sections:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside mb-3">
+          <li><strong>Edit</strong> - Modify section content</li>
+          <li><strong>Save</strong> - Save changes to this section</li>
+          <li><strong>Cancel</strong> - Discard unsaved changes</li>
+        </ul>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Sections are saved individually, not the whole page at once
+        </p>
+      </div>
+    )
+  }
+];
+
+// Admin System Logs Tour
+export const adminSystemLogsTourSteps: TourStep[] = [
+  {
+    target: 'body',
+    placement: 'center',
+    title: 'System Logs & Monitoring',
+    navigateTo: '/admin/system-logs',
+    content: (
+      <div>
+        <p className="mb-3">
+          Monitor system activity, track errors, review audit logs, and troubleshoot issues to ensure platform stability.
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Essential for security and troubleshooting
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="log-filters"]',
+    placement: 'bottom',
+    title: 'Filter Logs',
+    navigateTo: '/admin/system-logs',
+    content: (
+      <div>
+        <p className="mb-2">Filter logs by:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside">
+          <li><strong>Type</strong> - Error, Warning, Info, Debug</li>
+          <li><strong>Date Range</strong> - Specific time periods</li>
+          <li><strong>User</strong> - Actions by specific users</li>
+          <li><strong>Module</strong> - Different system components</li>
+          <li><strong>Severity</strong> - Critical to low priority</li>
+        </ul>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="audit-trail"]',
+    placement: 'top',
+    title: 'Audit Trail',
+    content: (
+      <div>
+        <p className="mb-2">Track all admin actions:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside">
+          <li>User account modifications</li>
+          <li>Permission changes</li>
+          <li>Settings updates</li>
+          <li>Content changes</li>
+          <li>Financial transactions</li>
+        </ul>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+          💡 Complete accountability and transparency
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="error-logs"]',
+    placement: 'top',
+    title: 'Error Monitoring',
+    content: (
+      <div>
+        <p className="mb-3">
+          Monitor system errors and exceptions. Get alerts for critical issues and track resolution status.
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Set up email alerts for critical errors
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="export-logs"]',
+    placement: 'bottom',
+    title: 'Export & Analysis',
+    content: (
+      <div>
+        <p className="mb-3">
+          Export logs for detailed analysis or compliance requirements. Download in various formats (CSV, JSON, TXT).
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Retain logs per your data retention policy
+        </p>
       </div>
     )
   }

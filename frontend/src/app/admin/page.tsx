@@ -3,8 +3,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useOnboarding } from "@/contexts/OnboardingContext";
-import OnboardingTour from "@/components/onboarding/OnboardingTour";
-import OnboardingChecklist from "@/components/onboarding/OnboardingChecklist";
+import CustomTour from "@/components/onboarding/CustomTour";
 import { adminWelcomeTourSteps } from "@/components/onboarding/AdminOnboardingTours";
 import { PERMISSIONS } from "@/hooks/usePermissions";
 import { PermissionGate } from "@/components/PermissionGate";
@@ -1265,17 +1264,14 @@ export default function AdminDashboard() {
       </div>
 
       {/* Admin Dashboard Tour */}
-      <OnboardingTour
+      <CustomTour
         steps={adminWelcomeTourSteps}
-        run={showDashboardTour}
-        onFinish={() => {
-          setShowDashboardTour(false);
+        isOpen={showDashboardTour}
+        onClose={() => setShowDashboardTour(false)}
+        onComplete={() => {
           completeStep('explore-dashboard');
         }}
       />
-
-      {/* Onboarding Checklist - Only visible on dashboard */}
-      <OnboardingChecklist />
     </div>
   );
 }

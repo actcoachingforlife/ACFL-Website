@@ -493,6 +493,7 @@ export default function AppointmentManagement() {
           <button
             onClick={() => router.push('/admin/appointments/reports')}
             className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+            data-tour="appointment-reports"
           >
             <BarChart3 className="w-4 h-4" />
             Reports
@@ -659,7 +660,7 @@ export default function AppointmentManagement() {
                   <span>Search Appointments</span>
                 </div>
               </label>
-              <div className="relative">
+              <div className="relative" data-tour="appointments-search">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <input
                   id="appointment-search"
@@ -890,7 +891,7 @@ export default function AppointmentManagement() {
       </div>
 
       {/* Appointments Table - Desktop & Mobile Responsive */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden mb-6">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden mb-6" data-tour="appointment-list">
         {/* Desktop Table View */}
         <div className="hidden xl:block overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -985,7 +986,7 @@ export default function AppointmentManagement() {
                       {getStatusBadge(appointment.status)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <div className="relative">
+                      <div className="relative" data-tour="appointment-actions">
                         <button
                           onClick={() => setShowActionMenu(showActionMenu === appointment.id ? null : appointment.id)}
                           className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 p-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-full transition-colors"

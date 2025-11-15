@@ -13,6 +13,7 @@ import { usePermissions, PERMISSIONS } from '@/hooks/usePermissions';
 import { getApiUrl } from '@/lib/api';
 import NotificationBadge from '@/components/NotificationBadge';
 import ThemeConsentModal from '@/components/ThemeConsentModal';
+import AdminUserGuide from '@/components/admin/AdminUserGuide';
 import {
   Users,
   UserCheck,
@@ -495,6 +496,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       <div className={`min-h-screen bg-gray-50 dark:bg-gray-900 flex ${poppins.className}`}>
       {/* Collapsible Sidebar - Desktop */}
       <div
+        data-tour="admin-sidebar"
         className={`hidden lg:flex lg:flex-col lg:fixed lg:inset-y-0 lg:z-[10001] ${
           sidebarCollapsed ? 'lg:w-16' : 'lg:w-72'
         } transition-all duration-500 ease-out will-change-[width]`}
@@ -1521,6 +1523,9 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         onAccept={handleConsentAccept}
         onDecline={handleConsentDecline}
       />
+
+      {/* Admin User Guide */}
+      <AdminUserGuide />
       </div>
       </ToastProvider>
     </OnboardingProvider>

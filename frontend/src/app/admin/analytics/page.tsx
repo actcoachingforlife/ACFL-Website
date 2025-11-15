@@ -243,7 +243,7 @@ export default function Analytics() {
             </div>
 
             {/* Export Buttons - Desktop only */}
-            <div className="hidden sm:flex gap-2 flex-shrink-0">
+            <div className="hidden sm:flex gap-2 flex-shrink-0" data-tour="export-analytics">
               <button
                 onClick={() => exportToCSV(analyticsData, 'analytics-report')}
                 className="flex items-center gap-2 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium shadow-sm text-sm whitespace-nowrap"
@@ -358,7 +358,7 @@ export default function Analytics() {
       </div>
 
       {/* Overview Cards - Mobile-optimized layout */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5 mb-4 sm:mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5 mb-4 sm:mb-6" data-tour="analytics-overview">
         {/* Total Users Card */}
         <div className="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-5 shadow-sm hover:shadow-md transition-all duration-300 sm:hover:scale-105 cursor-pointer group border border-gray-200 dark:border-gray-700 animate-in fade-in slide-in-from-bottom-2" style={{ animationDelay: '0ms', animationFillMode: 'backwards' }}>
           <div className="flex items-start justify-between mb-2 sm:mb-3">
@@ -530,7 +530,7 @@ export default function Analytics() {
         </div>
 
         {/* Session Metrics */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-5 shadow-sm hover:shadow-md transition-all duration-300 sm:hover:scale-[1.02] border border-gray-200 dark:border-gray-700 group">
+        <div className="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-5 shadow-sm hover:shadow-md transition-all duration-300 sm:hover:scale-[1.02] border border-gray-200 dark:border-gray-700 group" data-tour="user-analytics">
           <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4 flex items-center">
             <div className="w-7 h-7 sm:w-8 sm:h-8 bg-orange-100 dark:bg-orange-900/30 rounded-lg flex items-center justify-center mr-2 sm:mr-3 transition-colors duration-300 group-hover:bg-orange-200 dark:group-hover:bg-orange-900/50 flex-shrink-0">
               <Activity className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-orange-600 dark:text-orange-400" />
@@ -562,7 +562,7 @@ export default function Analytics() {
       </div>
 
       {/* Top Performers and Specialties - Mobile-optimized */}
-      <div className="space-y-3 sm:space-y-4 md:space-y-6">
+      <div className="space-y-3 sm:space-y-4 md:space-y-6" data-tour="analytics-charts">
         {/* Top Coaches - Mobile with horizontal scroll */}
         <div className="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-5 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-200 dark:border-gray-700">
           <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4 flex items-center">

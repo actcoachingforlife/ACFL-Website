@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { getApiUrl } from '@/lib/api';
 import {
   Settings,
@@ -62,11 +63,21 @@ interface SystemSettings {
 
 export default function AdminSettings() {
   const API_URL = getApiUrl();
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const [settings, setSettings] = useState<SystemSettings | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [activeTab, setActiveTab] = useState('general');
   const [saveMessage, setSaveMessage] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+
+  // Set active tab from URL parameter
+  useEffect(() => {
+    const tabParam = searchParams.get('tab');
+    if (tabParam && ['general', 'notifications', 'security', 'payment', 'scheduling'].includes(tabParam)) {
+      setActiveTab(tabParam);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     fetchSettings();
@@ -302,7 +313,11 @@ export default function AdminSettings() {
               {tabs.map((tab, index) => (
                 <button
                   key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
+                  onClick={() => {
+                    setActiveTab(tab.id);
+                    router.push(`/admin/settings?tab=${tab.id}`, { scroll: false });
+                  }}
+                  data-tour={`settings-tab-${tab.id}`}
                   className={`group relative min-h-[44px] py-3 sm:py-4 px-3 sm:px-4 border-b-2 font-medium text-sm sm:text-base flex items-center space-x-2 whitespace-nowrap transition-all duration-200 touch-manipulation ${
                     activeTab === tab.id
                       ? 'border-blue-500 text-blue-600 dark:text-blue-400'
@@ -328,7 +343,7 @@ export default function AdminSettings() {
           <div className="p-4 sm:p-6 lg:p-8">
             {/* General Settings */}
           {activeTab === 'general' && (
-            <div className="space-y-6 sm:space-y-8 max-w-none sm:max-w-xl">
+            <div className="space-y-6 sm:space-y-8 max-w-none sm:max-w-xl" data-tour="general-settings">
               <div className="space-y-6">
                 <div className="space-y-2">
                   <label className="block text-sm sm:text-base font-medium text-gray-700 dark:text-gray-200">
@@ -495,7 +510,7 @@ export default function AdminSettings() {
 
             {/* Notification Settings */}
             {activeTab === 'notifications' && (
-              <div className="space-y-6 sm:space-y-8 max-w-none sm:max-w-xl">
+              <div className="space-y-6 sm:space-y-8 max-w-none sm:max-w-xl" data-tour="email-settings">
                 <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-900/50 rounded-xl p-4 sm:p-6 border border-gray-200 dark:border-gray-700">
                   <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-4 sm:mb-6 flex items-center gap-2">
                     <Bell className="w-5 h-5 text-blue-600 dark:text-blue-400" />
@@ -592,7 +607,7 @@ export default function AdminSettings() {
 
             {/* Security Settings */}
             {activeTab === 'security' && (
-              <div className="space-y-6 sm:space-y-8 max-w-none sm:max-w-xl">
+              <div className="space-y-6 sm:space-y-8 max-w-none sm:max-w-xl" data-tour="security-settings">
                 <div className="space-y-6">
                   <div className="space-y-2">
                     <label className="block text-sm sm:text-base font-medium text-gray-700 dark:text-gray-200">
@@ -663,7 +678,7 @@ export default function AdminSettings() {
 
             {/* Payment Settings */}
             {activeTab === 'payment' && (
-              <div className="space-y-6 sm:space-y-8 max-w-none sm:max-w-xl">
+              <div className="space-y-6 sm:space-y-8 max-w-none sm:max-w-xl" data-tour="payment-settings">
                 <div className="space-y-6">
                   <div className="space-y-2">
                     <label className="block text-sm sm:text-base font-medium text-gray-700 dark:text-gray-200">

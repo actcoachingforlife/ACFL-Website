@@ -1426,7 +1426,7 @@ export default function UserManagement() {
             </div>
 
             {/* Action Buttons - Mobile First Design */}
-            <div className="flex-shrink-0 w-full lg:w-auto lg:ml-auto">
+            <div className="flex-shrink-0 w-full lg:w-auto lg:ml-auto" data-tour="user-actions">
               {/* Mobile: Stack buttons vertically, Desktop: Horizontal layout */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-wrap gap-2 lg:gap-3">
                 {/* Primary Actions */}
@@ -1681,7 +1681,7 @@ export default function UserManagement() {
         </div>
 
         {/* Enhanced Filters Section */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-200 dark:border-gray-700 mb-6 overflow-hidden">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-200 dark:border-gray-700 mb-6 overflow-hidden" data-tour="filter-users">
           {/* Filter Header */}
           <div className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-750 border-b border-gray-200 dark:border-gray-600 px-6 py-4">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
@@ -1730,7 +1730,7 @@ export default function UserManagement() {
           <div className="p-6">
             <div className="space-y-6">
               {/* Search Bar - Full Width Priority */}
-              <div>
+              <div data-tour="search-users">
                 <label htmlFor="user-search" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   <div className="flex items-center gap-2">
                     <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1802,7 +1802,7 @@ export default function UserManagement() {
                 </div>
 
                 {/* Items Per Page */}
-                <div>
+                <div data-tour="items-per-page">
                   <label htmlFor="items-per-page" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     <div className="flex items-center gap-2">
                       <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -2004,7 +2004,7 @@ export default function UserManagement() {
       )}
 
       {/* Users Table - Desktop & Mobile Responsive */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden" data-tour="user-table">
         {/* Desktop Table View */}
         <div className="hidden xl:block overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -2016,7 +2016,7 @@ export default function UserManagement() {
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                   Role
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider" data-tour="user-status">
                   Status
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
@@ -2532,7 +2532,7 @@ export default function UserManagement() {
         </div>
 
         {/* Enhanced Pagination */}
-        <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700">
+        <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700" data-tour="pagination">
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
