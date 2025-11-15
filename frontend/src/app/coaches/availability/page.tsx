@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import OnboardingTour from '@/components/onboarding/OnboardingTour';
-import { availabilityTourSteps } from '@/components/onboarding/CoachOnboardingTours';
+import { calendarTourSteps } from '@/components/onboarding/CoachOnboardingTours';
 import { Calendar, Clock, Plus, X, Edit3, Trash2, Save, CalendarDays, Settings, Grid, List, AlertTriangle } from 'lucide-react';
 import CalendarSkeleton from '@/components/CalendarSkeleton';
 import { getApiUrl } from '@/lib/api';
@@ -1693,7 +1693,7 @@ export default function CoachAvailabilityPage() {
 
       {/* Onboarding Tour */}
       <OnboardingTour
-        steps={availabilityTourSteps}
+        steps={calendarTourSteps}
         run={showAvailabilityTour}
         onFinish={() => {
           setShowAvailabilityTour(false);

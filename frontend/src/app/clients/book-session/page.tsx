@@ -7,7 +7,7 @@ import MeetingBlocker from '@/components/MeetingBlocker';
 import { Calendar, Clock, User, ChevronLeft, ChevronRight, CheckCircle, MapPin, Phone, HelpCircle } from 'lucide-react';
 import { getApiUrl } from '@/lib/api';
 import OnboardingTour from '@/components/onboarding/OnboardingTour';
-import { bookingTourSteps } from '@/components/onboarding/ClientOnboardingTours';
+import { clientAppointmentsTourSteps } from '@/components/onboarding/ClientOnboardingTours';
 
 interface Coach {
   id: string;
@@ -365,7 +365,7 @@ export default function BookSessionPage() {
           )}
         </div>
         <OnboardingTour
-          steps={bookingTourSteps}
+          steps={clientAppointmentsTourSteps}
           run={showBookingTour}
           onFinish={() => endTour('booking')}
         />
@@ -659,7 +659,7 @@ export default function BookSessionPage() {
         </div>
       )}
       <OnboardingTour
-        steps={bookingTourSteps}
+        steps={clientAppointmentsTourSteps}
         run={showBookingTour}
         onFinish={() => endTour('booking')}
       />

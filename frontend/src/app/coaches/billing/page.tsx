@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
 import { useOnboarding } from '@/contexts/OnboardingContext'
 import OnboardingTour from '@/components/onboarding/OnboardingTour'
-import { paymentTourSteps } from '@/components/onboarding/CoachOnboardingTours'
+import { coachEarningsTourSteps } from '@/components/onboarding/CoachOnboardingTours'
 import CoachPageWrapper from '@/components/CoachPageWrapper'
 import CoachBillingManagement from '@/components/coach/BillingManagement'
 
@@ -58,7 +58,7 @@ export default function CoachBillingPage() {
 
       {/* Onboarding Tour */}
       <OnboardingTour
-        steps={paymentTourSteps}
+        steps={coachEarningsTourSteps}
         run={showPaymentTour}
         onFinish={() => {
           setShowPaymentTour(false)
