@@ -965,7 +965,7 @@ function SearchCoachesContent() {
               <button
                 onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
                 className="inline-flex items-center justify-center bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 border-2 border-gray-200 dark:border-gray-700 rounded-2xl px-4 sm:px-6 py-3 font-semibold text-gray-700 dark:text-gray-200 shadow-lg hover:shadow-xl transition-all duration-200 w-full sm:w-auto max-w-md sm:max-w-none text-sm sm:text-base"
-                data-tour="search-filters"
+                data-tour="coach-filters"
               >
                 <SlidersHorizontal className="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 flex-shrink-0" />
                 <span>{showAdvancedFilters ? 'Hide' : 'Show'} Advanced Filters</span>

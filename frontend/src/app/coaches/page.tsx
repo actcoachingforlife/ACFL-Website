@@ -144,7 +144,7 @@ export default function CoachDashboardPage() {
           </div>
 
           {/* Active Clients Card */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-5 md:p-6 shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-all duration-300 hover:scale-105 cursor-pointer group">
+          <div className="bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-5 md:p-6 shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-all duration-300 hover:scale-105 cursor-pointer group" data-tour="client-stats">
             <div className="flex items-center justify-between mb-3 sm:mb-4">
               <div className="w-9 h-9 sm:w-10 sm:h-10 bg-gray-50 dark:bg-gray-700/50 rounded-lg flex items-center justify-center transition-colors duration-300 group-hover:bg-green-50 dark:group-hover:bg-green-900/20">
                 <Users className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 dark:text-gray-500 opacity-70 transition-all duration-300 group-hover:text-green-500 dark:group-hover:text-green-400 group-hover:opacity-100" />
@@ -164,7 +164,7 @@ export default function CoachDashboardPage() {
           </div>
 
           {/* Week Sessions Card */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-5 md:p-6 shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-all duration-300 hover:scale-105 cursor-pointer group">
+          <div className="bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-5 md:p-6 shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-all duration-300 hover:scale-105 cursor-pointer group" data-tour="earnings-overview">
             <div className="flex items-center justify-between mb-3 sm:mb-4">
               <div className="w-9 h-9 sm:w-10 sm:h-10 bg-gray-50 dark:bg-gray-700/50 rounded-lg flex items-center justify-center transition-colors duration-300 group-hover:bg-purple-50 dark:group-hover:bg-purple-900/20">
                 <BarChart3 className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 dark:text-gray-500 opacity-70 transition-all duration-300 group-hover:text-purple-500 dark:group-hover:text-purple-400 group-hover:opacity-100" />
@@ -209,7 +209,7 @@ export default function CoachDashboardPage() {
         {/* Main Dashboard Sections Layout */}
         <div className="space-y-4 sm:space-y-5 md:space-y-6 mt-4 sm:mt-5 md:mt-6">
           {/* Today's Appointments - Table Style */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700" data-tour="upcoming-sessions">
             <div className="p-4 sm:p-6 flex items-center justify-between border-b border-gray-100 dark:border-gray-700">
               <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">
                 Today's Appointments
@@ -306,7 +306,7 @@ export default function CoachDashboardPage() {
           </div>
 
           {/* Recent Clients - Table Style */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700" data-tour="recent-clients">
             <div className="p-4 sm:p-6 flex items-center justify-between border-b border-gray-100 dark:border-gray-700">
               <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">
                 Recent Clients

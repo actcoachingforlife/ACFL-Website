@@ -144,7 +144,7 @@ export default function CalendarView({ coachId }: CalendarViewProps) {
         </div>
       )}
 
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid gap-6 lg:grid-cols-3" data-tour="calendar-view">
         {/* Calendar Grid */}
         <div className="lg:col-span-2">
           <Card>

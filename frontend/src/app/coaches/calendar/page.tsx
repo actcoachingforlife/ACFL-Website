@@ -222,7 +222,7 @@ export default function UnifiedCalendarPage() {
                     Common calendar tasks
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-2 sm:space-y-3">
+                <CardContent className="space-y-2 sm:space-y-3" data-tour="availability-settings">
                   <Button
                     onClick={() => setActiveTab('appointments')}
                     variant="outline"
@@ -287,7 +287,7 @@ export default function UnifiedCalendarPage() {
           </TabsContent>
 
           {/* Calendar View Tab */}
-          <TabsContent value="calendar" className="mt-4 sm:mt-6">
+          <TabsContent value="calendar" className="mt-4 sm:mt-6" data-tour="calendar-view">
             <CalendarView coachId={coachId} />
           </TabsContent>
         </Tabs>

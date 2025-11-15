@@ -642,7 +642,7 @@ function CoachMessagesContent() {
 						</div>
 
 						{/* Contacts List */}
-						<div className="flex-1 overflow-y-auto p-2 space-y-1 min-h-0" data-tour="conversations-list">
+						<div className="flex-1 overflow-y-auto p-2 space-y-1 min-h-0" data-tour="conversation-list">
 							{filteredConversations.map((c, index) => {
 								const initials = getInitials(c.partnerName)
 								const avatarColor = getAvatarColor(index)
@@ -811,7 +811,7 @@ function CoachMessagesContent() {
 						</div>
 					</div>
 					{/* Messages */}
-					<div ref={scrollerRef} className="flex-1 overflow-y-auto p-4 space-y-3 bg-white dark:bg-gray-800 min-h-0" data-tour="messages-area">
+					<div ref={scrollerRef} className="flex-1 overflow-y-auto p-4 space-y-3 bg-white dark:bg-gray-800 min-h-0" data-tour="message-thread">
 						{!activePartnerId && (
 							<div className="flex items-center justify-center h-full text-gray-500 dark:text-gray-400">
 								<div className="text-center">

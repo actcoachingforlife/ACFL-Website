@@ -150,7 +150,7 @@ export default function MyClientsPage() {
       )}
 
       {/* Search and Filter */}
-      <div className="mb-6 flex flex-col sm:flex-row gap-4">
+      <div className="mb-6 flex flex-col sm:flex-row gap-4" data-tour="client-search">
         <div className="flex-1">
           <input
             type="text"
@@ -236,7 +236,7 @@ export default function MyClientsPage() {
       {initialLoad ? (
         <ClientCardSkeleton count={6} />
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6" data-tour="client-list">
           {filteredClients.length === 0 ? (
             <Card className="col-span-2 bg-card border-border">
               <CardContent className="text-center py-12">
@@ -302,7 +302,7 @@ export default function MyClientsPage() {
                   </div>
                 )}
 
-                <div className="flex gap-2 mb-2">
+                <div className="flex gap-2 mb-2" data-tour="client-actions">
                   <Button
                     onClick={() => handleViewDetails(client)}
                     className="flex-1 bg-blue-600 hover:bg-blue-700 dark:text-white flex items-center justify-center gap-2 py-2.5 px-4"

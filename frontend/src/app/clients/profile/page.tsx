@@ -796,7 +796,7 @@ function ProfileContent() {
             <Form {...form}>
               <form className="space-y-6" data-tour="profile-form">
                 {/* Personal Information */}
-                <div className="space-y-4">
+                <div className="space-y-4" data-tour="profile-info">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 dark:text-white mb-1">First Name <span className="text-red-500">*</span></label>
@@ -1075,7 +1075,7 @@ function ProfileContent() {
         {initialLoad ? (
           <ProfileCardSkeleton type="form" />
         ) : (
-          <Card className="bg-card border-border mt-6">
+          <Card className="bg-card border-border mt-6" data-tour="preferences">
             <CardHeader>
               <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
                 <div className="flex-1">

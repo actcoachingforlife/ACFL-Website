@@ -176,6 +176,12 @@ export default function CoachProfilePage() {
   useEffect(() => {
     const shouldStartTour = searchParams.get('startTour');
     const section = searchParams.get('section');
+    const tabParam = searchParams.get('tab');
+
+    // Handle tab parameter
+    if (tabParam && ['basic', 'professional', 'specialization', 'approach', 'availability', 'ethics', 'technology', 'references'].includes(tabParam)) {
+      setActiveTab(tabParam);
+    }
 
     if (shouldStartTour === 'true' && !loadingProfile) {
       console.log('Starting coach profile tour from URL param, section:', section);
@@ -697,7 +703,7 @@ export default function CoachProfilePage() {
         <div className="space-y-6">
           {/* Profile Photo Section */}
           <Card data-tour="profile-photo">
-            <CardHeader>
+            <CardHeader data-tour="profile-header">
               <CardTitle className="flex items-center gap-2">
                 <Camera className="w-5 h-5" />
                 Profile Photo
@@ -909,7 +915,7 @@ export default function CoachProfilePage() {
                         className="w-full px-4 py-3 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-background text-foreground touch-manipulation min-h-[48px]"
                       />
                     </div>
-                    <div data-tour="session-rates">
+                    <div data-tour="session-pricing">
                       <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-300">Hourly Rate ($)</label>
                       <input
                         type="number"
@@ -1102,7 +1108,7 @@ export default function CoachProfilePage() {
                     )}
                   </div>
 
-                  <div>
+                  <div data-tour="credentials">
                     <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-300">Professional Certifications</label>
                     {editing ? (
                       <div className="grid grid-cols-1 gap-4 border border-gray-300 rounded-lg p-6">

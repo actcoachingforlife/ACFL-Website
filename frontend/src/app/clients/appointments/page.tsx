@@ -487,7 +487,7 @@ function AppointmentsContent() {
       )}
 
       {/* Filter Tabs */}
-      <div className="mb-6" data-tour="filter-tabs">
+      <div className="mb-6" data-tour="appointment-filters">
         <div className="border-b border-gray-200 dark:border-gray-700">
           <nav className="-mb-px flex space-x-2 sm:space-x-8 overflow-x-auto">
             {[
@@ -689,7 +689,7 @@ function AppointmentsContent() {
                               className={`${isInMeeting && currentMeetingId === appointment.meeting_id ? 'bg-blue-600 hover:bg-blue-700' : 'bg-green-600 hover:bg-green-700'} disabled:opacity-40 disabled:cursor-not-allowed w-full sm:w-auto`}
                               disabled={!isJoinAvailable(appointment) || (isInMeeting && currentMeetingId !== appointment.meeting_id)}
                               size="sm"
-                              data-tour={index === 0 ? "join-session-button" : undefined}
+                              data-tour={index === 0 ? "session-actions" : undefined}
                             >
                               <Video className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
                               {isInMeeting && currentMeetingId === appointment.meeting_id ? 'Rejoin Session' : 'Join Session'}

@@ -5,14 +5,12 @@ import {
   X,
   HelpCircle,
   BookOpen,
-  Video,
   CheckSquare,
   Search,
   Keyboard,
   MessageSquare,
   ChevronRight,
   Play,
-  ExternalLink,
   Sparkles,
   Users,
   UserCheck,
@@ -53,16 +51,6 @@ interface HelpTopic {
   keywords: string[];
 }
 
-interface VideoTutorial {
-  id: string;
-  title: string;
-  description: string;
-  duration: string;
-  thumbnail: string;
-  url: string;
-  category: string;
-}
-
 interface FAQ {
   id: string;
   question: string;
@@ -87,12 +75,15 @@ interface KeyboardShortcut {
 export default function AdminUserGuide() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<'quickstart' | 'videos' | 'faq' | 'shortcuts' | 'checklist'>('quickstart');
+  const [activeTab, setActiveTab] = useState<'quickstart' | 'faq' | 'shortcuts' | 'checklist'>('quickstart');
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTour, setActiveTour] = useState<string | null>(null);
   const [checklistItems, setChecklistItems] = useState<ChecklistItem[]>([]);
   const [isMinimized, setIsMinimized] = useState(false);
   const [isEnabled, setIsEnabled] = useState(true);
+
+  // Check if on client or coach pages (during impersonation)
+  const isOnClientOrCoachPage = pathname.startsWith('/clients') || pathname.startsWith('/coaches');
 
   // Check if user guide is enabled
   useEffect(() => {
@@ -227,46 +218,6 @@ export default function AdminUserGuide() {
       icon: Shield,
       tourId: 'system-logs',
       keywords: ['security', 'permissions', 'access', 'roles', 'staff']
-    }
-  ];
-
-  // Video tutorials
-  const videoTutorials: VideoTutorial[] = [
-    {
-      id: 'getting-started',
-      title: 'Getting Started with Admin Panel',
-      description: 'A comprehensive overview of the admin dashboard and its features',
-      duration: '5:30',
-      thumbnail: '/tutorials/getting-started.jpg',
-      url: '#',
-      category: 'Getting Started'
-    },
-    {
-      id: 'user-management',
-      title: 'User Management Best Practices',
-      description: 'Learn how to effectively manage users, coaches, and clients',
-      duration: '8:15',
-      thumbnail: '/tutorials/user-management.jpg',
-      url: '#',
-      category: 'User Management'
-    },
-    {
-      id: 'coach-approval',
-      title: 'Coach Application Review Process',
-      description: 'Step-by-step guide for reviewing and approving coach applications',
-      duration: '6:45',
-      thumbnail: '/tutorials/coach-approval.jpg',
-      url: '#',
-      category: 'Coach Management'
-    },
-    {
-      id: 'financial-overview',
-      title: 'Financial Dashboard Walkthrough',
-      description: 'Understanding revenue tracking, payments, and payout management',
-      duration: '7:20',
-      thumbnail: '/tutorials/financials.jpg',
-      url: '#',
-      category: 'Financials'
     }
   ];
 
@@ -473,7 +424,7 @@ export default function AdminUserGuide() {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 z-[9997] bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-full p-4 shadow-2xl transition-all duration-300 hover:scale-110 group"
+          className={`fixed bottom-6 ${isOnClientOrCoachPage ? 'left-6' : 'right-6'} z-[9997] bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-full p-4 shadow-2xl transition-all duration-300 hover:scale-110 group`}
           aria-label="Open help guide"
         >
           <HelpCircle className="w-6 h-6" />
@@ -485,7 +436,7 @@ export default function AdminUserGuide() {
 
       {/* Help Panel */}
       {isOpen && (
-        <div className="fixed inset-0 z-[9998] flex items-end sm:items-center justify-end">
+        <div className="fixed inset-0 z-[9998] flex items-end sm:items-center justify-end pt-16">
           {/* Backdrop */}
           <div
             className="absolute inset-0 bg-black/50 backdrop-blur-sm"
@@ -493,7 +444,7 @@ export default function AdminUserGuide() {
           />
 
           {/* Panel */}
-          <div className="relative bg-white dark:bg-gray-900 w-full sm:w-[500px] h-full sm:h-[90vh] sm:mr-4 sm:rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-slide-in-right border border-gray-200 dark:border-gray-800">
+          <div className="relative bg-white dark:bg-gray-900 w-full sm:w-[500px] h-[calc(100%-4rem)] sm:h-[calc(90vh-4rem)] sm:mr-4 sm:my-4 sm:rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-slide-in-right border border-gray-200 dark:border-gray-800">
             {/* Header */}
             <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6">
               <div className="flex items-center justify-between mb-4">
@@ -576,17 +527,6 @@ export default function AdminUserGuide() {
                 >
                   <CheckSquare className="w-4 h-4 inline mr-2" />
                   Checklist ({completedCount}/{checklistItems.length})
-                </button>
-                <button
-                  onClick={() => setActiveTab('videos')}
-                  className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
-                    activeTab === 'videos'
-                      ? 'border-blue-600 text-blue-600 dark:text-blue-400'
-                      : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
-                  }`}
-                >
-                  <Video className="w-4 h-4 inline mr-2" />
-                  Videos
                 </button>
                 <button
                   onClick={() => setActiveTab('faq')}
@@ -734,49 +674,6 @@ export default function AdminUserGuide() {
                       </div>
                     ))}
                   </div>
-                </div>
-              )}
-
-              {/* Videos Tab */}
-              {activeTab === 'videos' && (
-                <div className="space-y-4">
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                    Watch these video tutorials to learn how to use the admin panel effectively.
-                  </p>
-                  {videoTutorials.map((video) => (
-                    <a
-                      key={video.id}
-                      href={video.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block p-4 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors group border border-gray-200 dark:border-gray-700"
-                    >
-                      <div className="flex gap-4">
-                        <div className="relative w-32 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <Play className="w-8 h-8 text-white" />
-                          <span className="absolute bottom-1 right-1 bg-black/70 text-white text-xs px-1.5 py-0.5 rounded">
-                            {video.duration}
-                          </span>
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex items-start justify-between">
-                            <div>
-                              <h4 className="font-medium text-gray-900 dark:text-white mb-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                                {video.title}
-                              </h4>
-                              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                                {video.description}
-                              </p>
-                              <span className="text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-2 py-1 rounded">
-                                {video.category}
-                              </span>
-                            </div>
-                            <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors flex-shrink-0 ml-2" />
-                          </div>
-                        </div>
-                      </div>
-                    </a>
-                  ))}
                 </div>
               )}
 

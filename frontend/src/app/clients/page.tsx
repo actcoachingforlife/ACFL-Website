@@ -231,7 +231,7 @@ export default function ClientDashboard() {
         {/* Two Column Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
           {/* Upcoming Appointments */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 h-[400px] sm:h-[450px] flex flex-col">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 h-[400px] sm:h-[450px] flex flex-col" data-tour="upcoming-sessions">
             <div className="p-4 sm:p-6 flex items-center justify-between border-b border-gray-100 dark:border-gray-700">
               <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                 <Calendar className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -284,7 +284,7 @@ export default function ClientDashboard() {
           </div>
 
           {/* Recent Activity */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 h-[400px] sm:h-[450px] flex flex-col">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 h-[400px] sm:h-[450px] flex flex-col" data-tour="progress-overview">
             <div className="p-4 sm:p-6 flex items-center justify-between border-b border-gray-100 dark:border-gray-700">
               <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                 <Clock className="w-4 h-4 sm:w-5 sm:h-5" />

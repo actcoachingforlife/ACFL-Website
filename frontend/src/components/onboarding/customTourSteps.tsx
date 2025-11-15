@@ -435,257 +435,6 @@ export const bookingFlowProfileSteps: TourStep[] = [
   }
 ];
 
-// ==================== COACH TOURS ====================
-
-// Coach Dashboard Welcome Tour
-export const coachWelcomeTourSteps: TourStep[] = [
-  {
-    target: 'body',
-    placement: 'center',
-    title: 'Welcome to ACT Coaching!',
-    content: (
-      <div>
-        <p className="mb-3">
-          We're excited to have you as a coach on our platform. Let's take a quick tour to help you get started.
-        </p>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
-          You can skip this tour anytime by clicking "Skip Tour".
-        </p>
-      </div>
-    )
-  },
-  {
-    target: '[data-tour="dashboard-stats"]',
-    placement: 'bottom',
-    title: 'Your Dashboard Overview',
-    content: (
-      <p>
-        These cards show your key metrics: upcoming sessions, total clients, revenue, and messages.
-      </p>
-    )
-  },
-  {
-    target: '[data-tour="navigation"]',
-    placement: 'right',
-    title: 'Main Navigation',
-    content: (
-      <p>
-        Navigate through your coaching dashboard using this menu. Manage your availability, appointments, clients, and earnings.
-      </p>
-    )
-  }
-];
-
-// Coach Profile Tour
-export const coachProfileTourSteps: TourStep[] = [
-  {
-    target: 'body',
-    placement: 'center',
-    title: 'Complete Your Coach Profile',
-    content: (
-      <div>
-        <p className="mb-3">
-          A complete profile helps clients connect with you and builds trust. Let's set up your coaching profile!
-        </p>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
-          💡 Coaches with complete profiles get 3x more bookings!
-        </p>
-      </div>
-    )
-  },
-  {
-    target: '[data-tour="profile-photo"]',
-    placement: 'bottom',
-    title: 'Upload Your Photo',
-    content: (
-      <div>
-        <p className="mb-3">
-          Click here to upload a clear, professional headshot. This will be visible to all clients browsing coaches.
-        </p>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
-          💡 Tip: Use a high-quality image with good lighting.
-        </p>
-      </div>
-    )
-  },
-  {
-    target: '[data-tour="basic-info-form"]',
-    placement: 'top',
-    title: 'Basic Information',
-    content: (
-      <div>
-        <p className="mb-3">
-          Fill in your contact details and professional information.
-        </p>
-        <ul className="text-sm space-y-1 list-disc list-inside">
-          <li>Full name and contact info</li>
-          <li>Professional credentials</li>
-          <li>Years of experience</li>
-          <li>Location and timezone</li>
-        </ul>
-      </div>
-    )
-  },
-  {
-    target: '[data-tour="bio-section"]',
-    placement: 'top',
-    title: 'Your Bio',
-    content: (
-      <div>
-        <p className="mb-3">
-          Write a compelling bio that tells clients about your coaching approach and expertise.
-        </p>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
-          💡 Tip: Share your coaching philosophy and what makes you unique!
-        </p>
-      </div>
-    )
-  },
-  {
-    target: '[data-tour="specializations-section"]',
-    placement: 'top',
-    title: 'Add Specializations',
-    content: (
-      <div>
-        <p className="mb-3">
-          Select your areas of expertise to help clients find you for their specific needs.
-        </p>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
-          💡 Tip: Add 3-5 specializations that match your expertise.
-        </p>
-      </div>
-    )
-  },
-  {
-    target: '[data-tour="save-profile"]',
-    placement: 'left',
-    title: 'Save Your Changes',
-    content: (
-      <p>
-        Don't forget to save your profile changes! Click this button whenever you update your information.
-      </p>
-    )
-  }
-];
-
-// Coach Availability Tour
-export const coachAvailabilityTourSteps: TourStep[] = [
-  {
-    target: 'body',
-    placement: 'center',
-    title: 'Set Your Availability',
-    content: (
-      <div>
-        <p className="mb-3">
-          Let clients know when you're available for coaching sessions. Set your schedule here!
-        </p>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
-          💡 You can update your availability anytime.
-        </p>
-      </div>
-    )
-  },
-  {
-    target: '[data-tour="availability-calendar"]',
-    placement: 'bottom',
-    title: 'Calendar View',
-    content: (
-      <div>
-        <p className="mb-3">
-          View and manage your available time slots on the calendar.
-        </p>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
-          💡 Green = Available, Gray = Unavailable, Blue = Booked
-        </p>
-      </div>
-    )
-  },
-  {
-    target: '[data-tour="time-slots"]',
-    placement: 'top',
-    title: 'Manage Time Slots',
-    content: (
-      <div>
-        <p className="mb-3">
-          Add or remove time slots for specific days. Clients can only book during your available hours.
-        </p>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
-          💡 Tip: Keep your availability up to date for better bookings!
-        </p>
-      </div>
-    )
-  }
-];
-
-// Coach Calendar Tour
-export const coachCalendarTourSteps: TourStep[] = [
-  {
-    target: 'body',
-    placement: 'center',
-    title: 'Manage Your Calendar',
-    content: (
-      <div>
-        <p className="mb-3">
-          View all your appointments, manage your schedule, and stay organized with your coaching calendar.
-        </p>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
-          💡 Keep track of upcoming sessions and plan your week!
-        </p>
-      </div>
-    )
-  },
-  {
-    target: '[data-tour="calendar-tabs"]',
-    placement: 'bottom',
-    title: 'Calendar Views',
-    content: (
-      <div>
-        <p className="mb-2">Switch between different views:</p>
-        <ul className="text-sm space-y-1 list-disc list-inside">
-          <li><strong>Today</strong> - See today's sessions</li>
-          <li><strong>Appointments</strong> - View all bookings</li>
-          <li><strong>Integration</strong> - Connect external calendars</li>
-          <li><strong>Calendar</strong> - Month view of your schedule</li>
-        </ul>
-      </div>
-    )
-  }
-];
-
-// Coach Payment/Billing Tour
-export const coachPaymentTourSteps: TourStep[] = [
-  {
-    target: 'body',
-    placement: 'center',
-    title: 'Manage Your Earnings',
-    content: (
-      <div>
-        <p className="mb-3">
-          Track your coaching income, manage payouts, and view your financial history all in one place.
-        </p>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
-          💡 Get paid for your coaching sessions!
-        </p>
-      </div>
-    )
-  },
-  {
-    target: '[data-tour="billing-tabs"]',
-    placement: 'bottom',
-    title: 'Billing Sections',
-    content: (
-      <div>
-        <p className="mb-2">Manage your finances:</p>
-        <ul className="text-sm space-y-1 list-disc list-inside">
-          <li><strong>Payouts</strong> - Request and track payments</li>
-          <li><strong>History</strong> - View past transactions</li>
-          <li><strong>Bank Accounts</strong> - Manage payment methods</li>
-        </ul>
-      </div>
-    )
-  }
-];
-
 // ==================== ADMIN TOURS ====================
 
 // Admin Dashboard Welcome Tour
@@ -1692,6 +1441,824 @@ export const adminSystemLogsTourSteps: TourStep[] = [
         </p>
         <p className="text-sm text-gray-500 dark:text-gray-400">
           💡 Retain logs per your data retention policy
+        </p>
+      </div>
+    )
+  }
+];
+
+// ============================================
+// CLIENT TOURS
+// ============================================
+
+// Client Dashboard Tour
+export const clientDashboardTourSteps: TourStep[] = [
+  {
+    target: 'body',
+    placement: 'center',
+    title: 'Welcome to Your Dashboard',
+    navigateTo: '/clients',
+    content: (
+      <div>
+        <p className="mb-3">
+          Welcome to your client dashboard! This is your hub for managing your coaching journey, tracking progress, and staying connected with your coach.
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Let&apos;s take a quick tour to get you started
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="upcoming-sessions"]',
+    placement: 'bottom',
+    title: 'Upcoming Sessions',
+    navigateTo: '/clients',
+    content: (
+      <div>
+        <p className="mb-2">View your scheduled coaching sessions:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside">
+          <li>See session dates and times</li>
+          <li>Join video calls when it&apos;s time</li>
+          <li>Reschedule if needed</li>
+          <li>Prepare notes for your session</li>
+        </ul>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+          💡 You&apos;ll receive reminders before each session
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="progress-overview"]',
+    placement: 'bottom',
+    title: 'Track Your Progress',
+    content: (
+      <div>
+        <p className="mb-3">
+          Monitor your coaching journey with visual progress indicators. See session completion, goal achievement, and growth over time.
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Regular sessions lead to better outcomes
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="quick-actions"]',
+    placement: 'bottom',
+    title: 'Quick Actions',
+    content: (
+      <div>
+        <p className="mb-2">Access common actions quickly:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside">
+          <li>Book a new session</li>
+          <li>Message your coach</li>
+          <li>View resources</li>
+          <li>Update your goals</li>
+        </ul>
+      </div>
+    )
+  }
+];
+
+// Client Find Coach Tour
+export const clientFindCoachTourSteps: TourStep[] = [
+  {
+    target: 'body',
+    placement: 'center',
+    title: 'Find Your Perfect Coach',
+    navigateTo: '/clients/search-coaches',
+    content: (
+      <div>
+        <p className="mb-3">
+          Browse our directory of certified ACT coaches. Each coach has a unique approach and specialties to match your needs.
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Take your time to find the right fit
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="coach-filters"]',
+    placement: 'bottom',
+    title: 'Filter Coaches',
+    navigateTo: '/clients/search-coaches',
+    content: (
+      <div>
+        <p className="mb-2">Narrow down your search:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside">
+          <li>Filter by specialty</li>
+          <li>Sort by rating or experience</li>
+          <li>Check availability</li>
+          <li>View pricing</li>
+        </ul>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="coach-cards"]',
+    placement: 'top',
+    title: 'Coach Profiles',
+    content: (
+      <div>
+        <p className="mb-2">Each coach card shows:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside">
+          <li>Profile photo and name</li>
+          <li>Specialties and approach</li>
+          <li>Rating and reviews</li>
+          <li>Session pricing</li>
+        </ul>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+          💡 Click &quot;View Profile&quot; to learn more
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="book-session-btn"]',
+    placement: 'top',
+    title: 'Book a Session',
+    content: (
+      <div>
+        <p className="mb-3">
+          Found the right coach? Click &quot;Book Session&quot; to view their calendar and schedule your first appointment.
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Many coaches offer a free introductory call
+        </p>
+      </div>
+    )
+  }
+];
+
+// Client Appointments Tour
+export const clientAppointmentsTourSteps: TourStep[] = [
+  {
+    target: 'body',
+    placement: 'center',
+    title: 'Manage Your Sessions',
+    navigateTo: '/clients/appointments',
+    content: (
+      <div>
+        <p className="mb-3">
+          View all your past and upcoming coaching sessions. Manage bookings, reschedule if needed, and access session notes.
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Stay organized and never miss a session
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="appointment-filters"]',
+    placement: 'bottom',
+    title: 'Filter Your Sessions',
+    navigateTo: '/clients/appointments',
+    content: (
+      <div>
+        <p className="mb-2">Organize your appointments:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside">
+          <li>View upcoming or past sessions</li>
+          <li>Filter by coach</li>
+          <li>See cancelled or rescheduled</li>
+        </ul>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="appointment-list"]',
+    placement: 'top',
+    title: 'Session Details',
+    content: (
+      <div>
+        <p className="mb-2">Each session shows:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside">
+          <li>Date, time, and duration</li>
+          <li>Coach name and specialty</li>
+          <li>Session status</li>
+          <li>Video call link (when available)</li>
+        </ul>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="session-actions"]',
+    placement: 'left',
+    title: 'Session Actions',
+    content: (
+      <div>
+        <p className="mb-2">Manage your sessions:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside">
+          <li><strong>Join Call</strong> - Start video session</li>
+          <li><strong>Reschedule</strong> - Change date/time</li>
+          <li><strong>Cancel</strong> - Cancel session</li>
+          <li><strong>View Notes</strong> - Access session notes</li>
+        </ul>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+          💡 Check cancellation policies before cancelling
+        </p>
+      </div>
+    )
+  }
+];
+
+// Client Messages Tour
+export const clientMessagesTourSteps: TourStep[] = [
+  {
+    target: 'body',
+    placement: 'center',
+    title: 'Stay Connected',
+    navigateTo: '/clients/messages',
+    content: (
+      <div>
+        <p className="mb-3">
+          Message your coach anytime between sessions. Share updates, ask questions, or discuss your progress.
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Your coach will respond within 24-48 hours
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="conversation-list"]',
+    placement: 'right',
+    title: 'Your Conversations',
+    navigateTo: '/clients/messages',
+    content: (
+      <div>
+        <p className="mb-2">All your coach conversations in one place:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside">
+          <li>See recent messages</li>
+          <li>Unread message indicators</li>
+          <li>Quick search</li>
+        </ul>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="message-thread"]',
+    placement: 'left',
+    title: 'Message Thread',
+    content: (
+      <div>
+        <p className="mb-3">
+          View your complete message history with your coach. All conversations are private and secure.
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="message-input"]',
+    placement: 'top',
+    title: 'Send Messages',
+    content: (
+      <div>
+        <p className="mb-3">
+          Type your message and click send. You can share text messages anytime.
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Be clear and specific about what you need help with
+        </p>
+      </div>
+    )
+  }
+];
+
+// Client Profile Tour
+export const clientProfileTourSteps: TourStep[] = [
+  {
+    target: 'body',
+    placement: 'center',
+    title: 'Your Profile',
+    navigateTo: '/clients/profile',
+    content: (
+      <div>
+        <p className="mb-3">
+          Manage your personal information, preferences, and account settings. Keep your profile up to date for the best experience.
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="profile-info"]',
+    placement: 'bottom',
+    title: 'Personal Information',
+    navigateTo: '/clients/profile',
+    content: (
+      <div>
+        <p className="mb-2">Update your details:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside">
+          <li>Name and contact info</li>
+          <li>Profile photo</li>
+          <li>Timezone preferences</li>
+          <li>Bio and background</li>
+        </ul>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="goals-section"]',
+    placement: 'bottom',
+    title: 'Your Goals',
+    content: (
+      <div>
+        <p className="mb-3">
+          Set and track your coaching goals. Share these with your coach to align your sessions with what matters most to you.
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Update goals as your journey progresses
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="preferences"]',
+    placement: 'top',
+    title: 'Preferences',
+    content: (
+      <div>
+        <p className="mb-2">Customize your experience:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside">
+          <li>Notification settings</li>
+          <li>Email preferences</li>
+          <li>Privacy settings</li>
+          <li>Language and timezone</li>
+        </ul>
+      </div>
+    )
+  }
+];
+
+// ============================================
+// COACH TOURS
+// ============================================
+
+// Coach Dashboard Tour
+export const coachDashboardTourSteps: TourStep[] = [
+  {
+    target: 'body',
+    placement: 'center',
+    title: 'Welcome to Your Coach Dashboard',
+    navigateTo: '/coaches',
+    content: (
+      <div>
+        <p className="mb-3">
+          Welcome to your coach dashboard! Manage your clients, schedule sessions, track earnings, and grow your coaching practice.
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Let&apos;s explore the key features
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="upcoming-sessions"]',
+    placement: 'bottom',
+    title: 'Your Schedule',
+    navigateTo: '/coaches',
+    content: (
+      <div>
+        <p className="mb-2">Manage your coaching sessions:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside">
+          <li>View today&apos;s and upcoming sessions</li>
+          <li>Join video calls</li>
+          <li>Reschedule when needed</li>
+          <li>Add session notes</li>
+        </ul>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+          💡 Prepare notes before each session
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="earnings-overview"]',
+    placement: 'bottom',
+    title: 'Track Your Earnings',
+    content: (
+      <div>
+        <p className="mb-3">
+          Monitor your income with real-time earnings tracking. See total revenue, pending payouts, and financial trends.
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Request payouts when you reach the minimum threshold
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="client-stats"]',
+    placement: 'left',
+    title: 'Client Statistics',
+    content: (
+      <div>
+        <p className="mb-2">Monitor your practice growth:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside">
+          <li>Total active clients</li>
+          <li>Session completion rate</li>
+          <li>Client satisfaction ratings</li>
+          <li>Practice milestones</li>
+        </ul>
+      </div>
+    )
+  }
+];
+
+// Coach Clients Tour
+export const coachClientsTourSteps: TourStep[] = [
+  {
+    target: 'body',
+    placement: 'center',
+    title: 'Your Clients',
+    navigateTo: '/coaches/clients',
+    content: (
+      <div>
+        <p className="mb-3">
+          Manage all your clients in one place. View client profiles, track progress, and maintain detailed records of your coaching relationships.
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Keep detailed notes for effective coaching
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="client-list"]',
+    placement: 'bottom',
+    title: 'Client Directory',
+    navigateTo: '/coaches/clients',
+    content: (
+      <div>
+        <p className="mb-2">Each client card shows:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside">
+          <li>Client name and photo</li>
+          <li>Coaching goals</li>
+          <li>Session history</li>
+          <li>Progress indicators</li>
+          <li>Last session date</li>
+        </ul>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="client-search"]',
+    placement: 'bottom',
+    title: 'Search & Filter',
+    content: (
+      <div>
+        <p className="mb-2">Find clients quickly:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside">
+          <li>Search by name</li>
+          <li>Filter by status (active/inactive)</li>
+          <li>Sort by recent activity</li>
+        </ul>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="client-actions"]',
+    placement: 'top',
+    title: 'Client Actions',
+    content: (
+      <div>
+        <p className="mb-2">Quick actions for each client:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside">
+          <li><strong>View Profile</strong> - See full details</li>
+          <li><strong>Schedule Session</strong> - Book time</li>
+          <li><strong>Send Message</strong> - Quick contact</li>
+          <li><strong>View Notes</strong> - Access session notes</li>
+        </ul>
+      </div>
+    )
+  }
+];
+
+// Coach Appointments Tour
+// Coach Calendar Tour (for /coaches/calendar page)
+export const calendarTourSteps: TourStep[] = [
+  {
+    target: 'body',
+    placement: 'center',
+    title: 'Your Calendar & Appointments',
+    navigateTo: '/coaches/calendar',
+    content: (
+      <div>
+        <p className="mb-3">
+          Manage your coaching schedule with our integrated calendar. View appointments, set availability, and sync with external calendars.
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Keep your calendar updated for smooth operations
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="calendar-tabs"]',
+    placement: 'bottom',
+    title: 'Calendar Sections',
+    navigateTo: '/coaches/calendar',
+    content: (
+      <div>
+        <p className="mb-2">Explore different calendar views:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside">
+          <li>Today - Quick overview of today&apos;s schedule</li>
+          <li>Appointments - Manage all sessions</li>
+          <li>Integration - Connect external calendars</li>
+          <li>Calendar - Full calendar view</li>
+        </ul>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="today-tab"]',
+    placement: 'bottom',
+    title: 'Today\'s Overview',
+    content: (
+      <div>
+        <p className="mb-3">
+          Get a quick snapshot of today&apos;s appointments and what&apos;s coming up next.
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="appointments-tab"]',
+    placement: 'bottom',
+    title: 'All Appointments',
+    content: (
+      <div>
+        <p className="mb-3">
+          View and manage all your scheduled sessions. Filter by status, client, or date range.
+        </p>
+      </div>
+    )
+  }
+];
+
+export const coachAppointmentsTourSteps: TourStep[] = [
+  {
+    target: 'body',
+    placement: 'center',
+    title: 'Manage Appointments',
+    navigateTo: '/coaches/calendar',
+    content: (
+      <div>
+        <p className="mb-3">
+          View and manage all your coaching sessions. Keep track of your schedule, prepare for sessions, and maintain session records.
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Set your availability to control bookings
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="calendar-view"]',
+    placement: 'bottom',
+    title: 'Calendar View',
+    navigateTo: '/coaches/calendar?activeTab=calendar',
+    content: (
+      <div>
+        <p className="mb-3">
+          Visualize your schedule with calendar and list views. Toggle between daily, weekly, and monthly perspectives.
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="appointment-filters"]',
+    placement: 'bottom',
+    title: 'Filter Sessions',
+    navigateTo: '/coaches/calendar?activeTab=appointments',
+    content: (
+      <div>
+        <p className="mb-2">Organize appointments:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside">
+          <li>Upcoming vs completed</li>
+          <li>Filter by client</li>
+          <li>View cancellations</li>
+        </ul>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="availability-settings"]',
+    placement: 'left',
+    title: 'Set Availability',
+    navigateTo: '/coaches/calendar?activeTab=overview',
+    content: (
+      <div>
+        <p className="mb-3">
+          Control when clients can book sessions by setting your available hours, blocking time off, and managing your coaching schedule.
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Update availability regularly to avoid conflicts
+        </p>
+      </div>
+    )
+  }
+];
+
+// Coach Earnings Tour
+export const coachEarningsTourSteps: TourStep[] = [
+  {
+    target: 'body',
+    placement: 'center',
+    title: 'Your Earnings',
+    navigateTo: '/coaches/revenue',
+    content: (
+      <div>
+        <p className="mb-3">
+          Track your coaching income, view transaction history, and manage payouts. Stay on top of your coaching business finances.
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Earnings are updated in real-time after each session
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="earnings-summary"]',
+    placement: 'bottom',
+    title: 'Earnings Summary',
+    navigateTo: '/coaches/revenue',
+    content: (
+      <div>
+        <p className="mb-2">Financial overview:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside">
+          <li>Total earnings (all time)</li>
+          <li>This month&apos;s revenue</li>
+          <li>Pending payouts</li>
+          <li>Available for withdrawal</li>
+        </ul>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="transaction-history"]',
+    placement: 'top',
+    title: 'Transaction History',
+    content: (
+      <div>
+        <p className="mb-3">
+          View detailed transaction records including session payments, refunds, and platform fees. Download statements for your records.
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="payout-request"]',
+    placement: 'left',
+    title: 'Request Payout',
+    content: (
+      <div>
+        <p className="mb-3">
+          Request withdrawals when you reach the minimum threshold. Funds are typically transferred within 3-5 business days.
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Ensure your payment details are up to date
+        </p>
+      </div>
+    )
+  }
+];
+
+// Coach Profile Tour
+// Coach Profile - Upload Photo Tour
+export const uploadPhotoTourSteps: TourStep[] = [
+  {
+    target: '[data-tour="profile-photo"]',
+    placement: 'bottom',
+    title: 'Upload Your Photo',
+    content: (
+      <div>
+        <p className="mb-3">
+          Add a professional photo to help clients connect with you. A clear, friendly photo builds trust and makes your profile more inviting.
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Use a high-quality headshot with good lighting
+        </p>
+      </div>
+    )
+  }
+];
+
+// Coach Profile - Basic Info Tour
+export const basicInfoTourSteps: TourStep[] = [
+  {
+    target: '[data-tour="basic-info-form"]',
+    placement: 'bottom',
+    title: 'Complete Your Basic Info',
+    content: (
+      <div>
+        <p className="mb-3">
+          Fill in your name, title, and bio. This information helps clients understand who you are and what you offer.
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Be clear and authentic about your coaching approach
+        </p>
+      </div>
+    )
+  }
+];
+
+// Coach Profile - Specializations Tour
+export const specializationsTourSteps: TourStep[] = [
+  {
+    target: '[data-tour="specializations-section"]',
+    placement: 'bottom',
+    title: 'Add Your Specializations',
+    content: (
+      <div>
+        <p className="mb-3">
+          Select your areas of expertise and specialties. This helps clients find you when they&apos;re searching for specific coaching services.
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Choose specializations that match your experience
+        </p>
+      </div>
+    )
+  }
+];
+
+export const coachProfileTourSteps: TourStep[] = [
+  {
+    target: 'body',
+    placement: 'center',
+    title: 'Your Coach Profile',
+    navigateTo: '/coaches/profile',
+    content: (
+      <div>
+        <p className="mb-3">
+          Manage your professional profile, credentials, and preferences. Your profile is what clients see when they&apos;re looking for a coach.
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 A complete profile attracts more clients
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="profile-header"]',
+    placement: 'bottom',
+    title: 'Profile Header',
+    navigateTo: '/coaches/profile',
+    content: (
+      <div>
+        <p className="mb-2">Make a great first impression:</p>
+        <ul className="text-sm space-y-1 list-disc list-inside">
+          <li>Professional photo</li>
+          <li>Your name and title</li>
+          <li>Specialties and approach</li>
+          <li>Rating and reviews</li>
+        </ul>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="bio-section"]',
+    placement: 'bottom',
+    title: 'Your Bio',
+    navigateTo: '/coaches/profile?tab=basic',
+    content: (
+      <div>
+        <p className="mb-3">
+          Share your story, qualifications, and coaching philosophy. Help clients understand your unique approach and expertise.
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Be authentic and specific about what you offer
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="credentials"]',
+    placement: 'bottom',
+    title: 'Credentials & Certifications',
+    navigateTo: '/coaches/profile?tab=professional',
+    content: (
+      <div>
+        <p className="mb-3">
+          Add your certifications, training, and professional credentials. Build trust by showcasing your qualifications.
+        </p>
+      </div>
+    )
+  },
+  {
+    target: '[data-tour="session-pricing"]',
+    placement: 'top',
+    title: 'Session Pricing',
+    navigateTo: '/coaches/profile?tab=basic',
+    content: (
+      <div>
+        <p className="mb-3">
+          Set your session rates and package pricing. You have full control over your pricing structure.
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          💡 Consider offering package discounts
         </p>
       </div>
     )
