@@ -9,7 +9,7 @@ const router = express.Router();
 router.post('/subscribe', newsletterLimiter, newsletterController.subscribe);
 router.post('/unsubscribe', newsletterLimiter, newsletterController.unsubscribe);
 
-// Admin-only routes
-router.get('/subscribers', authenticate, authorize('admin'), newsletterController.getSubscribers);
+// Admin and Staff routes
+router.get('/subscribers', authenticate, authorize('admin', 'staff'), newsletterController.getSubscribers);
 
 export default router;
