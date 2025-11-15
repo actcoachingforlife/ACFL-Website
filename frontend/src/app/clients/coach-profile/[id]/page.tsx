@@ -36,7 +36,7 @@ import CoachRating from '@/components/coach/CoachRating'
 import { useAuth } from '@/contexts/AuthContext'
 import { useOnboarding } from '@/contexts/OnboardingContext'
 import OnboardingTour from '@/components/onboarding/OnboardingTour'
-import { bookingFlowProfileSteps } from '@/components/onboarding/ClientOnboardingTours'
+import { clientFindCoachTourSteps } from '@/components/onboarding/ClientOnboardingTours'
 import { getApiUrl } from '@/lib/api'
 
 // Test Coach IDs - coaches that show all buttons to clients
@@ -1520,7 +1520,7 @@ function CoachProfileContent() {
 
       {/* Onboarding Tour - Continues from search-coaches page */}
       <OnboardingTour
-        steps={bookingFlowProfileSteps}
+        steps={clientFindCoachTourSteps}
         run={showBookingTour}
         onFinish={() => endTour('booking')}
       />
