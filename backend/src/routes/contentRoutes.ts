@@ -15,9 +15,9 @@ router.post('/public/faq/:id/feedback', contentController.trackFAQHelpfulness);
 router.get('/public/blog/posts', contentController.getPublishedBlogPosts);
 router.get('/public/blog/categories', contentController.getBlogCategories);
 
-// Admin routes
+// Admin and Staff routes - allow both admin and staff to access content management
 router.use(authenticate);
-router.use(authorize('admin'));
+router.use(authorize('admin', 'staff'));
 
 // Static content management - with HTML sanitization
 router.get('/content', contentController.getAllContent);

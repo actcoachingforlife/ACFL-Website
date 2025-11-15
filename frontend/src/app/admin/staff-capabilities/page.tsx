@@ -378,6 +378,74 @@ export default function StaffCapabilities() {
     };
   };
 
+  // Check if user is admin-only - staff should not have access to this page
+  if (!isLoading && !isAdmin) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-4">
+        <div className="max-w-2xl w-full">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 md:p-12">
+            {/* Icon */}
+            <div className="flex justify-center mb-6">
+              <div className="bg-red-100 dark:bg-red-900/30 p-6 rounded-full">
+                <Shield className="w-16 h-16 text-red-600 dark:text-red-400" />
+              </div>
+            </div>
+
+            {/* Title */}
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white text-center mb-4">
+              Admin Access Required
+            </h1>
+
+            {/* Message */}
+            <p className="text-lg text-gray-600 dark:text-gray-400 text-center mb-6">
+              The Staff Capabilities page is restricted to administrators only. Staff members do not have permission to access this area.
+            </p>
+
+            {/* Info Box */}
+            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
+              <div className="flex items-start gap-3">
+                <Lock className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-sm font-medium text-blue-900 dark:text-blue-100 mb-1">
+                    Why Can't I Access This?
+                  </p>
+                  <p className="text-sm text-blue-700 dark:text-blue-300">
+                    This page allows administrators to configure staff permissions and capabilities.
+                    To prevent conflicts of interest, staff members cannot modify their own or other staff members' permissions.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <button
+                onClick={() => window.history.back()}
+                className="px-6 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors flex items-center justify-center gap-2"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                Go Back
+              </button>
+              <button
+                onClick={() => window.location.href = '/admin'}
+                className="px-6 py-3 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
+              >
+                Go to Dashboard
+              </button>
+            </div>
+
+            {/* Help Text */}
+            <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+              <p className="text-sm text-gray-500 dark:text-gray-500 text-center">
+                If you believe you need access to manage staff capabilities, please contact your system administrator.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (isLoading) {
     return (
       <div className="w-full">

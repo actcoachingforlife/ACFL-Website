@@ -546,17 +546,25 @@ router.get('/users', async (req, res) => {
     // Build queries for each user type
     const getUsersFromTable = async (tableName: string, userRole: string) => {
       try {
-        // Build base query with filters
+        // Build base query with filters - different columns for staff table
+        let selectColumns = tableName === 'staff'
+          ? 'id, first_name, last_name, email, phone, created_at, last_login, status, profile_photo, department, role_level, employee_id, is_verified'
+          : 'id, first_name, last_name, email, phone, created_at, last_login, status, profile_photo, is_active, deactivated_at';
+
         let query = supabase
           .from(tableName)
-          .select('id, first_name, last_name, email, phone, created_at, last_login, status, profile_photo, is_active, deactivated_at' +
-                  (tableName === 'staff' ? ', department, role_level' : ''))
+          .select(selectColumns)
           .order('created_at', { ascending: false });
 
         // Apply status filter
         if (status && status !== 'all') {
           if (status === 'inactive') {
-            query = query.eq('is_active', false);
+            // Staff uses 'inactive' status value, not is_active column
+            if (tableName === 'staff') {
+              query = query.eq('status', 'inactive');
+            } else {
+              query = query.eq('is_active', false);
+            }
           } else {
             query = query.eq('status', status);
           }
@@ -572,7 +580,11 @@ router.get('/users', async (req, res) => {
 
         if (status && status !== 'all') {
           if (status === 'inactive') {
-            countQuery = countQuery.eq('is_active', false);
+            if (tableName === 'staff') {
+              countQuery = countQuery.eq('status', 'inactive');
+            } else {
+              countQuery = countQuery.eq('is_active', false);
+            }
           } else {
             countQuery = countQuery.eq('status', status);
           }
@@ -587,17 +599,25 @@ router.get('/users', async (req, res) => {
 
         if (error || countError) {
           console.error(`Error fetching ${tableName}:`, error || countError);
+          console.error('Query details:', { tableName, status, selectColumns });
           return { users: [], count: 0 };
         }
+
+        console.log(`Fetched ${users?.length || 0} ${tableName} from database`);
 
         const formattedUsers = (users || []).map((user: any) => ({
           ...user,
           name: `${user.first_name || ''} ${user.last_name || ''}`.trim() || `Unnamed ${userRole}`,
           role: userRole,
-          status: user.is_active === false ? 'inactive' : (user.status || 'active'),
+          // For staff, use status directly; for others, check is_active
+          status: tableName === 'staff'
+            ? (user.status || 'active')
+            : (user.is_active === false ? 'inactive' : (user.status || 'active')),
           ...(tableName === 'staff' && {
             department: user.department,
-            role_level: user.role_level
+            role_level: user.role_level,
+            employee_id: user.employee_id,
+            is_verified: user.is_verified
           })
         }));
 
@@ -953,7 +973,14 @@ router.post('/users', authorize('admin'), async (req, res) => {
           email: userData.email,
           phone: userData.phone || null,
           department: userData.department || null,
-          role_level: 'staff',
+          role_level: userData.roleLevel || 'staff',
+          employment_type: userData.employmentType || 'full-time',
+          employee_id: userData.employeeId || null,
+          hire_date: userData.hireDate || new Date().toISOString(),
+          bio: userData.bio || null,
+          supervisor_id: userData.supervisorId || null,
+          skills: userData.skills || [],
+          certifications: userData.certifications || [],
           status: userData.status || 'active',
           password_hash: hashedPassword,
           is_verified: true,

@@ -1,22 +1,26 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
+import AccessDenied from '@/components/AccessDenied';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
   allowedRoles?: string[];
   redirectTo?: string;
+  showAccessDenied?: boolean; // New prop to control whether to show access denied page or redirect
 }
 
-export default function ProtectedRoute({ 
-  children, 
-  allowedRoles = [], 
-  redirectTo = '/login' 
+export default function ProtectedRoute({
+  children,
+  allowedRoles = [],
+  redirectTo = '/login',
+  showAccessDenied = true // Default to showing access denied page for better UX
 }: ProtectedRouteProps) {
   const { user, loading, isAuthenticated } = useAuth();
   const router = useRouter();
+  const [shouldShowAccessDenied, setShouldShowAccessDenied] = useState(false);
 
   useEffect(() => {
     if (!loading) {
@@ -26,22 +30,27 @@ export default function ProtectedRoute({
       }
 
       if (allowedRoles.length > 0 && user && !allowedRoles.includes(user.role)) {
-        // Redirect based on user role
-        if (user.role === 'client') {
-          router.push('/');
-        } else if (user.role === 'coach') {
-          router.push('/coaches');
-        } else if (user.role === 'admin') {
-          router.push('/admin');
-        } else if (user.role === 'staff') {
-          router.push('/admin');
+        if (showAccessDenied) {
+          // Show access denied page instead of redirecting
+          setShouldShowAccessDenied(true);
         } else {
-          router.push('/');
+          // Legacy behavior: Redirect based on user role
+          if (user.role === 'client') {
+            router.push('/');
+          } else if (user.role === 'coach') {
+            router.push('/coaches');
+          } else if (user.role === 'admin') {
+            router.push('/admin');
+          } else if (user.role === 'staff') {
+            router.push('/admin');
+          } else {
+            router.push('/');
+          }
         }
         return;
       }
     }
-  }, [user, loading, isAuthenticated, allowedRoles, router, redirectTo]);
+  }, [user, loading, isAuthenticated, allowedRoles, router, redirectTo, showAccessDenied]);
 
   if (loading) {
     return (
@@ -59,7 +68,16 @@ export default function ProtectedRoute({
   }
 
   if (allowedRoles.length > 0 && user && !allowedRoles.includes(user.role)) {
-    return null; // Will redirect in useEffect
+    if (shouldShowAccessDenied && showAccessDenied) {
+      return (
+        <AccessDenied
+          title="Access Restricted"
+          message={`This page is restricted to ${allowedRoles.join(', ')} users only. Your current role (${user.role}) does not have permission to access this area.`}
+          showBackButton={true}
+        />
+      );
+    }
+    return null; // Will redirect in useEffect if showAccessDenied is false
   }
 
   return <>{children}</>;

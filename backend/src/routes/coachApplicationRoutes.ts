@@ -54,9 +54,9 @@ const validateCoachApplication = [
 // Public route - Submit coach application
 router.post('/applications', validateCoachApplication, submitCoachApplication);
 
-// Admin routes - require authentication and admin role
+// Admin and Staff routes - require authentication and admin/staff role
 router.use(authenticate);
-router.use(authorize('admin'));
+router.use(authorize('admin', 'staff'));
 
 // Get all coach applications (with filtering and pagination)
 router.get('/applications', getCoachApplications);
