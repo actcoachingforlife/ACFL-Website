@@ -16,6 +16,7 @@ import Footer from '@/components/Footer';
 import AdminImpersonationFloat from '@/components/AdminImpersonationFloat';
 import DeactivatedAccountBanner from '@/components/DeactivatedAccountBanner';
 import ThemeConsentModal from '@/components/ThemeConsentModal';
+import ClientUserGuide from '@/components/client/ClientUserGuide';
 import {
   Bell, CircleUserRound, LogOut, Sun, Moon, Menu, X, Activity, Calendar,
   Mail, UserSearch, User, CreditCard, Settings, BarChart2,
@@ -1409,6 +1410,9 @@ function ClientLayoutInner({
           onAccept={handleConsentAccept}
           onDecline={handleConsentDecline}
         />
+
+        {/* Client User Guide */}
+        <ClientUserGuide />
         </div>
   );
 }

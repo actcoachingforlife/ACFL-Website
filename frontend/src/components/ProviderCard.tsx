@@ -380,7 +380,7 @@ export const ProviderCard = ({
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row md:flex-col gap-2">
           <Link href={`/clients/coach-profile/${id || name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}`} className="flex-1">
-            <button className="w-full bg-brand-teal hover:bg-brand-teal/90 text-white font-medium py-2.5 px-4 rounded-lg transition-colors">
+            <button className="w-full bg-brand-teal hover:bg-brand-teal/90 text-white font-medium py-2.5 px-4 rounded-lg transition-colors" data-tour="book-session-btn">
               View Full Profile
             </button>
           </Link>

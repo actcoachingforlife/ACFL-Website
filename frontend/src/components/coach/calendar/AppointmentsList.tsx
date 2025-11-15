@@ -376,7 +376,11 @@ export default function AppointmentsList({ coachId }: AppointmentsListProps) {
   }
 
   if (loading) {
-    return <AppointmentCardSkeleton count={5} />
+    return (
+      <div data-tour="appointment-filters">
+        <AppointmentCardSkeleton count={5} />
+      </div>
+    )
   }
 
   return (
@@ -388,7 +392,7 @@ export default function AppointmentsList({ coachId }: AppointmentsListProps) {
       )}
 
       {/* Filter Tabs */}
-      <div className="border-b border-gray-200 dark:border-gray-700">
+      <div className="border-b border-gray-200 dark:border-gray-700" data-tour="appointment-filters">
         <nav className="-mb-px flex space-x-2 sm:space-x-8 overflow-x-auto">
           {[
             { key: 'upcoming', label: 'Upcoming (Scheduled)' },
