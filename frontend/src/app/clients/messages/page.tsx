@@ -122,14 +122,25 @@ function CoachMessagesContent() {
 
 	const loadMessages = async (partnerId: string) => {
 		try {
+			console.log('📬 [Frontend] Loading messages for partner:', partnerId)
+			console.log('📬 [Frontend] User ID:', user?.id)
+
 			const params = new URLSearchParams({ conversation_with: partnerId })
-			const res = await fetch(`${API_URL}/api/client/messages?${params.toString()}`, {
+			const url = `${API_URL}/api/client/messages?${params.toString()}`
+			console.log('📬 [Frontend] Fetching from:', url)
+
+			const res = await fetch(url, {
 				headers: {
 					'Authorization': `Bearer ${localStorage.getItem('token')}`,
 					'Cache-Control': 'no-cache, no-store, must-revalidate'
 				}
 			})
+
+			console.log('📬 [Frontend] Response status:', res.status)
 			const data = await res.json()
+			console.log('📬 [Frontend] Response data:', data)
+			console.log('📬 [Frontend] Messages received:', data.data?.length || 0)
+
 			if (data.success) {
 				// Filter out messages that are hidden for this user
 				const userId = user?.id
@@ -138,11 +149,21 @@ function CoachMessagesContent() {
 					return !userId || !m.hidden_for_users || !m.hidden_for_users.includes(userId)
 				})
 
-				setMessages(filteredMessages)
+				console.log('📬 [Frontend] Filtered messages:', filteredMessages.length)
+				if (filteredMessages.length > 0) {
+					console.log('📬 [Frontend] Sample message IDs:', filteredMessages.slice(0, 3).map(m => m.id))
+					console.log('📬 [Frontend] First message:', filteredMessages[0])
+				} else {
+					console.log('⚠️ [Frontend] No messages after filtering')
+				}
+
+				// Reverse the array since backend now returns newest first, but we want to display oldest first
+				setMessages(filteredMessages.reverse())
 
 				// Mark any unread incoming messages as read
 				const unread = filteredMessages.filter(m => m.recipient_id === userId && !m.read_at)
 				if (unread.length > 0) {
+					console.log('📬 [Frontend] Marking', unread.length, 'messages as read')
 					await Promise.all(
 						unread.map(m => fetch(`${API_URL}/api/client/messages/${m.id}/read`, {
 							method: 'PUT',
@@ -152,9 +173,11 @@ function CoachMessagesContent() {
 					// Refresh conversations to drop unread badges
 					loadConversations(true) // Preserve manual conversations
 				}
+			} else {
+				console.log('⚠️ [Frontend] API returned success: false')
 			}
 		} catch (error) {
-			console.error('Error loading messages:', error)
+			console.error('❌ [Frontend] Error loading messages:', error)
 		}
 	}
 
@@ -339,14 +362,27 @@ function CoachMessagesContent() {
 				socketRef.current.close()
 			}
 
+			console.log('🔌 Initializing socket connection to:', API_URL)
+			console.log('🔌 Token:', localStorage.getItem('token')?.substring(0, 20) + '...')
+
 			const socket = io(API_URL, {
-				transports: ['websocket'],
+				transports: ['polling', 'websocket'],
 				auth: { token: `Bearer ${localStorage.getItem('token')}` }
 			})
 			socketRef.current = socket
 
 			socket.on('connect', () => {
-				console.log('Socket connected')
+				console.log('✅ Socket connected successfully')
+				console.log('✅ Socket ID:', socket.id)
+			})
+
+			socket.on('connect_error', (error) => {
+				console.error('❌ Socket connection error:', error.message)
+				console.error('❌ Error details:', error)
+			})
+
+			socket.on('disconnect', (reason) => {
+				console.log('⚠️ Socket disconnected:', reason)
 			})
 
 			socket.on('message:new', async (msg: Message) => {
@@ -587,12 +623,32 @@ function CoachMessagesContent() {
 				}
 			}
 
+			// Check if socket is connected
+			if (!socketRef.current) {
+				console.error('❌ Socket is not initialized')
+				toast.error('Connection error', 'Not connected to messaging server')
+				return
+			}
+
+			if (!socketRef.current.connected) {
+				console.error('❌ Socket is not connected')
+				toast.error('Connection error', 'Lost connection to messaging server')
+				return
+			}
+
+			console.log('📤 Sending message via socket...')
+			console.log('📤 Socket connected:', socketRef.current.connected)
+			console.log('📤 Recipient:', activePartnerId)
+			console.log('📤 Body:', text.trim())
+
 			// Send message with or without attachment
-			socketRef.current?.emit('message:send', {
+			socketRef.current.emit('message:send', {
 				recipientId: activePartnerId,
 				body: text.trim() || '',
 				attachment
 			})
+
+			console.log('✅ Message emitted to socket')
 
 			setText('')
 			setSelectedFile(null)
@@ -829,26 +885,25 @@ function CoachMessagesContent() {
 
 							return (
 								<div key={m.id} className={`flex ${isMine ? 'justify-end' : 'justify-start'}`}>
-									<div className={`max-w-md ${isMine ? 'order-2' : 'order-1'} group relative`}>
+									<div className={`max-w-md ${isMine ? 'order-2' : 'order-1'} group relative flex items-start gap-2`}>
 										{!isMine && (
-											<div className="flex items-center mb-1">
-												<div className={`w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-semibold mr-2`}>
-													{getInitials(senderName)}
-												</div>
+											<div className={`w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-semibold flex-shrink-0`}>
+												{getInitials(senderName)}
 											</div>
 										)}
-										<div className={`${isMine ? 'bg-blue-500 text-white ml-auto' : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'} rounded-2xl px-4 py-3 ${isDeleted ? 'italic opacity-70' : ''}`}>
-											{m.body && <p className="text-sm">{m.body}</p>}
-											{hasAttachment && (
-												<AttachmentPreview
-													attachmentUrl={m.attachment_url!}
-													attachmentName={m.attachment_name!}
-													attachmentSize={m.attachment_size}
-													attachmentType={m.attachment_type}
-													isMine={isMine}
-												/>
-											)}
-										</div>
+										<div className="flex flex-col">
+											<div className={`${isMine ? 'bg-blue-500 text-white ml-auto' : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'} rounded-2xl px-4 py-3 ${isDeleted ? 'italic opacity-70' : ''}`}>
+												{m.body && <p className="text-sm">{m.body}</p>}
+												{hasAttachment && (
+													<AttachmentPreview
+														attachmentUrl={m.attachment_url!}
+														attachmentName={m.attachment_name!}
+														attachmentSize={m.attachment_size}
+														attachmentType={m.attachment_type}
+														isMine={isMine}
+													/>
+												)}
+											</div>
 
 										{/* Message options dropdown */}
 										{!isDeleted && (
@@ -878,7 +933,7 @@ function CoachMessagesContent() {
 															<div className="fixed inset-0 z-40" onClick={() => setOpenDropdownId(null)} />
 
 															{/* Dropdown menu */}
-															<div className="absolute right-0 top-10 bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl shadow-sm sm:shadow-md border border-gray-200 dark:border-gray-700 z-50 min-w-[220px] overflow-hidden animate-in fade-in zoom-in-95 duration-200 origin-top-right">
+															<div className="absolute right-0 bottom-10 bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl shadow-sm sm:shadow-md border border-gray-200 dark:border-gray-700 z-50 min-w-[220px] overflow-hidden animate-in fade-in zoom-in-95 duration-200 origin-bottom-right">
 																{/* Header gradient */}
 																<div className="bg-gradient-to-r from-red-50 to-pink-50 dark:from-gray-700 dark:to-gray-750 border-b border-gray-200 dark:border-gray-600 px-3 py-2">
 																	<div className="flex items-center gap-2">
@@ -939,10 +994,11 @@ function CoachMessagesContent() {
 											</div>
 										)}
 
-										<p className="text-xs text-gray-500 dark:text-gray-400 mt-1 px-2">
-											{senderName}, {new Date(m.created_at).toLocaleString()}
-											{isMine && m.read_at && <span className="text-blue-600 ml-2">• Seen</span>}
-										</p>
+											<p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+												{senderName}, {new Date(m.created_at).toLocaleString()}
+												{isMine && m.read_at && <span className="text-blue-600 ml-2">• Seen</span>}
+											</p>
+										</div>
 									</div>
 								</div>
 							)

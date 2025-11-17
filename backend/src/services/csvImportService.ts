@@ -1,5 +1,5 @@
 import { parse } from 'csv-parse';
-import * as bcrypt from 'bcryptjs';
+import * as bcrypt from 'bcrypt';
 import { supabase } from '../lib/supabase';
 import { generateMemorablePassword } from '../utils/passwordGenerator';
 import emailService from './emailService';
