@@ -5,6 +5,8 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  // Empty turbopack config to acknowledge we're using Turbopack (required for Next.js 16)
+  turbopack: {},
   webpack: (config, { isServer, webpack }) => {
     // Add global polyfills for browser-only globals used by socket.io
     // This config is kept for webpack mode compatibility
