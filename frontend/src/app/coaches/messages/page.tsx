@@ -814,26 +814,25 @@ function CoachMessagesContent() {
 
 							return (
 								<div key={m.id} className={`flex ${isMine ? 'justify-end' : 'justify-start'}`}>
-									<div className={`max-w-md ${isMine ? 'order-2' : 'order-1'} group relative`}>
+									<div className={`max-w-md ${isMine ? 'order-2' : 'order-1'} group relative flex items-start gap-2`}>
 										{!isMine && (
-											<div className="flex items-center mb-1">
-												<div className={`w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-semibold mr-2`}>
-													{getInitials(senderName)}
-												</div>
+											<div className={`w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-semibold flex-shrink-0`}>
+												{getInitials(senderName)}
 											</div>
 										)}
-										<div className={`${isMine ? 'bg-blue-500 text-white ml-auto' : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'} rounded-2xl px-4 py-3 ${isDeleted ? 'italic opacity-70' : ''}`}>
-											{m.body && <p className="text-sm">{m.body}</p>}
-											{hasAttachment && (
-												<AttachmentPreview
-													attachmentUrl={m.attachment_url!}
-													attachmentName={m.attachment_name!}
-													attachmentSize={m.attachment_size}
-													attachmentType={m.attachment_type}
-													isMine={isMine}
-												/>
-											)}
-										</div>
+										<div className="flex flex-col">
+											<div className={`${isMine ? 'bg-blue-500 text-white ml-auto' : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'} rounded-2xl px-4 py-3 ${isDeleted ? 'italic opacity-70' : ''}`}>
+												{m.body && <p className="text-sm">{m.body}</p>}
+												{hasAttachment && (
+													<AttachmentPreview
+														attachmentUrl={m.attachment_url!}
+														attachmentName={m.attachment_name!}
+														attachmentSize={m.attachment_size}
+														attachmentType={m.attachment_type}
+														isMine={isMine}
+													/>
+												)}
+											</div>
 
 										{/* Message options dropdown */}
 										{!isDeleted && (
@@ -924,10 +923,11 @@ function CoachMessagesContent() {
 											</div>
 										)}
 
-										<p className="text-xs text-gray-500 dark:text-gray-400 mt-1 px-2">
-											{senderName}, {new Date(m.created_at).toLocaleString()}
-											{isMine && m.read_at && <span className="text-blue-600 ml-2">• Seen</span>}
-										</p>
+											<p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+												{senderName}, {new Date(m.created_at).toLocaleString()}
+												{isMine && m.read_at && <span className="text-blue-600 ml-2">• Seen</span>}
+											</p>
+										</div>
 									</div>
 								</div>
 							)

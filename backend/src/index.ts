@@ -192,28 +192,42 @@ type SocketUser = { userId: string; role: string } | null;
 
 io.use((socket, next) => {
   try {
+    console.log('🔌 Socket authentication attempt...');
+    console.log('🔌 Auth header:', socket.handshake.auth?.token?.substring(0, 20) + '...');
+
     const authHeader = socket.handshake.auth?.token || socket.handshake.headers['authorization'];
     const token = typeof authHeader === 'string' && authHeader.startsWith('Bearer ')
       ? authHeader.replace('Bearer ', '')
       : (typeof socket.handshake.auth?.token === 'string' ? socket.handshake.auth.token : undefined);
-    if (!token) return next(new Error('Unauthorized'));
+
+    if (!token) {
+      console.log('❌ Socket auth failed: No token provided');
+      return next(new Error('Unauthorized'));
+    }
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key') as any;
     (socket as any).user = { userId: decoded.userId, role: decoded.role } as SocketUser;
+    console.log('✅ Socket authenticated for user:', decoded.userId);
     return next();
   } catch (e) {
+    console.error('❌ Socket auth failed:', e.message);
     return next(new Error('Unauthorized'));
   }
 });
 
 io.on('connection', (socket) => {
+  console.log('🔌 New socket connection attempt');
   const user = (socket as any).user as SocketUser;
   if (!user) {
+    console.log('❌ Socket connection rejected: No user');
     socket.disconnect(true);
     return;
   }
+  console.log('✅ Socket connected for user:', user.userId, 'role:', user.role);
   const room = `user:${user.userId}`;
   socket.join(room);
-  
+  console.log('✅ User joined room:', room);
+
   // Join admin room if user is admin
   if (user.role === 'admin') {
     socket.join('admin:notifications');
@@ -222,9 +236,15 @@ io.on('connection', (socket) => {
 
   socket.on('message:send', async (payload: { recipientId: string; body: string; attachment?: { url: string; name: string; size: number; type: string } }) => {
     try {
+      console.log('📨 Received message:send event from user:', user.userId);
+      console.log('📨 Payload:', payload);
+
       const senderId = user.userId;
       const { recipientId, body, attachment } = payload;
-      if (!recipientId || (!body?.trim() && !attachment)) return;
+      if (!recipientId || (!body?.trim() && !attachment)) {
+        console.log('⚠️ Invalid message payload - missing recipientId or body/attachment');
+        return;
+      }
       const now = new Date().toISOString();
       const insert = {
         sender_id: senderId,
@@ -238,13 +258,18 @@ io.on('connection', (socket) => {
         read_at: null as string | null,
       } as any;
 
+      console.log('💾 Attempting to save message to database...');
       const { data: saved, error } = await supabase
         .from('messages')
         .insert(insert)
         .select('*')
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('❌ Database error saving message:', error);
+        throw error;
+      }
+      console.log('✅ Message saved successfully:', saved.id);
 
       // Fetch sender information to include in the message
       let senderName = 'Unknown';
@@ -281,9 +306,13 @@ io.on('connection', (socket) => {
       };
 
       // Emit to both participants
+      console.log('📤 Emitting message:new to recipient:', recipientId);
+      console.log('📤 Emitting message:new to sender:', senderId);
       io.to(`user:${recipientId}`).emit('message:new', messageWithSender);
       io.to(`user:${senderId}`).emit('message:new', messageWithSender);
+      console.log('✅ Message emitted successfully');
     } catch (err) {
+      console.error('❌ Error in message:send handler:', err);
       socket.emit('message:error', { message: 'Failed to send message' });
     }
   });

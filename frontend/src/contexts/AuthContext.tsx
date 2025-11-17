@@ -161,7 +161,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         email,
         password
       }, {
-        timeout: 10000, // 10 second timeout
+        timeout: 30000, // 30 second timeout
         headers: {
           'Content-Type': 'application/json'
         }
@@ -235,6 +235,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         data: error.response?.data
       });
       
+      // Handle timeout errors
+      if (error.code === 'ECONNABORTED') {
+        throw new Error('Login is taking longer than expected. Please try again or contact support if this persists.');
+      }
+
       // Handle network errors
       if (error.code === 'NETWORK_ERROR' || error.code === 'ECONNREFUSED' || !error.response) {
         throw new Error('Unable to connect to server. Please check your internet connection and try again.');

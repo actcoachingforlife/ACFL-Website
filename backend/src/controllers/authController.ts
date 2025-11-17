@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import * as bcrypt from 'bcryptjs';
+import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import { SignOptions } from 'jsonwebtoken';
 import { validationResult } from 'express-validator';

@@ -1613,8 +1613,12 @@ router.post('/client/message-coach', [
 // Get client messages/conversations
 router.get('/client/messages', authenticate, async (req: Request & { user?: any }, res: Response) => {
   try {
+    console.log('📬 GET /client/messages - Loading messages from database');
+    console.log('📬 Request user email:', req.user.email);
+
     const { page = 1, limit = 50, conversation_with } = req.query as any;
     const offset = (Number(page) - 1) * Number(limit);
+    console.log('📬 Query params:', { page, limit, conversation_with, offset });
 
     // Get client profile by email first
     const { data: clientProfile, error: clientError } = await supabase
@@ -1624,32 +1628,55 @@ router.get('/client/messages', authenticate, async (req: Request & { user?: any 
       .single();
 
     if (clientError || !clientProfile) {
+      console.log('❌ Client profile not found for email:', req.user.email);
       return res.status(404).json({ success: false, message: 'Client profile not found' });
     }
 
     const clientId = clientProfile.id;
     const partnerId = conversation_with as string | undefined;
+    console.log('📬 Client ID:', clientId);
+    console.log('📬 Partner ID:', partnerId);
 
     let query = supabase
       .from('messages')
       .select('id, sender_id, recipient_id, body, created_at, read_at, attachment_url, attachment_name, attachment_size, attachment_type, deleted_for_everyone, deleted_at, hidden_for_users')
-      .order('created_at', { ascending: true });
+      .order('created_at', { ascending: false }); // Changed to descending to get newest messages first
 
     if (partnerId) {
-      query = query.or(
-        `and(sender_id.eq.${clientId},recipient_id.eq.${partnerId}),and(sender_id.eq.${partnerId},recipient_id.eq.${clientId})`
-      );
+      const filterQuery = `and(sender_id.eq.${clientId},recipient_id.eq.${partnerId}),and(sender_id.eq.${partnerId},recipient_id.eq.${clientId})`;
+      console.log('📬 Using conversation filter:', filterQuery);
+      query = query.or(filterQuery);
     } else {
-      query = query.or(`sender_id.eq.${clientId},recipient_id.eq.${clientId}`);
+      const filterQuery = `sender_id.eq.${clientId},recipient_id.eq.${clientId}`;
+      console.log('📬 Using all messages filter:', filterQuery);
+      query = query.or(filterQuery);
     }
 
     const { data: messages, error: messagesError, count } = await query.range(offset, offset + Number(limit) - 1) as any;
-    if (messagesError) throw messagesError;
+    if (messagesError) {
+      console.error('❌ Database error fetching messages:', messagesError);
+      throw messagesError;
+    }
+
+    console.log('📬 Raw messages from database:', messages?.length || 0);
+    if (messages && messages.length > 0) {
+      console.log('📬 Sample message IDs:', messages.slice(0, 3).map((m: any) => m.id));
+      console.log('📬 First message:', JSON.stringify(messages[0], null, 2));
+    } else {
+      console.log('⚠️ No messages returned from database query');
+    }
 
     // Filter out messages hidden for this user
     const filteredMessages = messages?.filter((message: any) => {
-      return !message.hidden_for_users?.includes(clientId);
+      const isHidden = message.hidden_for_users?.includes(clientId);
+      if (isHidden) {
+        console.log('🚫 Filtering out hidden message:', message.id);
+      }
+      return !isHidden;
     }) || [];
+
+    console.log('📬 Filtered messages count:', filteredMessages.length);
+    console.log('📬 Returning messages to client');
 
     res.json({
       success: true,
@@ -1661,7 +1688,7 @@ router.get('/client/messages', authenticate, async (req: Request & { user?: any 
       }
     });
   } catch (error) {
-    console.error('Get messages error:', error);
+    console.error('❌ Get messages error:', error);
     res.status(500).json({ success: false, message: 'Failed to fetch messages' });
   }
 });

@@ -1,3 +1,5 @@
+"use client";
+
 // Logo.tsx
 import { motion } from "framer-motion";
 import Image from "next/image";
