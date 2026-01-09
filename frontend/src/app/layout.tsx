@@ -56,23 +56,33 @@ export default function RootLayout({
               document.addEventListener('DOMContentLoaded', removeBlockedScripts);
 
               // Also intercept any new script injections
-              const observer = new MutationObserver((mutations) => {
-                mutations.forEach(mutation => {
-                  if (mutation.addedNodes.length) {
-                    mutation.addedNodes.forEach(node => {
-                      if (node.tagName === 'SCRIPT' && node.src) {
-                        if (blocklist.some(domain => node.src.includes(domain))) {
-                          console.warn('[Security] Blocked injected script:', node.src);
-                          node.remove();
-                        }
-                      }
-                    });
-                  }
-                });
-              });
+              function setupObserver() {
+                if (!document.head || !document.body) {
+                  // Defer if DOM not ready yet
+                  setTimeout(setupObserver, 100);
+                  return;
+                }
 
-              observer.observe(document.head, { childList: true, subtree: true });
-              observer.observe(document.body, { childList: true, subtree: true });
+                const observer = new MutationObserver((mutations) => {
+                  mutations.forEach(mutation => {
+                    if (mutation.addedNodes.length) {
+                      mutation.addedNodes.forEach(node => {
+                        if (node.nodeType === 1 && node.tagName === 'SCRIPT' && node.src) {
+                          if (blocklist.some(domain => node.src.includes(domain))) {
+                            console.warn('[Security] Blocked injected script:', node.src);
+                            node.remove();
+                          }
+                        }
+                      });
+                    }
+                  });
+                });
+
+                observer.observe(document.head, { childList: true, subtree: true });
+                observer.observe(document.body, { childList: true, subtree: true });
+              }
+
+              setupObserver();
             })();
           `
         }} />
