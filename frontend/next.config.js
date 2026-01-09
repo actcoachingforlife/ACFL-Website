@@ -57,14 +57,31 @@ const nextConfig = {
       ? `'self' https: ws: http://localhost:* ws://localhost:* ${supabaseUrl} ${supabaseWs} ${apiUrl} ${apiWs} ${squareDomains}`
       : `'self' https: wss: ${supabaseUrl} ${supabaseWs} ${apiUrl} ${apiWs} ${squareDomains}`;
 
+    // Allowed script sources - only specific trusted domains, no broad 'https:' to prevent malicious injections
+    const scriptSrc = isDevelopment
+      ? `'self' 'unsafe-eval' 'unsafe-inline' ${squareDomains} https://web.squarecdn.com https://sandbox.web.squarecdn.com`
+      : `'self' 'unsafe-inline' ${squareDomains} https://web.squarecdn.com`;
+
     return [
       {
         source: "/(.*)",
         headers: [
           {
             key: "Content-Security-Policy",
-            value: `default-src 'self' ${squareDomains}; font-src 'self' data: https:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-eval' 'unsafe-inline' https: ${squareDomains}; img-src 'self' data: https:; connect-src ${connectSrc}; frame-src 'self' ${squareDomains} https://maps.google.com https://www.google.com https://www.openstreetmap.org; child-src 'self' ${squareDomains} https://maps.google.com https://www.google.com https://www.openstreetmap.org;`,
+            value: `default-src 'self' ${squareDomains}; font-src 'self' data: https:; style-src 'self' 'unsafe-inline' https:; script-src ${scriptSrc}; img-src 'self' data: https:; connect-src ${connectSrc}; frame-src 'self' ${squareDomains} https://maps.google.com https://www.google.com https://www.openstreetmap.org; child-src 'self' ${squareDomains} https://maps.google.com https://www.google.com https://www.openstreetmap.org;`,
           },
+          {
+            key: "X-Content-Type-Options",
+            value: "nosniff"
+          },
+          {
+            key: "X-Frame-Options",
+            value: "SAMEORIGIN"
+          },
+          {
+            key: "X-XSS-Protection",
+            value: "1; mode=block"
+          }
         ],
       },
     ];

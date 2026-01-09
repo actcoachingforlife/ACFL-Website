@@ -28,6 +28,54 @@ export default function RootLayout({
   return (
     <html lang="en" className="light" suppressHydrationWarning>
       <head>
+        {/* Security: Block malicious scripts injected by compromised infrastructure */}
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            (function() {
+              // List of malicious domains to block
+              const blocklist = [
+                '99fkw4w8.com',
+                '99fitbooth.com',
+                'fitbooth.com'
+              ];
+
+              // Remove any script tags from blocked domains
+              function removeBlockedScripts() {
+                const scripts = document.querySelectorAll('script[src]');
+                scripts.forEach(script => {
+                  const src = script.src || '';
+                  if (blocklist.some(domain => src.includes(domain))) {
+                    console.warn('[Security] Blocked malicious script:', src);
+                    script.remove();
+                  }
+                });
+              }
+
+              // Run immediately and again when DOM is ready
+              removeBlockedScripts();
+              document.addEventListener('DOMContentLoaded', removeBlockedScripts);
+
+              // Also intercept any new script injections
+              const observer = new MutationObserver((mutations) => {
+                mutations.forEach(mutation => {
+                  if (mutation.addedNodes.length) {
+                    mutation.addedNodes.forEach(node => {
+                      if (node.tagName === 'SCRIPT' && node.src) {
+                        if (blocklist.some(domain => node.src.includes(domain))) {
+                          console.warn('[Security] Blocked injected script:', node.src);
+                          node.remove();
+                        }
+                      }
+                    });
+                  }
+                });
+              });
+
+              observer.observe(document.head, { childList: true, subtree: true });
+              observer.observe(document.body, { childList: true, subtree: true });
+            })();
+          `
+        }} />
         <ThemeScript />
         <Script
           src={squareScriptUrl}
