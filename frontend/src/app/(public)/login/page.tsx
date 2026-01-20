@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import NavbarLandingPage  from '@/components/NavbarLandingPage';
 import Footer from "@/components/Footer"
-import { Mail, Lock } from 'lucide-react';
+import { Mail, Lock, ChevronDown } from 'lucide-react';
 
 function LoginForm() {
   const [formData, setFormData] = useState({
@@ -21,6 +21,7 @@ function LoginForm() {
   const [emailNotVerified, setEmailNotVerified] = useState(false);
   const [resendingEmail, setResendingEmail] = useState(false);
   const [resendSuccess, setResendSuccess] = useState(false);
+  const [showTestCredentials, setShowTestCredentials] = useState(false);
   const { login } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -298,14 +299,27 @@ function LoginForm() {
           </div>
         </div>
 
-        {/* Test Credentials */}
-        <div className="mt-6 p-5 bg-gray-50 rounded-lg border border-gray-200">
-          <h4 className="text-sm font-semibold text-gray-900 mb-3">Test Credentials:</h4>
-          <div className="text-xs text-gray-700 space-y-1.5">
-            <p><strong>Admin:</strong> admin@acfl.com / admin123</p>
-            <p><strong>Coach:</strong> coach@acfl.com / coach123</p>
-            <p><strong>Client:</strong> client@acfl.com / client123</p>
-          </div>
+        {/* Test Credentials - Collapsible */}
+        <div className="mt-6 bg-gray-50 rounded-lg border border-gray-200 overflow-hidden">
+          <button
+            type="button"
+            onClick={() => setShowTestCredentials(!showTestCredentials)}
+            className="w-full p-4 flex items-center justify-between hover:bg-gray-100 transition-colors"
+          >
+            <h4 className="text-sm font-semibold text-gray-900">Test Credentials</h4>
+            <ChevronDown
+              className={`w-5 h-5 text-gray-600 transition-transform duration-200 ${
+                showTestCredentials ? 'rotate-180' : ''
+              }`}
+            />
+          </button>
+          {showTestCredentials && (
+            <div className="px-5 pb-5 text-xs text-gray-700 space-y-1.5 animate-in fade-in slide-in-from-top-2 duration-200">
+              <p><strong>Admin:</strong> admin@acfl.com / admin123</p>
+              <p><strong>Coach:</strong> coach@acfl.com / coach123</p>
+              <p><strong>Client:</strong> client@acfl.com / client123</p>
+            </div>
+          )}
         </div>
 
         {/* Security Notice */}
