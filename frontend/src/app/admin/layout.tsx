@@ -47,7 +47,8 @@ import {
   TrendingUp,
   Cog,
   MessageSquare,
-  BookOpen
+  BookOpen,
+  MessageSquareText
 } from 'lucide-react';
 
 const poppins = Poppins({
@@ -543,8 +544,8 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           )}
 
           {/* Navigation Groups - Scrollable */}
-          <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide min-h-0">
-            <nav className="space-y-1 p-4" data-tour="admin-navigation">
+          <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide min-h-0 flex flex-col">
+            <nav className="space-y-1 p-4 flex-1" data-tour="admin-navigation">
             {filteredNavigationGroups.map((group) => {
               const filteredItems = filterItemsBySearch(group.items);
               const isExpanded = expandedGroups.has(group.id);
@@ -652,6 +653,23 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               );
             })}
             </nav>
+
+            {/* Feedback Button - Bottom of Sidebar */}
+            <div className="shrink-0 p-3 border-t border-gray-200 dark:border-gray-700">
+              <Link
+                href="/admin/feedback"
+                className={`flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                  sidebarCollapsed ? 'justify-center' : ''
+                } ${
+                  pathname === '/admin/feedback'
+                    ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400'
+                    : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white'
+                }`}
+              >
+                <MessageSquareText className={`w-5 h-5 ${sidebarCollapsed ? '' : 'mr-3'} flex-shrink-0`} />
+                {!sidebarCollapsed && <span>Bug & Feature Report</span>}
+              </Link>
+            </div>
           </div>
         </div>
       </div>
@@ -1279,6 +1297,22 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                     </div>
                   );
                 })}
+
+                {/* Mobile Feedback Button */}
+                <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                  <Link
+                    href="/admin/feedback"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${
+                      pathname === '/admin/feedback'
+                        ? 'bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 font-medium'
+                        : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white'
+                    }`}
+                  >
+                    <MessageSquareText className="w-5 h-5" />
+                    <span>Bug & Feature Report</span>
+                  </Link>
+                </div>
               </nav>
             </div>
           </>
